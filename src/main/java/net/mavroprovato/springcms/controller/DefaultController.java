@@ -20,7 +20,7 @@ public class DefaultController {
 
     @RequestMapping("/")
     public String index(Model model) {
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "createdAt");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "publishedAt");
         model.addAttribute("contents", contentRepository.findAll(pageRequest));
 
         return "index";
