@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 public class Content {
 
     @Id
-    @SequenceGenerator(name = "city_generator", sequenceName = "city_sequence", allocationSize = 1)
-    @GeneratedValue(generator = "city_generator")
+    @SequenceGenerator(name = "content_generator", sequenceName = "content_sequence", allocationSize = 1)
+    @GeneratedValue(generator = "content_generator")
     private Integer id;
 
     @Column(nullable = false)
@@ -29,6 +29,9 @@ public class Content {
     @Column(nullable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Column
+    private LocalDateTime publishedAt;
 
     public Integer getId() {
         return id;
@@ -64,5 +67,13 @@ public class Content {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getPublishedAt() {
+        return publishedAt;
+    }
+
+    public void setPublishedAt(LocalDateTime publishedAt) {
+        this.publishedAt = publishedAt;
     }
 }
