@@ -73,6 +73,7 @@
 
             <div th:each="content: ${contents}" class="blog-post">
                 <h2 th:text="${content.title}" class="blog-post-title"></h2>
+                <p th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}" class="blog-post-meta"></p>
                 <p th:text="${content.content}"></p>
             </div>
 
