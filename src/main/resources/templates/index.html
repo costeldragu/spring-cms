@@ -78,10 +78,11 @@
             </div>
 
             <nav class="blog-pagination">
-                <a class="btn btn-outline-primary" href="#">Older</a>
-                <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
+                <a th:if="not ${contents.last}" class="btn btn-outline-primary" th:href="@{'/page/' + ${contents.number + 2}}">Older</a>
+                <a th:if="${contents.last}" class="btn btn-outline-secondary disabled" href="#">Older</a>
+                <a th:if="not ${contents.first}" class="btn btn-outline-primary" th:href="@{'/page/' + ${contents.number}}">Newer</a>
+                <a th:if="${contents.first}" class="btn btn-outline-secondary disabled" href="#">Newer</a>
             </nav>
-
         </div>
         <aside class="col-md-4 blog-sidebar" th:insert="sidebar"></aside>
     </div>
