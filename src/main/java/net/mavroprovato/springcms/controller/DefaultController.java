@@ -6,21 +6,45 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class DefaultController {
 
+    /** The content repository */
     private final ContentRepository contentRepository;
 
+    /**
+     * Create the controller.
+     *
+     * @param contentRepository The content repository.
+     */
     @Autowired
     public DefaultController(ContentRepository contentRepository) {
         this.contentRepository = contentRepository;
     }
 
+    /**
+     * Display the index page.
+     *
+     * @param model The page model.
+     * @return The template name.
+     */
     @RequestMapping("/")
     public String index(Model model) {
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "publishedAt");
+        return indexPage(model, 1);
+    }
+
+    /**
+     * Display an index page.
+     *
+     * @param model The page model.
+     * @return The template name.
+     */
+    @RequestMapping("/page/{page}")
+    public String indexPage(Model model, @PathVariable("page") int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         model.addAttribute("contents", contentRepository.findAll(pageRequest));
 
         return "index";
