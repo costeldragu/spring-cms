@@ -2,22 +2,37 @@ package net.mavroprovato.springcms.command;
 
 import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.repository.ContentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.*;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A command line command that generates test content.
  */
-@Component
 @ComponentScan("net.mavroprovato.springcms")
 public class GenerateContentCommand implements ApplicationRunner {
+
+    /** Logger for the class */
+    private static Logger logger = LoggerFactory.getLogger(GenerateContentCommand.class);
+
+    /** The default number of content items to generate. */
+    private static final int DEFAULT_COUNT = 100;
+
+    /** The default minimum publication date for the content items. */
+    private static final LocalDateTime DEFAULT_START_DATE = LocalDateTime.now().minus(1, ChronoUnit.YEARS);
+
+    /** The default maximum publication date for the content items. */
+    private static final LocalDateTime DEFAULT_END_DATE = LocalDateTime.now();
 
     /** The content repository */
     private final ContentRepository contentRepository;
@@ -37,10 +52,54 @@ public class GenerateContentCommand implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) {
-        int count = 100;
-        LocalDateTime startDate = LocalDateTime.now().minus(1, ChronoUnit.YEARS);
-        LocalDateTime endDate = LocalDateTime.now();
+        // Parse the count argument.
+        int count = DEFAULT_COUNT;
+        if (args.containsOption("count")) {
+            try {
+                count = Integer.parseInt(args.getOptionValues("count").get(0));
+            } catch (NumberFormatException e) {
+                logger.error("Cannot parse the count argument ({}) as an integer.",
+                        args.getOptionValues("count").get(0));
+                return;
+            }
+            if (count <= 0) {
+                logger.error("Count must be a positive integer.");
+                return;
+            }
+        }
 
+        // Parse the start date argument
+        LocalDateTime startDate = DEFAULT_START_DATE;
+        if (args.containsOption("start-date")) {
+            try {
+                String startDateString = args.getOptionValues("start-date").get(0);
+                startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
+            } catch (DateTimeParseException e) {
+                logger.error("Start date ({}) cannot be parsed.", args.getOptionValues("start-date").get(0));
+                return;
+            }
+        }
+
+        // Parse the end date argument
+        LocalDateTime endDate = DEFAULT_END_DATE;
+        if (args.containsOption("end-date")) {
+            try {
+                String endDateString = args.getOptionValues("end-date").get(0);
+                endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
+            } catch (DateTimeParseException e) {
+                logger.error("End date ({}) cannot be parsed.", args.getOptionValues("end-date").get(0));
+                return;
+            }
+        }
+
+        // Check if start date is before end date
+        if (!startDate.isBefore(endDate)) {
+            logger.error("Start date must be before end date.");
+            return;
+        }
+
+        // Generate the content items
+        logger.info("Generating {} content items between {} and {}.", count, startDate, endDate);
         for (int i = 0; i < count; i++) {
             Content content = new Content();
             content.setTitle("Test Title");
@@ -53,6 +112,7 @@ public class GenerateContentCommand implements ApplicationRunner {
 
             contentRepository.save(content);
         }
+        logger.info("Content items generated.");
     }
 
     /**
