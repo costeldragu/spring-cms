@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * The default controller.
+ */
 @Controller
 public class DefaultController {
 
@@ -46,6 +49,7 @@ public class DefaultController {
     public String indexPage(Model model, @PathVariable("page") int page) {
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         model.addAttribute("contents", contentRepository.findAll(pageRequest));
+        model.addAttribute("archives", contentRepository.countByMonth());
 
         return "index";
     }
