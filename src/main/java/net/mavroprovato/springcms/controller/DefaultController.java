@@ -1,9 +1,7 @@
 package net.mavroprovato.springcms.controller;
 
-import net.mavroprovato.springcms.repository.ContentRepository;
+import net.mavroprovato.springcms.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,17 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DefaultController {
 
-    /** The content repository */
-    private final ContentRepository contentRepository;
+    /** The content service */
+    private final ContentService contentService;
 
     /**
      * Create the controller.
      *
-     * @param contentRepository The content repository.
+     * @param contentService The content service.
      */
     @Autowired
-    public DefaultController(ContentRepository contentRepository) {
-        this.contentRepository = contentRepository;
+    public DefaultController(ContentService contentService) {
+        this.contentService = contentService;
     }
 
     /**
@@ -47,9 +45,7 @@ public class DefaultController {
      */
     @RequestMapping("/page/{page}")
     public String indexPage(Model model, @PathVariable("page") int page) {
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
-        model.addAttribute("contents", contentRepository.findAll(pageRequest));
-        model.addAttribute("archives", contentRepository.countByMonth());
+        model.addAllAttributes(contentService.getContent(page));
 
         return "index";
     }
