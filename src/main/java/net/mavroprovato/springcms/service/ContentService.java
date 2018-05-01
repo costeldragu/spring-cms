@@ -14,34 +14,80 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The content service.
+ */
 @Service
 public class ContentService {
 
     /** The content repository */
     private final ContentRepository contentRepository;
 
+    /**
+     * Create the content service.
+     * @param contentRepository The content repository.
+     */
     @Autowired
     public ContentService(ContentRepository contentRepository) {
         this.contentRepository = contentRepository;
     }
 
-    public Map<String, ?> listAll(int page) {
-        return listAllImpl(null, null, null, page);
+    /**
+     * Get a content item page, ordered by publication date.
+     *
+     * @param page The page number.
+     * @return The content items.
+     */
+    public Map<String, ?> list(int page) {
+        return listImpl(null, null, null, page);
     }
 
-    public Map<String, ?> listAll(int year, int page) {
-        return listAllImpl(year, null, null, page);
+    /**
+     * Get a page of content items published in a year, ordered by publication date.
+     *
+     * @param year The year.
+     * @param page The page number.
+     * @return The content items.
+     */
+    public Map<String, ?> list(int year, int page) {
+        return listImpl(year, null, null, page);
     }
 
-    public Map<String, ?> listAll(int year, int month, int page) {
-        return listAllImpl(year, month, null, page);
+    /**
+     * Get a page of content items published in a month, ordered by publication date.
+     *
+     * @param year The year.
+     * @param month The month number (1 for January, 12 for December)
+     * @param page The page number.
+     * @return The content items.
+     */
+    public Map<String, ?> list(int year, int month, int page) {
+        return listImpl(year, month, null, page);
     }
 
-    public Map<String, ?> listAll(int year, int month, int day, int page) {
-        return listAllImpl(year, month, day, page);
+    /**
+     * Get a page of content items published in a day, ordered by publication date.
+     *
+     * @param year The year.
+     * @param month The month number (1 for January, 12 for December)
+     * @param day The day number.
+     * @param page The page number.
+     * @return The content items.
+     */
+    public Map<String, ?> list(int year, int month, int day, int page) {
+        return listImpl(year, month, day, page);
     }
 
-    private Map<String, ?> listAllImpl(Integer year, Integer month, Integer day, int page) {
+    /**
+     * Get a page of content items, ordered by publication date.
+     *
+     * @param year The year.
+     * @param month The month number (1 for January, 12 for December)
+     * @param day The day number.
+     * @param page The page number.
+     * @return The content items.
+     */
+    private Map<String, ?> listImpl(Integer year, Integer month, Integer day, int page) {
         // Calculate the start/end publication date
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
@@ -61,14 +107,16 @@ public class ContentService {
             endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
         }
 
+        // Create the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = null;
+        Page<Content> contents;
         if (startDateTime == null && endDateTime == null) {
             contents = contentRepository.findAll(pageRequest);
         } else {
             contents = contentRepository.findByPublishedAtBetween(startDateTime, endDateTime, pageRequest);
         }
 
+        // Create the model
         Map<String, Object> model = new HashMap<>();
         model.put("contents", contents);
         model.put("archives", contentRepository.countByMonth());

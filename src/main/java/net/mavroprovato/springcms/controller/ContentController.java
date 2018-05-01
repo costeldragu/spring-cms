@@ -46,7 +46,7 @@ public class ContentController {
      */
     @RequestMapping("/page/{page}")
     public String indexPage(Model model, @PathVariable("page") int page) {
-        model.addAllAttributes(contentService.listAll(page));
+        model.addAllAttributes(contentService.list(page));
 
         return "index";
     }
@@ -73,7 +73,7 @@ public class ContentController {
      */
     @RequestMapping("/{year}/page/{page}")
     public String yearPage(Model model, @PathVariable("year") int year, @PathVariable("page") int page) {
-        model.addAllAttributes(contentService.listAll(year, page));
+        model.addAllAttributes(contentService.list(year, page));
 
         return "index";
     }
@@ -103,7 +103,7 @@ public class ContentController {
     @RequestMapping("/{year}/{month}/page/{page}")
     public String monthPage(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                            @PathVariable("page") int page) {
-        model.addAllAttributes(contentService.listAll(year, month, page));
+        model.addAllAttributes(contentService.list(year, month, page));
 
         return "index";
     }
@@ -136,7 +136,7 @@ public class ContentController {
     @RequestMapping("/{year}/{month}/{day}/page/{page}")
     public String dayPage(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                           @PathVariable("day") int day, @PathVariable("page") int page) {
-        model.addAllAttributes(contentService.listAll(year, month, day, page));
+        model.addAllAttributes(contentService.list(year, month, day, page));
 
         return "index";
     }
