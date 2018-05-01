@@ -28,5 +28,13 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
     )
     List<CountByMonth> countByMonth();
 
+    /**
+     * Return a page of content items published between two dates.
+     *
+     * @param startDateTime The start dates.
+     * @param endDateTime The end dates.
+     * @param pageable The pagination parameters.
+     * @return The content item list.
+     */
     Page<Content> findByPublishedAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
 }
