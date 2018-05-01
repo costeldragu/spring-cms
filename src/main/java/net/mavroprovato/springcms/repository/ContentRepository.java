@@ -2,9 +2,12 @@ package net.mavroprovato.springcms.repository;
 
 import net.mavroprovato.springcms.dto.CountByMonth;
 import net.mavroprovato.springcms.entity.Content;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,4 +27,6 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
         "ORDER BY YEAR(c.publishedAt) DESC, MONTH(c.publishedAt) DESC"
     )
     List<CountByMonth> countByMonth();
+
+    Page<Content> findByPublishedAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
 }
