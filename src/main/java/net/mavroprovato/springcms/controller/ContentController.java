@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * The default controller.
+ * The content controller.
  */
 @Controller
-public class DefaultController {
+public class ContentController {
 
     /** The content service */
     private final ContentService contentService;
@@ -22,7 +22,7 @@ public class DefaultController {
      * @param contentService The content service.
      */
     @Autowired
-    public DefaultController(ContentService contentService) {
+    public ContentController(ContentService contentService) {
         this.contentService = contentService;
     }
 
