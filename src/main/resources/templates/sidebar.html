@@ -18,7 +18,7 @@
                 <ul class="list-unstyled mb-0">
                     <li th:each="archive: ${archives}">
                         <a th:text="${#temporals.format(archive.month, 'MMMM yyyy')}"
-                           th:href="@{'/' + ${archive.month.year} + '/' + ${archive.month.monthValue}}"></a>
+                           th:href="${'/' + archive.month.year + '/' + #numbers.formatInteger(archive.month.monthValue, 2)}"></a>
                     </li>
                 </ul>
             </div>
