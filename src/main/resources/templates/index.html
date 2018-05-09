@@ -29,6 +29,7 @@
                     </div>
                     <div class="card-footer text-muted">
                         Posted on <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
+                        Tagged with <th:block th:each="tag: ${content.tags}"><a th:text="${tag.name}" href="#"></a>&nbsp;</th:block>
                     </div>
                 </div>
                 <ul class="pagination justify-content-center mb-4">
