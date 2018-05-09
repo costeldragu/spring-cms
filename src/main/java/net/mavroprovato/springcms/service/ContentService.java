@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,26 +89,31 @@ public class ContentService {
      * @return The content items.
      */
     private Map<String, ?> listImpl(Integer year, Integer month, Integer day, int page) {
-        // Calculate the start/end publication date
+        // Calculate the start/end publication date to use for the content query, and the url prefix for the pagination
+        // links.
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
+        String urlPrefix = "";
         if (year != null && month != null && day != null) {
             LocalDate date = LocalDate.of(year, month, day);
             startDateTime = LocalDateTime.of(date, LocalTime.MIN);
             endDateTime = LocalDateTime.of(date, LocalTime.MAX);
+            urlPrefix = String.format("/%02d/%02d/%02d", year, month, day);
         } else if (year != null && month != null) {
             LocalDate startDate = LocalDate.of(year, month, 1);
             startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
             LocalDate endDate = startDate.withDayOfMonth(startDate.getMonth().length(startDate.isLeapYear()));
             endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+            urlPrefix = String.format("/%02d/%02d", year, month);
         } else if (year != null) {
-            LocalDate startDate = LocalDate.of(year, 1, 1);
+            LocalDate startDate = LocalDate.of(year, Month.JANUARY.getValue(), 1);
             startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
-            LocalDate endDate = LocalDate.of(year, 12, 31);
+            LocalDate endDate = LocalDate.of(year, Month.DECEMBER.getValue(), 31);
             endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+            urlPrefix = String.format("/%02d", year);
         }
 
-        // Create the query
+        // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents;
         if (startDateTime == null) {
@@ -120,6 +126,7 @@ public class ContentService {
         Map<String, Object> model = new HashMap<>();
         model.put("contents", contents);
         model.put("archives", contentRepository.countByMonth());
+        model.put("urlPrefix", urlPrefix);
 
         return model;
     }
