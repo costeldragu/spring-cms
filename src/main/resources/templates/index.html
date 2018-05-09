@@ -17,14 +17,10 @@
 
     <div class="container">
         <div class="row">
-            <!-- Blog Entries Column -->
             <div class="col-md-8">
-
                 <h1 class="my-4">Page Heading
                     <small>Secondary Text</small>
                 </h1>
-
-                <!-- Blog Post -->
                 <div th:each="content: ${contents}" class="card mb-4">
                     <div class="card-body">
                         <h2 th:text="${content.title}" class="card-title"></h2>
@@ -35,8 +31,6 @@
                         Posted on <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
                     </div>
                 </div>
-
-                <!-- Pagination -->
                 <ul class="pagination justify-content-center mb-4">
                     <li th:if="not ${contents.last}" class="page-item">
                         <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${contents.number + 2}}">&larr; Older</a>
@@ -51,9 +45,7 @@
                         <a class="page-link" href="#">&rarr; Newer</a>
                     </li>
                 </ul>
-
             </div>
-
             <div class="col-md-4" th:insert="sidebar"></div>
         </div>
     </div>
