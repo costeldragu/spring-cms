@@ -6,6 +6,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Holds the content.
@@ -41,6 +43,10 @@ public class Content {
     /** The content publication date */
     @Column
     private LocalDateTime publishedAt;
+
+    /** The tags applied to the content */
+    @ManyToMany
+    private List<Tag> tags = new ArrayList<>();
 
     /**
      * Return the content identifier.
@@ -121,5 +127,14 @@ public class Content {
      */
     public void setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
+    }
+
+    /**
+     * Return the tags for the content.
+     *
+     * @return The tags for the content.
+     */
+    public List<Tag> getTags() {
+        return tags;
     }
 }
