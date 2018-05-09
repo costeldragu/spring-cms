@@ -1,7 +1,9 @@
 package net.mavroprovato.springcms.command;
 
 import net.mavroprovato.springcms.entity.Content;
+import net.mavroprovato.springcms.entity.Tag;
 import net.mavroprovato.springcms.repository.ContentRepository;
+import net.mavroprovato.springcms.repository.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -34,17 +39,25 @@ public class GenerateContentCommand implements ApplicationRunner {
     /** The default maximum publication date for the content items. */
     private static final LocalDateTime DEFAULT_END_DATE = LocalDateTime.now();
 
+    /** A random number generator */
+    private static final Random RANDOM = new Random();
+
     /** The content repository */
     private final ContentRepository contentRepository;
+
+    /** The tag repository */
+    private final TagRepository tagRepository;
 
     /**
      * Create the generate content command.
      *
      * @param contentRepository The content repository.
+     * @param tagRepository The tag repository.
      */
     @Autowired
-    public GenerateContentCommand(ContentRepository contentRepository) {
+    public GenerateContentCommand(ContentRepository contentRepository, TagRepository tagRepository) {
         this.contentRepository = contentRepository;
+        this.tagRepository = tagRepository;
     }
 
     /**
@@ -109,10 +122,25 @@ public class GenerateContentCommand implements ApplicationRunner {
                     "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat " +
                     "cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
             content.setPublishedAt(randomDateTime(startDate, endDate));
+            for (Tag tag: getRandomTags(2)) {
+                content.getTags().add(tag);
+            }
 
             contentRepository.save(content);
         }
         logger.info("Content items generated.");
+    }
+
+    private Iterable<? extends Tag> getRandomTags(int count) {
+        List<Tag> allTags = tagRepository.findAll();
+        int postTagCount = Math.min(count, allTags.size());
+        List<Tag> postTags = new ArrayList<>();
+
+        for (int i = 0; i < postTagCount; i++) {
+            postTags.add(allTags.remove(RANDOM.nextInt(allTags.size())));
+        }
+
+        return postTags;
     }
 
     /**
