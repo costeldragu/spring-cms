@@ -2,6 +2,7 @@ package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.repository.ContentRepository;
+import net.mavroprovato.springcms.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,13 +25,17 @@ public class ContentService {
     /** The content repository */
     private final ContentRepository contentRepository;
 
+    /** The tag repository */
+    private final TagRepository tagRepository;
+
     /**
      * Create the content service.
      * @param contentRepository The content repository.
      */
     @Autowired
-    public ContentService(ContentRepository contentRepository) {
+    public ContentService(ContentRepository contentRepository, TagRepository tagRepository) {
         this.contentRepository = contentRepository;
+        this.tagRepository = tagRepository;
     }
 
     /**
@@ -122,7 +127,32 @@ public class ContentService {
             contents = contentRepository.findByPublishedAtBetween(startDateTime, endDateTime, pageRequest);
         }
 
-        // Create the model
+        return getModel(contents, urlPrefix);
+    }
+
+    /**
+     * Get a page of content items under a specific tag.
+     *
+     * @param id The tag identifier.
+     * @param page The page.
+     * @return The content items.
+     */
+    public Map<String,?> byTagId(int id, int page) {
+        // Run the query
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        Page<Content> contents = contentRepository.findByTags_Id(id, pageRequest);
+
+        return getModel(contents, String.format("/tag/%d", id));
+    }
+
+    /**
+     * Return the page model.
+     *
+     * @param contents The page contents.
+     * @param urlPrefix The URL prefix.
+     * @return The page model.
+     */
+    private Map<String, ?> getModel(Page<Content> contents, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
         model.put("contents", contents);
         model.put("archives", contentRepository.countByMonth());

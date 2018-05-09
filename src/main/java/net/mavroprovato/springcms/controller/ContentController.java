@@ -140,4 +140,31 @@ public class ContentController {
 
         return "index";
     }
+
+    /**
+     * Display the first page of content items that use the provided tag.
+     *
+     * @param model The model.
+     * @param id The tag identifier.
+     * @return The template name.
+     */
+    @RequestMapping("/tag/{id:\\d+}")
+    public String byTagId(Model model, @PathVariable("id") int id) {
+        return byTagIdPage(model, id, 1);
+    }
+
+    /**
+     * Display the first page of content items that use the provided tag.
+     *
+     * @param model The model.
+     * @param id The tag identifier.
+     * @param page The page number.
+     * @return The template name.
+     */
+    @RequestMapping("/tag/{id:\\d+}/page/{page:\\d+}")
+    public String byTagIdPage(Model model, @PathVariable("id") int id, @PathVariable("page") int page) {
+        model.addAllAttributes(contentService.byTagId(id, page));
+
+        return "index";
+    }
 }
