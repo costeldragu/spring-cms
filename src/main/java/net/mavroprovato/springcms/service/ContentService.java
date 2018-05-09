@@ -110,7 +110,7 @@ public class ContentService {
         // Create the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents;
-        if (startDateTime == null && endDateTime == null) {
+        if (startDateTime == null) {
             contents = contentRepository.findAll(pageRequest);
         } else {
             contents = contentRepository.findByPublishedAtBetween(startDateTime, endDateTime, pageRequest);
