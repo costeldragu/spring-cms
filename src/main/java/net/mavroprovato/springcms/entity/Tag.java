@@ -10,8 +10,7 @@ public class Tag {
 
     /** The unique identifier of the tag */
     @Id
-    @SequenceGenerator(name="tag_generator", sequenceName="tag_sequence", allocationSize=1)
-    @GeneratedValue(generator="tag_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /** The tag name */

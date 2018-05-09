@@ -17,8 +17,7 @@ public class Content {
 
     /** The unique identifier of the content */
     @Id
-    @SequenceGenerator(name = "content_generator", sequenceName = "content_sequence", allocationSize = 1)
-    @GeneratedValue(generator = "content_generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /** The content title */
