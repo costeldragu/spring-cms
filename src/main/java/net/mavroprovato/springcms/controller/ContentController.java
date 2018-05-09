@@ -58,7 +58,7 @@ public class ContentController {
      * @param year The year.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d{4}}")
+    @RequestMapping("/{year:\\d+}")
     public String year(Model model, @PathVariable("year") int year) {
         return yearPage(model, year, 1);
     }
@@ -71,7 +71,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d{4}}/page/{page:\\d+}")
+    @RequestMapping("/{year:\\d+}/page/{page:\\d+}")
     public String yearPage(Model model, @PathVariable("year") int year, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, page));
 
@@ -86,7 +86,7 @@ public class ContentController {
      * @param month The month number (1 for January, 12 for December).
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d{4}}/{month:\\d{1,2}}")
+    @RequestMapping("/{year:\\d+}/{month:\\d{1,2}}")
     public String month(Model model, @PathVariable("year") int year, @PathVariable("month") int month) {
         return monthPage(model, year, month, 1);
     }
@@ -100,7 +100,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d{4}}/{month:\\d{1,2}}/page/{page:\\d+}")
+    @RequestMapping("/{year:\\d+}/{month:\\d+}/page/{page:\\d+}")
     public String monthPage(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                            @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, month, page));
@@ -117,7 +117,7 @@ public class ContentController {
      * @param day The day number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d{4}}/{month:\\d{1,2}}/{day:\\d{1,2}}")
+    @RequestMapping("/{year:\\d+}/{month:\\d+}/{day:\\d+}")
     public String day(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                       @PathVariable("day") int day) {
         return dayPage(model, year, month, day, 1);
@@ -133,7 +133,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d{4}}/{month:\\d{1,2}}/{day:\\d{1,2}}/page/{page:\\d+}")
+    @RequestMapping("/{year:\\d+}/{month:\\d+}/{day:\\d+}/page/{page:\\d+}")
     public String dayPage(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                           @PathVariable("day") int day, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, month, day, page));
