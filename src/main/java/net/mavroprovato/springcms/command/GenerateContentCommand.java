@@ -49,6 +49,15 @@ public class GenerateContentCommand implements ApplicationRunner {
     private final TagRepository tagRepository;
 
     /**
+     * Private class to hold the options passed through the command line arguments
+     */
+    private static final class Options {
+        int count = DEFAULT_COUNT;
+        LocalDateTime startDate = DEFAULT_START_DATE;
+        LocalDateTime endDate = DEFAULT_START_DATE;
+    }
+
+    /**
      * Create the generate content command.
      *
      * @param contentRepository The content repository.
@@ -65,55 +74,16 @@ public class GenerateContentCommand implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) {
-        // Parse the count argument.
-        int count = DEFAULT_COUNT;
-        if (args.containsOption("count")) {
-            try {
-                count = Integer.parseInt(args.getOptionValues("count").get(0));
-            } catch (NumberFormatException e) {
-                logger.error("Cannot parse the count argument ({}) as an integer.",
-                        args.getOptionValues("count").get(0));
-                return;
-            }
-            if (count <= 0) {
-                logger.error("Count must be a positive integer.");
-                return;
-            }
-        }
-
-        // Parse the start date argument
-        LocalDateTime startDate = DEFAULT_START_DATE;
-        if (args.containsOption("start-date")) {
-            try {
-                String startDateString = args.getOptionValues("start-date").get(0);
-                startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
-            } catch (DateTimeParseException e) {
-                logger.error("Start date ({}) cannot be parsed.", args.getOptionValues("start-date").get(0));
-                return;
-            }
-        }
-
-        // Parse the end date argument
-        LocalDateTime endDate = DEFAULT_END_DATE;
-        if (args.containsOption("end-date")) {
-            try {
-                String endDateString = args.getOptionValues("end-date").get(0);
-                endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
-            } catch (DateTimeParseException e) {
-                logger.error("End date ({}) cannot be parsed.", args.getOptionValues("end-date").get(0));
-                return;
-            }
-        }
-
-        // Check if start date is before end date
-        if (!startDate.isBefore(endDate)) {
-            logger.error("Start date must be before end date.");
+        // Parse the command line options
+        Options options = parseArguments(args);
+        if (options == null) {
             return;
         }
 
         // Generate the content items
-        logger.info("Generating {} content items between {} and {}.", count, startDate, endDate);
-        for (int i = 0; i < count; i++) {
+        logger.info("Generating {} content items between {} and {}.", options.count, options.startDate,
+                options.endDate);
+        for (int i = 0; i < options.count; i++) {
             Content content = new Content();
             content.setTitle("Test Title");
             content.setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
@@ -121,7 +91,7 @@ public class GenerateContentCommand implements ApplicationRunner {
                     "ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit " +
                     "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat " +
                     "cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-            content.setPublishedAt(randomDateTime(startDate, endDate));
+            content.setPublishedAt(randomDateTime(options.startDate, options.endDate));
             for (Tag tag: getRandomTags(2)) {
                 content.getTags().add(tag);
             }
@@ -129,6 +99,60 @@ public class GenerateContentCommand implements ApplicationRunner {
             contentRepository.save(content);
         }
         logger.info("Content items generated.");
+    }
+
+    /**
+     * Parse the command line arguments.
+     *
+     * @param args The command line arguments.
+     * @return The parsed command line arguments as options.
+     */
+    private Options parseArguments(ApplicationArguments args) {
+        Options options = new Options();
+        // Parse the count argument.
+        if (args.containsOption("count")) {
+            try {
+                options.count = Integer.parseInt(args.getOptionValues("count").get(0));
+            } catch (NumberFormatException e) {
+                logger.error("Cannot parse the count argument ({}) as an integer.",
+                        args.getOptionValues("count").get(0));
+                return null;
+            }
+            if (options.count <= 0) {
+                logger.error("Count must be a positive integer.");
+                return null;
+            }
+        }
+
+        // Parse the start date argument
+        if (args.containsOption("start-date")) {
+            try {
+                String startDateString = args.getOptionValues("start-date").get(0);
+                options.startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
+            } catch (DateTimeParseException e) {
+                logger.error("Start date ({}) cannot be parsed.", args.getOptionValues("start-date").get(0));
+                return null;
+            }
+        }
+
+        // Parse the end date argument
+        if (args.containsOption("end-date")) {
+            try {
+                String endDateString = args.getOptionValues("end-date").get(0);
+                options.endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
+            } catch (DateTimeParseException e) {
+                logger.error("End date ({}) cannot be parsed.", args.getOptionValues("end-date").get(0));
+                return null;
+            }
+        }
+
+        // Check if start date is before end date
+        if (!options.startDate.isBefore(options.endDate)) {
+            logger.error("Start date must be before end date.");
+            return null;
+        }
+
+        return options;
     }
 
     private Iterable<? extends Tag> getRandomTags(int count) {
