@@ -40,7 +40,7 @@ public class GenerateContentCommand implements ApplicationRunner {
     private static final LocalDateTime DEFAULT_END_DATE = LocalDateTime.now();
 
     /** The default number of tags to apply to a content item */
-    private static final int DEFAULT_TAG_COUNT = 100;
+    private static final int DEFAULT_TAG_COUNT = 2;
 
     /** A random number generator */
     private static final Random RANDOM = new Random();
