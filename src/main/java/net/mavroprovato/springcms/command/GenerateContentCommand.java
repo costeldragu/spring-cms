@@ -30,14 +30,17 @@ public class GenerateContentCommand implements ApplicationRunner {
     /** Logger for the class */
     private static Logger logger = LoggerFactory.getLogger(GenerateContentCommand.class);
 
-    /** The default number of content items to generate. */
+    /** The default number of content items to generate */
     private static final int DEFAULT_COUNT = 100;
 
-    /** The default minimum publication date for the content items. */
+    /** The default minimum publication date for the content items */
     private static final LocalDateTime DEFAULT_START_DATE = LocalDateTime.now().minus(1, ChronoUnit.YEARS);
 
-    /** The default maximum publication date for the content items. */
+    /** The default maximum publication date for the content items */
     private static final LocalDateTime DEFAULT_END_DATE = LocalDateTime.now();
+
+    /** The default number of tags to apply to a content item */
+    private static final int DEFAULT_TAG_COUNT = 100;
 
     /** A random number generator */
     private static final Random RANDOM = new Random();
@@ -54,7 +57,8 @@ public class GenerateContentCommand implements ApplicationRunner {
     private static final class Options {
         int count = DEFAULT_COUNT;
         LocalDateTime startDate = DEFAULT_START_DATE;
-        LocalDateTime endDate = DEFAULT_START_DATE;
+        LocalDateTime endDate = DEFAULT_END_DATE;
+        int tagCount = DEFAULT_TAG_COUNT;
     }
 
     /**
@@ -77,6 +81,7 @@ public class GenerateContentCommand implements ApplicationRunner {
         // Parse the command line options
         Options options = parseArguments(args);
         if (options == null) {
+            // An error occurred during parsing
             return;
         }
 
@@ -92,7 +97,7 @@ public class GenerateContentCommand implements ApplicationRunner {
                     "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat " +
                     "cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
             content.setPublishedAt(randomDateTime(options.startDate, options.endDate));
-            for (Tag tag: getRandomTags(2)) {
+            for (Tag tag: getRandomTags(options.tagCount)) {
                 content.getTags().add(tag);
             }
 
@@ -152,9 +157,30 @@ public class GenerateContentCommand implements ApplicationRunner {
             return null;
         }
 
+        // Parse the tag count argument.
+        if (args.containsOption("tag-count")) {
+            try {
+                options.tagCount = Integer.parseInt(args.getOptionValues("tag-count").get(0));
+            } catch (NumberFormatException e) {
+                logger.error("Cannot parse the tag count argument ({}) as an integer.",
+                        args.getOptionValues("tag-count").get(0));
+                return null;
+            }
+            if (options.tagCount <= 0) {
+                logger.error("Tag count must be a positive integer.");
+                return null;
+            }
+        }
+
         return options;
     }
 
+    /**
+     * Generate an iterable with random tags from the database.
+     *
+     * @param count The number of random tags to fetch.
+     * @return An iterable with random tags from the database.
+     */
     private Iterable<? extends Tag> getRandomTags(int count) {
         List<Tag> allTags = tagRepository.findAll();
         int postTagCount = Math.min(count, allTags.size());
