@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds the content.
+ * Object mapping for content items.
  */
 @Entity
 public class Content {
@@ -20,7 +20,7 @@ public class Content {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    /** The content title */
+    /** The content item title */
     @Column(nullable = false)
     private String title;
 
@@ -29,53 +29,57 @@ public class Content {
     @Type(type = "org.hibernate.type.TextType")
     private String content;
 
-    /** The content creation date */
+    /** The content item creation date */
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    /** The content update date */
+    /** The content item update date */
     @Column(nullable = false)
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    /** The content publication date */
+    /** The content item publication date */
     @Column
     private LocalDateTime publishedAt;
 
-    /** The tags applied to the content */
+    /** The tags applied to the content item */
     @ManyToMany
     private List<Tag> tags = new ArrayList<>();
 
+    /** The categories that this content item belongs to */
+    @ManyToMany
+    private List<Category> categories = new ArrayList<>();
+
     /**
-     * Return the content identifier.
+     * Return the content item identifier.
      *
-     * @return The content identifier.
+     * @return The content item identifier.
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * Return the content title.
+     * Return the content item title.
      *
-     * @return The content title.
+     * @return The content item title.
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * Set the content title.
+     * Set the content item title.
      *
-     * @param title The content title.
+     * @param title The content item title.
      */
     public void setTitle(String title) {
         this.title = title;
     }
 
     /**
-     * Return the content.
+     * Return the content for the content item.
      *
      * @return The content.
      */
@@ -84,7 +88,7 @@ public class Content {
     }
 
     /**
-     * Set the content.
+     * Set the content for the item.
      *
      * @param content The content.
      */
@@ -93,34 +97,34 @@ public class Content {
     }
 
     /**
-     * Return the content creation date.
+     * Return the content item creation date.
      *
-     * @return The content creating date.
+     * @return The content item creating date.
      */
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
     /**
-     * Return the content update date.
+     * Return the content item update date.
      *
-     * @return The content creating date.
+     * @return The content item creating date.
      */
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
     /**
-     * Return the content publication date.
+     * Return the content item publication date.
      *
-     * @return The content publication date.
+     * @return The content item publication date.
      */
     public LocalDateTime getPublishedAt() {
         return publishedAt;
     }
 
     /**
-     * Set the content publication date.
+     * Set the content item publication date.
      *
      * @param publishedAt The publication date.
      */
@@ -135,5 +139,14 @@ public class Content {
      */
     public List<Tag> getTags() {
         return tags;
+    }
+
+    /**
+     * Return the categories for the content item.
+     *
+     * @return The categories for the content item.
+     */
+    public List<Category> getCategories() {
+        return categories;
     }
 }
