@@ -25,17 +25,14 @@ public class ContentService {
     /** The content repository */
     private final ContentRepository contentRepository;
 
-    /** The tag repository */
-    private final TagRepository tagRepository;
-
     /**
      * Create the content service.
+     *
      * @param contentRepository The content repository.
      */
     @Autowired
-    public ContentService(ContentRepository contentRepository, TagRepository tagRepository) {
+    public ContentService(ContentRepository contentRepository) {
         this.contentRepository = contentRepository;
-        this.tagRepository = tagRepository;
     }
 
     /**
