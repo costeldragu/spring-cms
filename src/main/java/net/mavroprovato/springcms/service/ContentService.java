@@ -140,7 +140,7 @@ public class ContentService {
     public Map<String,?> byTagId(int id, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByTags_Id(id, pageRequest);
+        Page<Content> contents = contentRepository.findByTagsId(id, pageRequest);
 
         return getModel(contents, String.format("/tag/%d", id));
     }

@@ -38,5 +38,12 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      */
     Page<Content> findByPublishedAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
 
-    Page<Content> findByTags_Id(int tagId, Pageable pageable);
+    /**
+     * Find content by tag.
+     *
+     * @param tagId The tag identifier.
+     * @param pageable The pagination parameters.
+     * @return The content item list.
+     */
+    Page<Content> findByTagsId(int tagId, Pageable pageable);
 }
