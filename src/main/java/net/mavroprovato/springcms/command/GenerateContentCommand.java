@@ -1,7 +1,9 @@
 package net.mavroprovato.springcms.command;
 
+import net.mavroprovato.springcms.entity.Category;
 import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.entity.Tag;
+import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.ContentRepository;
 import net.mavroprovato.springcms.repository.TagRepository;
 import org.slf4j.Logger;
@@ -42,6 +44,9 @@ public class GenerateContentCommand implements ApplicationRunner {
     /** The default number of tags to apply to a content item */
     private static final int DEFAULT_TAG_COUNT = 2;
 
+    /** The default number of categories to apply to a content item */
+    private static final int DEFAULT_CATEGORY_COUNT = 2;
+
     /** A random number generator */
     private static final Random RANDOM = new Random();
 
@@ -51,6 +56,9 @@ public class GenerateContentCommand implements ApplicationRunner {
     /** The tag repository */
     private final TagRepository tagRepository;
 
+    /** The category repository */
+    private final CategoryRepository categoryRepository;
+
     /**
      * Private class to hold the options passed through the command line arguments
      */
@@ -59,6 +67,7 @@ public class GenerateContentCommand implements ApplicationRunner {
         LocalDateTime startDate = DEFAULT_START_DATE;
         LocalDateTime endDate = DEFAULT_END_DATE;
         int tagCount = DEFAULT_TAG_COUNT;
+        int categoryCount = DEFAULT_CATEGORY_COUNT;
     }
 
     /**
@@ -68,9 +77,11 @@ public class GenerateContentCommand implements ApplicationRunner {
      * @param tagRepository The tag repository.
      */
     @Autowired
-    public GenerateContentCommand(ContentRepository contentRepository, TagRepository tagRepository) {
+    public GenerateContentCommand(ContentRepository contentRepository, TagRepository tagRepository,
+                                  CategoryRepository categoryRepository) {
         this.contentRepository = contentRepository;
         this.tagRepository = tagRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -99,6 +110,9 @@ public class GenerateContentCommand implements ApplicationRunner {
             content.setPublishedAt(randomDateTime(options.startDate, options.endDate));
             for (Tag tag: getRandomTags(options.tagCount)) {
                 content.getTags().add(tag);
+            }
+            for (Category category: getRandomCategories(options.categoryCount)) {
+                content.getCategories().add(category);
             }
 
             contentRepository.save(content);
@@ -172,6 +186,21 @@ public class GenerateContentCommand implements ApplicationRunner {
             }
         }
 
+        // Parse the category count argument.
+        if (args.containsOption("category-count")) {
+            try {
+                options.categoryCount = Integer.parseInt(args.getOptionValues("category-count").get(0));
+            } catch (NumberFormatException e) {
+                logger.error("Cannot parse the category count argument ({}) as an integer.",
+                        args.getOptionValues("category-count").get(0));
+                return null;
+            }
+            if (options.categoryCount <= 0) {
+                logger.error("Category count must be a positive integer.");
+                return null;
+            }
+        }
+
         return options;
     }
 
@@ -191,6 +220,24 @@ public class GenerateContentCommand implements ApplicationRunner {
         }
 
         return postTags;
+    }
+
+    /**
+     * Generate an iterable with random categories from the database.
+     *
+     * @param count The number of random categories to fetch.
+     * @return An iterable with random categories from the database.
+     */
+    private Iterable<? extends Category> getRandomCategories(int count) {
+        List<Category> allCategories = categoryRepository.findAll();
+        int postCategoryCount = Math.min(count, allCategories.size());
+        List<Category> postCategories = new ArrayList<>();
+
+        for (int i = 0; i < postCategoryCount; i++) {
+            postCategories.add(allCategories.remove(RANDOM.nextInt(allCategories.size())));
+        }
+
+        return postCategories;
     }
 
     /**
