@@ -2,6 +2,7 @@ package net.mavroprovato.springcms.repository;
 
 import net.mavroprovato.springcms.dto.CountByMonth;
 import net.mavroprovato.springcms.entity.Content;
+import net.mavroprovato.springcms.entity.ContentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,6 +29,8 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
     )
     List<CountByMonth> countByMonth();
 
+    Page<Content> findByStatus(ContentStatus status, Pageable pageable);
+
     /**
      * Return a page of content items published between two dates.
      *
@@ -36,7 +39,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param pageable The pagination parameters.
      * @return The content item list.
      */
-    Page<Content> findByPublishedAtBetween(LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
+    Page<Content> findByStatusAndPublishedAtBetween(ContentStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
 
     /**
      * Find content by tag.
@@ -45,7 +48,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param pageable The pagination parameters.
      * @return The content item list.
      */
-    Page<Content> findByTagsId(int tagId, Pageable pageable);
+    Page<Content> findByStatusAndTagsId(ContentStatus status, int tagId, Pageable pageable);
 
     /**
      * Find content by category.
@@ -54,5 +57,5 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param pageable The pagination parameters.
      * @return The content item list.
      */
-    Page<Content> findByCategoriesId(int categoryId, Pageable pageable);
+    Page<Content> findByStatusAndCategoriesId(ContentStatus status, int categoryId, Pageable pageable);
 }

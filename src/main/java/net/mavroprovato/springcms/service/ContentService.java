@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.entity.Content;
+import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +31,9 @@ public class ContentService {
 
     /**
      * Create the content service.
+     *
      * @param contentRepository The content repository.
+     * @param categoryRepository The category repository.
      */
     @Autowired
     public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository) {
@@ -123,9 +125,10 @@ public class ContentService {
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents;
         if (startDateTime == null) {
-            contents = contentRepository.findAll(pageRequest);
+            contents = contentRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
         } else {
-            contents = contentRepository.findByPublishedAtBetween(startDateTime, endDateTime, pageRequest);
+            contents = contentRepository.findByStatusAndPublishedAtBetween(
+                    ContentStatus.PUBLISHED, startDateTime, endDateTime, pageRequest);
         }
 
         return getModel(contents, urlPrefix);
@@ -141,7 +144,7 @@ public class ContentService {
     public Map<String,?> byTagId(int id, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByTagsId(id, pageRequest);
+        Page<Content> contents = contentRepository.findByStatusAndTagsId(ContentStatus.PUBLISHED, id, pageRequest);
 
         return getModel(contents, String.format("/tag/%d", id));
     }
@@ -156,7 +159,8 @@ public class ContentService {
     public Map<String,?> byCategoryId(int id, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByCategoriesId(id, pageRequest);
+        Page<Content> contents = contentRepository.findByStatusAndCategoriesId(
+                ContentStatus.PUBLISHED, id, pageRequest);
 
         return getModel(contents, String.format("/category/%d", id));
     }
