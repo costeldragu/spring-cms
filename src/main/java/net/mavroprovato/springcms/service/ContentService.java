@@ -1,8 +1,8 @@
 package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.entity.Content;
+import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.ContentRepository;
-import net.mavroprovato.springcms.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,14 +25,17 @@ public class ContentService {
     /** The content repository */
     private final ContentRepository contentRepository;
 
+    /** The category repository */
+    private final CategoryRepository categoryRepository;
+
     /**
      * Create the content service.
-     *
      * @param contentRepository The content repository.
      */
     @Autowired
-    public ContentService(ContentRepository contentRepository) {
+    public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository) {
         this.contentRepository = contentRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     /**
@@ -153,6 +156,7 @@ public class ContentService {
         Map<String, Object> model = new HashMap<>();
         model.put("contents", contents);
         model.put("archives", contentRepository.countByMonth());
+        model.put("categories", categoryRepository.findAllByOrderByNameAsc());
         model.put("urlPrefix", urlPrefix);
 
         return model;

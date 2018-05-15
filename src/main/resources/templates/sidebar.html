@@ -24,3 +24,17 @@
         </div>
     </div>
 </div>
+<div class="card my-4">
+    <h5 class="card-header">Categories</h5>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="list-unstyled mb-0">
+                    <li th:each="category: ${categories}">
+                        <a th:text="${category.name}" href="#"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
