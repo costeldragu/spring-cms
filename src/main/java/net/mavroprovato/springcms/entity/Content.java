@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.entity;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -28,6 +29,11 @@ public class Content {
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.TextType")
     private String content;
+
+    /** The content status */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ContentStatus status = ContentStatus.DRAFT;
 
     /** The content item creation date */
     @Column(nullable = false)
@@ -76,6 +82,24 @@ public class Content {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * Return the content status.
+     *
+     * @return The content status.
+     */
+    public ContentStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * Set the content status for the item.
+     *
+     * @param status The content status.
+     */
+    public void setStatus(ContentStatus status) {
+        this.status = status;
     }
 
     /**

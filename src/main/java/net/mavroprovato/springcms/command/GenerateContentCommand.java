@@ -2,6 +2,7 @@ package net.mavroprovato.springcms.command;
 
 import net.mavroprovato.springcms.entity.Category;
 import net.mavroprovato.springcms.entity.Content;
+import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.entity.Tag;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.ContentRepository;
@@ -107,6 +108,7 @@ public class GenerateContentCommand implements ApplicationRunner {
                     "ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit " +
                     "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat " +
                     "cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+            content.setStatus(ContentStatus.PUBLISHED);
             content.setPublishedAt(randomDateTime(options.startDate, options.endDate));
             for (Tag tag: getRandomTags(options.tagCount)) {
                 content.getTags().add(tag);
