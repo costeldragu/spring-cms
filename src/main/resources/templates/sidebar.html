@@ -31,7 +31,7 @@
             <div class="col-lg-12">
                 <ul class="list-unstyled mb-0">
                     <li th:each="category: ${categories}">
-                        <a th:text="${category.name}" href="#"></a>
+                        <a th:text="${category.name}" th:href="${'/category/' + category.id}"></a>
                     </li>
                 </ul>
             </div>

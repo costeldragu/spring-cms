@@ -46,4 +46,13 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @return The content item list.
      */
     Page<Content> findByTagsId(int tagId, Pageable pageable);
+
+    /**
+     * Find content by category.
+     *
+     * @param categoryId The category identifier.
+     * @param pageable The pagination parameters.
+     * @return The content item list.
+     */
+    Page<Content> findByCategoriesId(int categoryId, Pageable pageable);
 }

@@ -154,7 +154,7 @@ public class ContentController {
     }
 
     /**
-     * Display the first page of content items that use the provided tag.
+     * Display a page of content items that use the provided tag.
      *
      * @param model The model.
      * @param id The tag identifier.
@@ -164,6 +164,33 @@ public class ContentController {
     @RequestMapping("/tag/{id:\\d+}/page/{page:\\d+}")
     public String byTagIdPage(Model model, @PathVariable("id") int id, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byTagId(id, page));
+
+        return "index";
+    }
+
+    /**
+     * Display the first page of content items that are categorized under the specified category.
+     *
+     * @param model The model.
+     * @param id The category identifier.
+     * @return The template name.
+     */
+    @RequestMapping("/category/{id:\\d+}")
+    public String byCategoryId(Model model, @PathVariable("id") int id) {
+        return byCategoryIdPage(model, id, 1);
+    }
+
+    /**
+     * Display a page of content items that are categorized under the specified category.
+     *
+     * @param model The model.
+     * @param id The category identifier.
+     * @param page The page number.
+     * @return The template name.
+     */
+    @RequestMapping("/category/{id:\\d+}/page/{page:\\d+}")
+    public String byCategoryIdPage(Model model, @PathVariable("id") int id, @PathVariable("page") int page) {
+        model.addAllAttributes(contentService.byCategoryId(id, page));
 
         return "index";
     }

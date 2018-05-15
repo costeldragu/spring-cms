@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,6 +144,21 @@ public class ContentService {
         Page<Content> contents = contentRepository.findByTagsId(id, pageRequest);
 
         return getModel(contents, String.format("/tag/%d", id));
+    }
+
+    /**
+     * Get a page of content items categorized with a specific category.
+     *
+     * @param id The category identifier.
+     * @param page The page.
+     * @return The content items.
+     */
+    public Map<String,?> byCategoryId(int id, int page) {
+        // Run the query
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        Page<Content> contents = contentRepository.findByCategoriesId(id, pageRequest);
+
+        return getModel(contents, String.format("/category/%d", id));
     }
 
     /**
