@@ -17,6 +17,10 @@ public class Tag {
     @Column(nullable = false)
     private String name;
 
+    /** The tag slug */
+    @Column(unique = true)
+    private String slug;
+
     /**
      * Return the unique identifier of the tag.
      *
@@ -41,5 +45,23 @@ public class Tag {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Return the slug for the tag.
+     *
+     * @return The slug for the tag.
+     */
+    public String getSlug() {
+        return slug;
+    }
+
+    /**
+     * Set the slug for the tag.
+     *
+     * @param slug The slug for tag.
+     */
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 }

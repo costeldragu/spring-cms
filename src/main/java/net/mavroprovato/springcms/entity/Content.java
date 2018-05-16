@@ -37,6 +37,10 @@ public class Content {
     @Column(nullable = false)
     private ContentStatus status = ContentStatus.DRAFT;
 
+    /** The content item slug */
+    @Column(unique = true)
+    private String slug;
+
     /** The content item creation date */
     @Column(nullable = false)
     @CreationTimestamp
@@ -136,6 +140,24 @@ public class Content {
      */
     public void setContent(String content) {
         this.content = content;
+    }
+
+    /**
+     * Return the slug for the content item.
+     *
+     * @return The slug for the content item.
+     */
+    public String getSlug() {
+        return slug;
+    }
+
+    /**
+     * Set the slug for the content item.
+     *
+     * @param slug The slug for the content item.
+     */
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     /**

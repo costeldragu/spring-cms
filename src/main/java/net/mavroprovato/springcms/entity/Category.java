@@ -17,6 +17,10 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
+    /** The category slug */
+    @Column(unique = true)
+    private String slug;
+
     /** The parent category */
     @ManyToOne
     private Category parent;
@@ -46,6 +50,24 @@ public class Category {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Return the slug for the category.
+     *
+     * @return The slug for the category.
+     */
+    public String getSlug() {
+        return slug;
+    }
+
+    /**
+     * Set the slug for the category.
+     *
+     * @param slug The slug for the category.
+     */
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     /**
