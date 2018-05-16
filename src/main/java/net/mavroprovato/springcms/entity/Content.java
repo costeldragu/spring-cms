@@ -13,6 +13,9 @@ import java.util.List;
  * Object mapping for content items.
  */
 @Entity
+@Table(indexes = {
+        @Index(columnList = "publishedAt")
+})
 public class Content {
 
     /** The unique identifier of the content */
@@ -50,10 +53,26 @@ public class Content {
 
     /** The tags applied to the content item */
     @ManyToMany
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "content_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"),
+            indexes = {
+                    @Index(columnList = "content_id"),
+                    @Index(columnList = "tag_id")
+            }
+    )
     private List<Tag> tags = new ArrayList<>();
 
     /** The categories that this content item belongs to */
     @ManyToMany
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "content_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"),
+            indexes = {
+                    @Index(columnList = "content_id"),
+                    @Index(columnList = "category_id")
+            }
+    )
     private List<Category> categories = new ArrayList<>();
 
     /**
