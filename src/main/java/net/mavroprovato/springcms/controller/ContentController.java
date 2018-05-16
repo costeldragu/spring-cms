@@ -48,7 +48,7 @@ public class ContentController {
     public String indexPage(Model model, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(page));
 
-        return "index";
+        return "contents";
     }
 
     /**
@@ -75,7 +75,7 @@ public class ContentController {
     public String yearPage(Model model, @PathVariable("year") int year, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, page));
 
-        return "index";
+        return "contents";
     }
 
     /**
@@ -105,7 +105,7 @@ public class ContentController {
                            @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, month, page));
 
-        return "index";
+        return "contents";
     }
 
     /**
@@ -138,7 +138,7 @@ public class ContentController {
                           @PathVariable("day") int day, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, month, day, page));
 
-        return "index";
+        return "contents";
     }
 
     /**
@@ -166,7 +166,7 @@ public class ContentController {
     public String byTagIdPage(Model model, @PathVariable("id") int id, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byTagId(id, page));
 
-        return "index";
+        return "contents";
     }
 
     /**
@@ -193,7 +193,7 @@ public class ContentController {
     public String byTagSlugPage(Model model, @PathVariable("slug") String slug, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byTagSlug(slug, page));
 
-        return "index";
+        return "contents";
     }
 
     /**
@@ -220,7 +220,7 @@ public class ContentController {
     public String byCategoryIdPage(Model model, @PathVariable("id") int id, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byCategoryId(id, page));
 
-        return "index";
+        return "contents";
     }
 
     /**
@@ -247,6 +247,6 @@ public class ContentController {
     public String byCategorySlugPage(Model model, @PathVariable("slug") String slug, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byCategorySlug(slug, page));
 
-        return "index";
+        return "contents";
     }
 }
