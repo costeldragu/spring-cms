@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -134,16 +135,8 @@ public class ContentService {
         return getModel(contents, urlPrefix);
     }
 
-    public Map<String,?> byTagSlug(String slug, int page) {
-        // Run the query
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
-
-        return getModel(contents, String.format("/tag/%s", slug));
-    }
-
     /**
-     * Get a page of content items under a specific tag.
+     * Get a page of content items under a specific tag, specified by its id.
      *
      * @param id The tag identifier.
      * @param page The page.
@@ -158,7 +151,22 @@ public class ContentService {
     }
 
     /**
-     * Get a page of content items categorized with a specific category.
+     * Get a page of content items under a specific tag, specified by its slug.
+     *
+     * @param slug The tag slug.
+     * @param page The page.
+     * @return The content items.
+     */
+    public Map<String,?> byTagSlug(String slug, int page) {
+        // Run the query
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        Page<Content> contents = contentRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
+
+        return getModel(contents, String.format("/tag/%s", slug));
+    }
+
+    /**
+     * Get a page of content items categorized with a specific category, specified by its id.
      *
      * @param id The category identifier.
      * @param page The page.
@@ -171,6 +179,16 @@ public class ContentService {
                 ContentStatus.PUBLISHED, id, pageRequest);
 
         return getModel(contents, String.format("/category/%d", id));
+    }
+
+
+    public Map<String,?> byCategorySlug(String slug, int page) {
+        // Run the query
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        Page<Content> contents = contentRepository.findByStatusAndCategoriesSlug(
+                ContentStatus.PUBLISHED, slug, pageRequest);
+
+        return getModel(contents, String.format("/category/%s", slug));
     }
 
     /**

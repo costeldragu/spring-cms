@@ -4,6 +4,7 @@ import net.mavroprovato.springcms.dto.CountByMonth;
 import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -68,11 +69,20 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
     Page<Content> findByStatusAndTagsSlug(ContentStatus status, String tagSlug, Pageable pageable);
 
     /**
-     * Find content by status and category.
+     * Find content by status and category id.
      *
      * @param categoryId The category identifier.
      * @param pageable The pagination parameters.
      * @return The content item list.
      */
     Page<Content> findByStatusAndCategoriesId(ContentStatus status, int categoryId, Pageable pageable);
+
+    /**
+     * Find content by status and category slug.
+     *
+     * @param slug The category slug.
+     * @param pageable The pagination parameters.
+     * @return The content item list.
+     */
+    Page<Content> findByStatusAndCategoriesSlug(ContentStatus published, String slug, Pageable pageable);
 }
