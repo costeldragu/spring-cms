@@ -142,7 +142,8 @@ public class ContentController {
     }
 
     /**
-     * Display the first page of content items that use the provided tag.
+     * Display the first page of content items that use the provided tag. The tag is determined by its unique
+     * identifier.
      *
      * @param model The model.
      * @param id The tag identifier.
@@ -167,6 +168,34 @@ public class ContentController {
 
         return "index";
     }
+
+    /**
+     * Display the first page of content items that use the provided tag. The tag is determined by its slug.
+     *
+     * @param model The model.
+     * @param slug The tag slug.
+     * @return The template name.
+     */
+    @RequestMapping("/tag/{slug:\\D\\S+}")
+    public String byTagSlug(Model model, @PathVariable("slug") String slug) {
+        return byTagSlugPage(model, slug, 1);
+    }
+
+    /**
+     * Display a page of content items that use the provided tag.
+     *
+     * @param model The model.
+     * @param slug The tag slug.
+     * @param page The page number.
+     * @return The template name.
+     */
+    @RequestMapping("/tag/{slug:\\D\\S+}/page/{page:\\d+}")
+    public String byTagSlugPage(Model model, @PathVariable("slug") String slug, @PathVariable("page") int page) {
+        model.addAllAttributes(contentService.byTagSlug(slug, page));
+
+        return "index";
+    }
+
 
     /**
      * Display the first page of content items that are categorized under the specified category.

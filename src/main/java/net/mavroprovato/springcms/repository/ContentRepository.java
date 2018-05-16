@@ -29,6 +29,13 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
     )
     List<CountByMonth> countByMonth();
 
+    /**
+     * Return a page of content items by status.
+     *
+     * @param status The content item status.
+     * @param pageable The pagination parameters.
+     * @return The content item list.
+     */
     Page<Content> findByStatus(ContentStatus status, Pageable pageable);
 
     /**
@@ -39,10 +46,11 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param pageable The pagination parameters.
      * @return The content item list.
      */
-    Page<Content> findByStatusAndPublishedAtBetween(ContentStatus status, LocalDateTime startDateTime, LocalDateTime endDateTime, Pageable pageable);
+    Page<Content> findByStatusAndPublishedAtBetween(ContentStatus status, LocalDateTime startDateTime,
+                                                    LocalDateTime endDateTime, Pageable pageable);
 
     /**
-     * Find content by tag.
+     * Find content by status and tag identifier.
      *
      * @param tagId The tag identifier.
      * @param pageable The pagination parameters.
@@ -51,7 +59,16 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
     Page<Content> findByStatusAndTagsId(ContentStatus status, int tagId, Pageable pageable);
 
     /**
-     * Find content by category.
+     * Find content by status and tag slug.
+     *
+     * @param tagSlug The tag slug.
+     * @param pageable The pagination parameters.
+     * @return The content item list.
+     */
+    Page<Content> findByStatusAndTagsSlug(ContentStatus status, String tagSlug, Pageable pageable);
+
+    /**
+     * Find content by status and category.
      *
      * @param categoryId The category identifier.
      * @param pageable The pagination parameters.

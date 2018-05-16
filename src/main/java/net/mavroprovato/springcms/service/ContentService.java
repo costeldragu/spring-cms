@@ -134,6 +134,14 @@ public class ContentService {
         return getModel(contents, urlPrefix);
     }
 
+    public Map<String,?> byTagSlug(String slug, int page) {
+        // Run the query
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        Page<Content> contents = contentRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
+
+        return getModel(contents, String.format("/tag/%s", slug));
+    }
+
     /**
      * Get a page of content items under a specific tag.
      *
