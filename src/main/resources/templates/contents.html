@@ -25,15 +25,15 @@
                     <div class="card-body">
                         <h2 th:text="${content.title}" class="card-title"></h2>
                         <p th:text="${content.content}" class="card-text"></p>
-                        <a href="#" class="btn btn-primary">Read More &rarr;</a>
+                        <a th:href="@{'/content/' + ${content.id}}" class="btn btn-primary">Read More &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">
                         Posted on <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
                         Tagged with
-                            <th:block th:each="tag: ${content.tags}">
-                                <a th:if="${tag.slug == null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.id}}"></a>
-                                <a th:if="${tag.slug != null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.slug}}"></a>
-                            </th:block>
+                        <th:block th:each="tag: ${content.tags}">
+                            <a th:if="${tag.slug == null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.id}}"></a>
+                            <a th:if="${tag.slug != null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.slug}}"></a>
+                        </th:block>
                     </div>
                 </div>
                 <ul class="pagination justify-content-center mb-4">

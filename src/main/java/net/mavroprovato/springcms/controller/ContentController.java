@@ -249,4 +249,11 @@ public class ContentController {
 
         return "contents";
     }
+
+    @RequestMapping("/content//{id:\\d+}")
+    public String content(Model model, @PathVariable("id") int id) {
+        model.addAllAttributes(contentService.byId(id));
+
+        return "content";
+    }
 }

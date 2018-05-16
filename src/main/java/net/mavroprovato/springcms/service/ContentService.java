@@ -181,7 +181,13 @@ public class ContentService {
         return getModel(contents, String.format("/category/%d", id));
     }
 
-
+    /**
+     * Get a page of content items categorized with a specific category, specified by its slug.
+     *
+     * @param slug The category slug.
+     * @param page The page.
+     * @return The content items.
+     */
     public Map<String,?> byCategorySlug(String slug, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
@@ -204,6 +210,21 @@ public class ContentService {
         model.put("archives", contentRepository.countByMonth());
         model.put("categories", categoryRepository.findAllByOrderByNameAsc());
         model.put("urlPrefix", urlPrefix);
+
+        return model;
+    }
+
+    /**
+     * Return the model for a content item page.
+     *
+     * @param id The content item identifier.
+     * @return The page model.
+     */
+    public Map<String, ?> byId(int id) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("content", contentRepository.getOne(id));
+        model.put("archives", contentRepository.countByMonth());
+        model.put("categories", categoryRepository.findAllByOrderByNameAsc());
 
         return model;
     }
