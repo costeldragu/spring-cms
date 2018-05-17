@@ -118,6 +118,10 @@ public class GenerateContentCommand implements ApplicationRunner {
             }
 
             contentRepository.save(content);
+
+            // Set the slug
+            content.setSlug("test-title-" + content.getId());
+            contentRepository.save(content);
         }
         logger.info("Content items generated.");
     }
