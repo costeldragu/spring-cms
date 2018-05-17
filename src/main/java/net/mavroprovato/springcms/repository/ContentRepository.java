@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The content repository.
@@ -91,5 +92,5 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param slug The slug.
      * @return The content.
      */
-    Content getOneBySlug(String slug);
+    Optional<Content> getOneBySlug(String slug);
 }

@@ -2,6 +2,7 @@ package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.entity.ContentStatus;
+import net.mavroprovato.springcms.exception.ResourceNotFoundException;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The content service.
@@ -220,7 +222,11 @@ public class ContentService {
      */
     public Map<String, ?> byId(int id) {
         Map<String, Object> model = new HashMap<>();
-        model.put("content", contentRepository.getOne(id));
+        Optional<Content> content = contentRepository.findById(id);
+        if (!content.isPresent()) {
+            throw new ResourceNotFoundException();
+        }
+        model.put("content", content);
         addSidebarModel(model);
 
         return model;
@@ -234,7 +240,11 @@ public class ContentService {
      */
     public Map<String, ?> bySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
-        model.put("content", contentRepository.getOneBySlug(slug));
+        Optional<Content> content = contentRepository.getOneBySlug(slug);
+        if (!content.isPresent()) {
+            throw new ResourceNotFoundException();
+        }
+        model.put("content", content);
         addSidebarModel(model);
 
         return model;
