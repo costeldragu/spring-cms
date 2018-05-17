@@ -133,7 +133,7 @@ public class ContentService {
                     ContentStatus.PUBLISHED, startDateTime, endDateTime, pageRequest);
         }
 
-        return getModel(contents, urlPrefix);
+        return getListModel(contents, urlPrefix);
     }
 
     /**
@@ -143,12 +143,12 @@ public class ContentService {
      * @param page The page.
      * @return The content items.
      */
-    public Map<String,?> byTagId(int id, int page) {
+    public Map<String,?> listByTagId(int id, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndTagsId(ContentStatus.PUBLISHED, id, pageRequest);
 
-        return getModel(contents, String.format("/tag/%d", id));
+        return getListModel(contents, String.format("/tag/%d", id));
     }
 
     /**
@@ -158,12 +158,12 @@ public class ContentService {
      * @param page The page.
      * @return The content items.
      */
-    public Map<String,?> byTagSlug(String slug, int page) {
+    public Map<String,?> listByTagSlug(String slug, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
 
-        return getModel(contents, String.format("/tag/%s", slug));
+        return getListModel(contents, String.format("/tag/%s", slug));
     }
 
     /**
@@ -173,13 +173,13 @@ public class ContentService {
      * @param page The page.
      * @return The content items.
      */
-    public Map<String,?> byCategoryId(int id, int page) {
+    public Map<String,?> listByCategoryId(int id, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndCategoriesId(
                 ContentStatus.PUBLISHED, id, pageRequest);
 
-        return getModel(contents, String.format("/category/%d", id));
+        return getListModel(contents, String.format("/category/%d", id));
     }
 
     /**
@@ -189,23 +189,23 @@ public class ContentService {
      * @param page The page.
      * @return The content items.
      */
-    public Map<String,?> byCategorySlug(String slug, int page) {
+    public Map<String,?> listByCategorySlug(String slug, int page) {
         // Run the query
         PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndCategoriesSlug(
                 ContentStatus.PUBLISHED, slug, pageRequest);
 
-        return getModel(contents, String.format("/category/%s", slug));
+        return getListModel(contents, String.format("/category/%s", slug));
     }
 
     /**
-     * Return the page model.
+     * Return the content list page model.
      *
      * @param contents The page contents.
      * @param urlPrefix The URL prefix.
      * @return The page model.
      */
-    private Map<String, ?> getModel(Page<Content> contents, String urlPrefix) {
+    private Map<String, ?> getListModel(Page<Content> contents, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
         model.put("contents", contents);
         addSidebarModel(model);
@@ -220,7 +220,7 @@ public class ContentService {
      * @param id The content item identifier.
      * @return The page model.
      */
-    public Map<String, ?> byId(int id) {
+    public Map<String, ?> getById(int id) {
         Map<String, Object> model = new HashMap<>();
         Optional<Content> content = contentRepository.findById(id);
         if (!content.isPresent()) {
@@ -238,7 +238,7 @@ public class ContentService {
      * @param slug The content slug.
      * @return The page model.
      */
-    public Map<String, ?> bySlug(String slug) {
+    public Map<String, ?> getBySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
         Optional<Content> content = contentRepository.getOneBySlug(slug);
         if (!content.isPresent()) {
