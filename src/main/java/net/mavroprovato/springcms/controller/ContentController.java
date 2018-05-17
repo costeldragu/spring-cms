@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * The content controller.
@@ -32,7 +33,7 @@ public class ContentController {
      * @param model The page model.
      * @return The page template name.
      */
-    @RequestMapping("/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
         return indexPage(model, 1);
     }
@@ -44,7 +45,7 @@ public class ContentController {
      * @param page The page number.
      * @return The page template name.
      */
-    @RequestMapping("/page/{page:\\d+}")
+    @RequestMapping(value = "/page/{page:\\d+}", method = RequestMethod.GET)
     public String indexPage(Model model, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(page));
 
@@ -58,7 +59,7 @@ public class ContentController {
      * @param year The year.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d+}")
+    @RequestMapping(value = "/{year:\\d+}", method = RequestMethod.GET)
     public String year(Model model, @PathVariable("year") int year) {
         return yearPage(model, year, 1);
     }
@@ -71,7 +72,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d+}/page/{page:\\d+}")
+    @RequestMapping(value = "/{year:\\d+}/page/{page:\\d+}", method = RequestMethod.GET)
     public String yearPage(Model model, @PathVariable("year") int year, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, page));
 
@@ -86,7 +87,7 @@ public class ContentController {
      * @param month The month number (1 for January, 12 for December).
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d+}/{month:\\d{1,2}}")
+    @RequestMapping(value = "/{year:\\d+}/{month:\\d{1,2}}", method = RequestMethod.GET)
     public String month(Model model, @PathVariable("year") int year, @PathVariable("month") int month) {
         return monthPage(model, year, month, 1);
     }
@@ -100,7 +101,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d+}/{month:\\d+}/page/{page:\\d+}")
+    @RequestMapping(value = "/{year:\\d+}/{month:\\d+}/page/{page:\\d+}", method = RequestMethod.GET)
     public String monthPage(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                            @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, month, page));
@@ -117,7 +118,7 @@ public class ContentController {
      * @param day The day number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d+}/{month:\\d+}/{day:\\d+}")
+    @RequestMapping(value = "/{year:\\d+}/{month:\\d+}/{day:\\d+}", method = RequestMethod.GET)
     public String day(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                       @PathVariable("day") int day) {
         return dayPage(model, year, month, day, 1);
@@ -133,7 +134,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/{year:\\d+}/{month:\\d+}/{day:\\d+}/page/{page:\\d+}")
+    @RequestMapping(value = "/{year:\\d+}/{month:\\d+}/{day:\\d+}/page/{page:\\d+}", method = RequestMethod.GET)
     public String dayPage(Model model, @PathVariable("year") int year, @PathVariable("month") int month,
                           @PathVariable("day") int day, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.list(year, month, day, page));
@@ -149,7 +150,7 @@ public class ContentController {
      * @param id The tag identifier.
      * @return The template name.
      */
-    @RequestMapping("/tag/{id:\\d+}")
+    @RequestMapping(value = "/tag/{id:\\d+}", method = RequestMethod.GET)
     public String byTagId(Model model, @PathVariable("id") int id) {
         return byTagIdPage(model, id, 1);
     }
@@ -162,7 +163,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/tag/{id:\\d+}/page/{page:\\d+}")
+    @RequestMapping(value = "/tag/{id:\\d+}/page/{page:\\d+}", method = RequestMethod.GET)
     public String byTagIdPage(Model model, @PathVariable("id") int id, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byTagId(id, page));
 
@@ -176,7 +177,7 @@ public class ContentController {
      * @param slug The tag slug.
      * @return The template name.
      */
-    @RequestMapping("/tag/{slug:\\D\\S+}")
+    @RequestMapping(value = "/tag/{slug:\\D\\S+}", method = RequestMethod.GET)
     public String byTagSlug(Model model, @PathVariable("slug") String slug) {
         return byTagSlugPage(model, slug, 1);
     }
@@ -189,7 +190,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/tag/{slug:\\D\\S+}/page/{page:\\d+}")
+    @RequestMapping(value = "/tag/{slug:\\D\\S+}/page/{page:\\d+}", method = RequestMethod.GET)
     public String byTagSlugPage(Model model, @PathVariable("slug") String slug, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byTagSlug(slug, page));
 
@@ -203,7 +204,7 @@ public class ContentController {
      * @param id The category identifier.
      * @return The template name.
      */
-    @RequestMapping("/category/{id:\\d+}")
+    @RequestMapping(value = "/category/{id:\\d+}", method = RequestMethod.GET)
     public String byCategoryId(Model model, @PathVariable("id") int id) {
         return byCategoryIdPage(model, id, 1);
     }
@@ -216,7 +217,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/category/{id:\\d+}/page/{page:\\d+}")
+    @RequestMapping(value = "/category/{id:\\d+}/page/{page:\\d+}", method = RequestMethod.GET)
     public String byCategoryIdPage(Model model, @PathVariable("id") int id, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byCategoryId(id, page));
 
@@ -230,7 +231,7 @@ public class ContentController {
      * @param slug The tag slug.
      * @return The template name.
      */
-    @RequestMapping("/category/{slug:\\D\\S+}")
+    @RequestMapping(value = "/category/{slug:\\D\\S+}", method = RequestMethod.GET)
     public String byCategorySlug(Model model, @PathVariable("slug") String slug) {
         return byCategorySlugPage(model, slug, 1);
     }
@@ -243,7 +244,7 @@ public class ContentController {
      * @param page The page number.
      * @return The template name.
      */
-    @RequestMapping("/category/{slug:\\D\\S+}/page/{page:\\d+}")
+    @RequestMapping(value = "/category/{slug:\\D\\S+}/page/{page:\\d+}", method = RequestMethod.GET)
     public String byCategorySlugPage(Model model, @PathVariable("slug") String slug, @PathVariable("page") int page) {
         model.addAllAttributes(contentService.byCategorySlug(slug, page));
 
@@ -257,12 +258,13 @@ public class ContentController {
      * @param id The content id.
      * @return The template name.
      */
-    @RequestMapping("/content//{id:\\d+}")
+    @RequestMapping(value = "/content/{id:\\d+}", method = RequestMethod.GET)
     public String content(Model model, @PathVariable("id") int id) {
         model.addAllAttributes(contentService.byId(id));
 
         return "content";
     }
+
     /**
      * Display the content by its slug.
      *
@@ -270,11 +272,10 @@ public class ContentController {
      * @param slug The content slug.
      * @return The template name.
      */
-    @RequestMapping("/content//{slug:\\D\\S+}")
+    @RequestMapping(value = "/content/{slug:\\D\\S+}", method = RequestMethod.GET)
     public String content(Model model, @PathVariable("slug") String slug) {
         model.addAllAttributes(contentService.bySlug(slug));
 
         return "content";
     }
-
 }
