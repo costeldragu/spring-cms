@@ -92,5 +92,5 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param slug The slug.
      * @return The content.
      */
-    Optional<Content> getOneBySlug(String slug);
+    Optional<Content> findOneBySlug(String slug);
 }

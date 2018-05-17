@@ -223,10 +223,8 @@ public class ContentService {
     public Map<String, ?> getById(int id) {
         Map<String, Object> model = new HashMap<>();
         Optional<Content> content = contentRepository.findById(id);
-        if (!content.isPresent()) {
-            throw new ResourceNotFoundException();
-        }
-        model.put("content", content);
+        content.ifPresent(c -> model.put("content", c));
+        content.orElseThrow(ResourceNotFoundException::new);
         addSidebarModel(model);
 
         return model;
@@ -240,11 +238,9 @@ public class ContentService {
      */
     public Map<String, ?> getBySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
-        Optional<Content> content = contentRepository.getOneBySlug(slug);
-        if (!content.isPresent()) {
-            throw new ResourceNotFoundException();
-        }
-        model.put("content", content);
+        Optional<Content> content = contentRepository.findOneBySlug(slug);
+        content.ifPresent(c -> model.put("content", c));
+        content.orElseThrow(ResourceNotFoundException::new);
         addSidebarModel(model);
 
         return model;
