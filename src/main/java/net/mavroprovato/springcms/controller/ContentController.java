@@ -250,10 +250,31 @@ public class ContentController {
         return "contents";
     }
 
+    /**
+     * Display the content by its id.
+     *
+     * @param model The model.
+     * @param id The content id.
+     * @return The template name.
+     */
     @RequestMapping("/content//{id:\\d+}")
     public String content(Model model, @PathVariable("id") int id) {
         model.addAllAttributes(contentService.byId(id));
 
         return "content";
     }
+    /**
+     * Display the content by its slug.
+     *
+     * @param model The model.
+     * @param slug The content slug.
+     * @return The template name.
+     */
+    @RequestMapping("/content//{slug:\\D\\S+}")
+    public String content(Model model, @PathVariable("slug") String slug) {
+        model.addAllAttributes(contentService.bySlug(slug));
+
+        return "content";
+    }
+
 }

@@ -23,9 +23,11 @@
                 </h1>
                 <div th:each="content: ${contents}" class="card mb-4">
                     <div class="card-body">
-                        <h2 th:text="${content.title}" class="card-title"></h2>
+                        <a th:if="${content.slug != null}" th:href="@{'/content/' + ${content.slug}}"><h2 th:text="${content.title}" class="card-title"></h2></a>
+                        <a th:if="${content.slug == null}" th:href="@{'/content/' + ${content.id}}"><h2 th:text="${content.title}" class="card-title"></h2></a>
                         <p th:text="${content.content}" class="card-text"></p>
-                        <a th:href="@{'/content/' + ${content.id}}" class="btn btn-primary">Read More &rarr;</a>
+                        <a th:if="${content.slug != null}" th:href="@{'/content/' + ${content.slug}}" class="btn btn-primary">Read More &rarr;</a>
+                        <a th:if="${content.slug == null}" th:href="@{'/content/' + ${content.id}}" class="btn btn-primary">Read More &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">
                         Posted on <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>

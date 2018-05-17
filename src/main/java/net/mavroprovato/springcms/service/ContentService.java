@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -207,8 +206,7 @@ public class ContentService {
     private Map<String, ?> getModel(Page<Content> contents, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
         model.put("contents", contents);
-        model.put("archives", contentRepository.countByMonth());
-        model.put("categories", categoryRepository.findAllByOrderByNameAsc());
+        addSidebarModel(model);
         model.put("urlPrefix", urlPrefix);
 
         return model;
@@ -223,9 +221,32 @@ public class ContentService {
     public Map<String, ?> byId(int id) {
         Map<String, Object> model = new HashMap<>();
         model.put("content", contentRepository.getOne(id));
-        model.put("archives", contentRepository.countByMonth());
-        model.put("categories", categoryRepository.findAllByOrderByNameAsc());
+        addSidebarModel(model);
 
         return model;
+    }
+
+    /**
+     * Return the model for a content item page.
+     *
+     * @param slug The content slug.
+     * @return The page model.
+     */
+    public Map<String, ?> bySlug(String slug) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("content", contentRepository.getOneBySlug(slug));
+        addSidebarModel(model);
+
+        return model;
+    }
+
+    /**
+     * Add model objects needed to display the sidebar.
+     *
+     * @param model The model.
+     */
+    private void addSidebarModel(Map<String, Object> model) {
+        model.put("archives", contentRepository.countByMonth());
+        model.put("categories", categoryRepository.findAllByOrderByNameAsc());
     }
 }
