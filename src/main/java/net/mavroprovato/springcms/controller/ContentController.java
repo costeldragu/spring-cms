@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.controller;
 
+import net.mavroprovato.springcms.entity.Comment;
 import net.mavroprovato.springcms.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -261,6 +262,7 @@ public class ContentController {
     @RequestMapping(value = "/content/{id:\\d+}", method = RequestMethod.GET)
     public String getById(Model model, @PathVariable("id") int id) {
         model.addAllAttributes(contentService.getById(id));
+        model.addAttribute("comment", new Comment());
 
         return "content";
     }

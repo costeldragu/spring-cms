@@ -79,6 +79,10 @@ public class Content {
     )
     private List<Category> categories = new ArrayList<>();
 
+    /** The content item's comments */
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+
     /**
      * Return the content item identifier.
      *
@@ -212,5 +216,14 @@ public class Content {
      */
     public List<Category> getCategories() {
         return categories;
+    }
+
+    /**
+     * Return the comments for the content item.
+     *
+     * @return The comments for the content item.
+     */
+    public List<Comment> getComments() {
+        return comments;
     }
 }
