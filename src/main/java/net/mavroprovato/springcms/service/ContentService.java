@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.service;
 
+import net.mavroprovato.springcms.entity.Comment;
 import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.exception.ResourceNotFoundException;
@@ -225,6 +226,7 @@ public class ContentService {
         Optional<Content> content = contentRepository.findById(id);
         content.ifPresent(c -> model.put("content", c));
         content.orElseThrow(ResourceNotFoundException::new);
+        model.put("comment", new Comment());
         addSidebarModel(model);
 
         return model;
@@ -241,6 +243,7 @@ public class ContentService {
         Optional<Content> content = contentRepository.findOneBySlug(slug);
         content.ifPresent(c -> model.put("content", c));
         content.orElseThrow(ResourceNotFoundException::new);
+        model.put("comment", new Comment());
         addSidebarModel(model);
 
         return model;
