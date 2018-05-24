@@ -37,19 +37,19 @@
                         <form th:action="@{'/content/' + ${content.id} + '/comment'}" th:object="${newComment}" method="post">
                               <div class="form-group">
                                 <label for="name">Name</label>
-                                <input th:field="*{name}" type="text" class="form-control" id="name">
+                                <input th:field="*{name}" type="text" class="form-control" id="name" required>
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input th:field="*{email}" type="email" class="form-control" id="email">
+                                <input th:field="*{email}" type="email" class="form-control" id="email" required>
                             </div>
                             <div class="form-group">
                                 <label for="web-site">Web site</label>
-                                <input th:field="*{webSite}" type="text" class="form-control" id="web-site">
+                                <input th:field="*{webSite}" type="url" class="form-control" id="web-site">
                             </div>
                             <div class="form-group">
                                 <label for="comment">Comment</label>
-                                <textarea th:field="*{comment}" id="comment" class="form-control" rows="5"></textarea>
+                                <textarea th:field="*{comment}" id="comment" class="form-control" rows="5" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Post comment</button>
                         </form>
