@@ -18,7 +18,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    /** Comment on a content item */
+    /** The comment content */
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.TextType")
     private String comment;
@@ -47,6 +47,7 @@ public class Comment {
 
     /** The content that this comment belong to */
     @ManyToOne
+    @JoinColumn
     private Content content;
 
     /**

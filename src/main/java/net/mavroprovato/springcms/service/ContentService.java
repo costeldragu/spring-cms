@@ -5,6 +5,7 @@ import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.exception.ResourceNotFoundException;
 import net.mavroprovato.springcms.repository.CategoryRepository;
+import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,16 +33,20 @@ public class ContentService {
     /** The category repository */
     private final CategoryRepository categoryRepository;
 
+    /** The comment repository */
+    private final CommentRepository commentRepository;
+
     /**
      * Create the content service.
-     *
-     * @param contentRepository The content repository.
+     *  @param contentRepository The content repository.
      * @param categoryRepository The category repository.
+     * @param commentRepository
      */
     @Autowired
-    public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository) {
+    public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository, CommentRepository commentRepository) {
         this.contentRepository = contentRepository;
         this.categoryRepository = categoryRepository;
+        this.commentRepository = commentRepository;
     }
 
     /**
@@ -226,7 +231,7 @@ public class ContentService {
         Optional<Content> content = contentRepository.findById(id);
         content.ifPresent(c -> model.put("content", c));
         content.orElseThrow(ResourceNotFoundException::new);
-        model.put("comment", new Comment());
+        model.put("newComment", new Comment());
         addSidebarModel(model);
 
         return model;
@@ -243,7 +248,7 @@ public class ContentService {
         Optional<Content> content = contentRepository.findOneBySlug(slug);
         content.ifPresent(c -> model.put("content", c));
         content.orElseThrow(ResourceNotFoundException::new);
-        model.put("comment", new Comment());
+        model.put("newComment", new Comment());
         addSidebarModel(model);
 
         return model;
@@ -257,5 +262,21 @@ public class ContentService {
     private void addSidebarModel(Map<String, Object> model) {
         model.put("archives", contentRepository.countByMonth());
         model.put("categories", categoryRepository.findAllByOrderByNameAsc());
+    }
+
+    /**
+     * Add a new comment to a content item.
+     *
+     * @param postId The post identifier.
+     * @param comment The comment.
+     */
+    public void addComment(int postId, Comment comment) {
+        Optional<Content> content = contentRepository.findById(postId);
+        content.ifPresent(c -> {
+            comment.setContent(c);
+            c.getComments().add(comment);
+            commentRepository.save(comment);
+        });
+        content.orElseThrow(ResourceNotFoundException::new);
     }
 }

@@ -80,7 +80,7 @@ public class Content {
     private List<Category> categories = new ArrayList<>();
 
     /** The content item's comments */
-    @OneToMany
+    @OneToMany(mappedBy = "content")
     private List<Comment> comments = new ArrayList<>();
 
     /**

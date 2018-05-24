@@ -5,10 +5,7 @@ import net.mavroprovato.springcms.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * The content controller.
@@ -281,4 +278,17 @@ public class ContentController {
         return "content";
     }
 
+    /**
+     * Post a comment to a content item.
+     *
+     * @param id The post identifier.
+     * @param comment The submitted comment.
+     * @return The template name.
+     */
+    @PostMapping("/content/{id:\\d+}/comment")
+    public String postComment(@PathVariable("id") int id, @ModelAttribute("newComment") Comment comment) {
+        contentService.addComment(id, comment);
+
+        return "redirect:/content/" + id;
+    }
 }
