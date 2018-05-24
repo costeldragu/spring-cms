@@ -25,8 +25,18 @@
                 <hr>
                 <p>Posted on <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span></p>
                 <hr>
-                <img class="img-fluid rounded" src="http://placehold.it/900x300" alt=""><hr>
                 <span th:text="${content.content}"></span>
+                <hr>
+                <h5>Comments:</h5>
+                <div th:each="comment: ${content.comments}" class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
+
+                    <div class="media-body">
+                        <h5 th:text="${comment.name}" class="mt-0"></h5>
+                        <h6 th:text="${#temporals.format(comment.createdAt, 'MMMM dd, YYYY HH:mm')}"></h6>
+                        <span th:text="${comment.comment}"></span>
+                    </div>
+                </div>
                 <hr>
                 <div class="card my-4">
                     <h5 class="card-header">Leave a Comment:</h5>
