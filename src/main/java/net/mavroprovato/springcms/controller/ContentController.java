@@ -5,7 +5,10 @@ import net.mavroprovato.springcms.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * The content controller.
@@ -286,7 +289,14 @@ public class ContentController {
      * @return The template name.
      */
     @PostMapping("/content/{id:\\d+}/comment")
-    public String postComment(@PathVariable("id") int id, @ModelAttribute("newComment") Comment comment) {
+    public String postComment(Model model, @PathVariable("id") int id,
+                              @Valid @ModelAttribute("newComment") Comment comment, BindingResult bindingResult) {
+        // Validate the form
+        if (bindingResult.hasErrors()) {
+            model.addAllAttributes(contentService.getById(id));
+
+            return "content";
+        }
         contentService.addComment(id, comment);
 
         return "redirect:/content/" + id;

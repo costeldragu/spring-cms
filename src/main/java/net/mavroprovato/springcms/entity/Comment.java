@@ -5,6 +5,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -21,18 +23,24 @@ public class Comment {
     /** The comment content */
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.TextType")
+    @NotNull
     private String comment;
 
     /** The name of the user that posted the comment */
-    @Column
+    @Column(nullable = false, length = 255)
+    @NotNull
+    @Size(min = 2, max = 255)
     private String name;
 
     /** The email of the user that posted the comment */
-    @Column
+    @Column(nullable = false)
+    @NotNull
+    @Size(min = 2, max = 255)
     private String email;
 
     /** The web site of the user that posted the comment */
     @Column
+    @Size(min = 2, max = 255)
     private String webSite;
 
     /** The comment creation date */
