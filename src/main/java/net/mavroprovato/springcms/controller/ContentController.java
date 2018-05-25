@@ -36,7 +36,7 @@ public class ContentController {
      * @return The model and view.
      */
     @GetMapping(value = "/content/{id:\\d+}")
-    public ModelAndView getById(@PathVariable("id") int id) {
+    public ModelAndView byId(@PathVariable("id") int id) {
         return new ModelAndView("content", contentService.getById(id));
     }
 
@@ -47,7 +47,7 @@ public class ContentController {
      * @return The model and view.
      */
     @GetMapping("/content/{slug:\\D\\S+}")
-    public ModelAndView getBySlug(@PathVariable("slug") String slug) {
+    public ModelAndView bySlug(@PathVariable("slug") String slug) {
         return new ModelAndView("content", contentService.getBySlug(slug));
     }
 

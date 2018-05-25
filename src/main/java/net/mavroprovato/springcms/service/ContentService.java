@@ -205,7 +205,7 @@ public class ContentService {
     }
 
     /**
-     * Return the content list page model.
+     * Return the content page page model.
      *
      * @param contents The page contents.
      * @param urlPrefix The URL prefix.

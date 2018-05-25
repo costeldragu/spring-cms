@@ -35,7 +35,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      *
      * @param status The content item status.
      * @param pageable The pagination parameters.
-     * @return The content item list.
+     * @return The content item page.
      */
     Page<Content> findByStatus(ContentStatus status, Pageable pageable);
 
@@ -45,7 +45,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param startDateTime The start dates.
      * @param endDateTime The end dates.
      * @param pageable The pagination parameters.
-     * @return The content item list.
+     * @return The content item page.
      */
     Page<Content> findByStatusAndPublishedAtBetween(ContentStatus status, LocalDateTime startDateTime,
                                                     LocalDateTime endDateTime, Pageable pageable);
@@ -55,7 +55,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      *
      * @param tagId The tag identifier.
      * @param pageable The pagination parameters.
-     * @return The content item list.
+     * @return The content item page.
      */
     Page<Content> findByStatusAndTagsId(ContentStatus status, int tagId, Pageable pageable);
 
@@ -64,7 +64,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      *
      * @param tagSlug The tag slug.
      * @param pageable The pagination parameters.
-     * @return The content item list.
+     * @return The content item page.
      */
     Page<Content> findByStatusAndTagsSlug(ContentStatus status, String tagSlug, Pageable pageable);
 
@@ -73,7 +73,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      *
      * @param categoryId The category identifier.
      * @param pageable The pagination parameters.
-     * @return The content item list.
+     * @return The content item page.
      */
     Page<Content> findByStatusAndCategoriesId(ContentStatus status, int categoryId, Pageable pageable);
 
@@ -82,7 +82,7 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      *
      * @param slug The category slug.
      * @param pageable The pagination parameters.
-     * @return The content item list.
+     * @return The content item page.
      */
     Page<Content> findByStatusAndCategoriesSlug(ContentStatus published, String slug, Pageable pageable);
 
