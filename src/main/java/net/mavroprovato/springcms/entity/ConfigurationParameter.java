@@ -8,6 +8,9 @@ import javax.persistence.*;
 @Entity
 public class ConfigurationParameter {
 
+    /**
+     * An enumeration of the defined configuration parameters.
+     */
     public enum Parameter {
         /** How many posts to display in the list page. */
         POSTS_PER_PAGE(10);

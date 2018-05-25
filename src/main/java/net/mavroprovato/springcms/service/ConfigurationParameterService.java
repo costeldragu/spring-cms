@@ -15,6 +15,11 @@ public class ConfigurationParameterService {
     /** The configuration parameter repository. */
     private final ConfigurationParameterRepository configurationParameterRepository;
 
+    /**
+     * Create the configuration parameter service.
+     *
+     * @param configurationParameterRepository The configuration parameter repository.
+     */
     public ConfigurationParameterService(ConfigurationParameterRepository configurationParameterRepository) {
         this.configurationParameterRepository = configurationParameterRepository;
     }
