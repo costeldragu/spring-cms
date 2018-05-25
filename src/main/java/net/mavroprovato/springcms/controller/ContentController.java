@@ -284,8 +284,10 @@ public class ContentController {
     /**
      * Post a comment to a content item.
      *
+     * @param model The page model.
      * @param id The post identifier.
      * @param comment The submitted comment.
+     * @param bindingResult The form binding result.
      * @return The template name.
      */
     @PostMapping("/content/{id:\\d+}/comment")
