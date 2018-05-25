@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.entity.Comment;
+import net.mavroprovato.springcms.entity.ConfigurationParameter;
 import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.exception.ResourceNotFoundException;
@@ -36,17 +37,23 @@ public class ContentService {
     /** The comment repository */
     private final CommentRepository commentRepository;
 
+    /** The configuration parameter service */
+    private final ConfigurationParameterService configurationParameterService;
+
     /**
      * Create the content service.
-     *  @param contentRepository The content repository.
+     * @param contentRepository The content repository.
      * @param categoryRepository The category repository.
-     * @param commentRepository
+     * @param commentRepository The comment repository.
+     * @param configurationParameterService The configuration parameter service.
      */
     @Autowired
-    public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository, CommentRepository commentRepository) {
+    public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository,
+                          CommentRepository commentRepository, ConfigurationParameterService configurationParameterService) {
         this.contentRepository = contentRepository;
         this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
+        this.configurationParameterService = configurationParameterService;
     }
 
     /**
@@ -130,7 +137,8 @@ public class ContentService {
         }
 
         // Run the query
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        int postsPerPage = configurationParameterService.getInteger(ConfigurationParameter.Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents;
         if (startDateTime == null) {
             contents = contentRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
@@ -151,7 +159,8 @@ public class ContentService {
      */
     public Map<String,?> listByTagId(int id, int page) {
         // Run the query
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        int postsPerPage = configurationParameterService.getInteger(ConfigurationParameter.Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndTagsId(ContentStatus.PUBLISHED, id, pageRequest);
 
         return getListModel(contents, String.format("/tag/%d", id));
@@ -166,7 +175,8 @@ public class ContentService {
      */
     public Map<String,?> listByTagSlug(String slug, int page) {
         // Run the query
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        int postsPerPage = configurationParameterService.getInteger(ConfigurationParameter.Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
 
         return getListModel(contents, String.format("/tag/%s", slug));
@@ -181,7 +191,8 @@ public class ContentService {
      */
     public Map<String,?> listByCategoryId(int id, int page) {
         // Run the query
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        int postsPerPage = configurationParameterService.getInteger(ConfigurationParameter.Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndCategoriesId(
                 ContentStatus.PUBLISHED, id, pageRequest);
 
@@ -197,7 +208,8 @@ public class ContentService {
      */
     public Map<String,?> listByCategorySlug(String slug, int page) {
         // Run the query
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.Direction.DESC, "publishedAt");
+        int postsPerPage = configurationParameterService.getInteger(ConfigurationParameter.Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatusAndCategoriesSlug(
                 ContentStatus.PUBLISHED, slug, pageRequest);
 
