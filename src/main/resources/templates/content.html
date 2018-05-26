@@ -23,11 +23,14 @@
                     by <a href="#">Start Bootstrap</a>
                 </p>
                 <hr>
-                <p>Posted on <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span></p>
+                <p>
+                    <span th:text="#{content.published.at}"></span>
+                    <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
+                </p>
                 <hr>
                 <span th:text="${content.content}"></span>
                 <hr>
-                <h5>Comments:</h5>
+                <h5 th:text="#{content.comments}"></h5>
                 <div th:each="comment: ${content.comments}" class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
 
@@ -39,26 +42,26 @@
                 </div>
                 <hr>
                 <div class="card my-4">
-                    <h5 class="card-header">Leave a Comment:</h5>
+                    <h5 class="card-header" th:text="#{content.post.comment}"></h5>
                     <div class="card-body">
                         <form th:action="@{'/content/' + ${content.id} + '/comment'}" th:object="${newComment}" method="post">
                               <div class="form-group">
-                                <label for="name">Name</label>
+                                <label for="name" th:text="#{content.comment.name}"></label>
                                 <input th:field="*{name}" type="text" class="form-control" id="name" required>
                                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback">Name Error</div>
                             </div>
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email" th:text="#{content.comment.email}"></label>
                                 <input th:field="*{email}" type="email" class="form-control" id="email" required>
                                 <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback">Email Error</div>
                             </div>
                             <div class="form-group">
-                                <label for="web-site">Web site</label>
+                                <label for="web-site" th:text="#{content.comment.web.site}"></label>
                                 <input th:field="*{webSite}" type="url" class="form-control" id="web-site">
                                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{webSite}" class="invalid-feedback">Web site Error</div>
                             </div>
                             <div class="form-group">
-                                <label for="comment">Comment</label>
+                                <label for="comment" th:text="#{content.comment.comment}"></label>
                                 <textarea th:field="*{comment}" id="comment" class="form-control" rows="5" required></textarea>
                                 <div th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="invalid-feedback">Comment Error</div>
                             </div>

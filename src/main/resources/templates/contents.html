@@ -30,8 +30,9 @@
                         <a th:if="${content.slug == null}" th:href="@{'/content/' + ${content.id}}" class="btn btn-primary">Read More &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">
-                        Posted on <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
-                        Tagged with
+                        <span th:text="#{content.published.at}"></span>
+                        <span th:text="${#temporals.format(content.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
+                        <span th:text="#{content.tags}"></span>
                         <th:block th:each="tag: ${content.tags}">
                             <a th:if="${tag.slug == null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.id}}"></a>
                             <a th:if="${tag.slug != null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.slug}}"></a>
@@ -40,16 +41,16 @@
                 </div>
                 <ul class="pagination justify-content-center mb-4">
                     <li th:if="not ${contents.last}" class="page-item">
-                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${contents.number + 2}}">&larr; Older</a>
+                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${contents.number + 2}}" th:text="#{content.list.previous}"></a>
                     </li>
                     <li th:if="${contents.last}" class="page-item disabled">
-                        <a class="page-link" href="#">&larr; Older</a>
+                        <a class="page-link" href="#" th:text="#{content.list.previous}"></a>
                     </li>
                     <li th:if="not ${contents.first}" class="page-item">
-                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${contents.number}}">&rarr; Newer</a>
+                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${contents.number}}" th:text="#{content.list.next}"></a>
                     </li>
                     <li th:if="${contents.first}" class="page-item disabled">
-                        <a class="page-link" href="#">&rarr; Newer</a>
+                        <a class="page-link" href="#" th:text="#{content.list.next}"></a>
                     </li>
                 </ul>
             </div>

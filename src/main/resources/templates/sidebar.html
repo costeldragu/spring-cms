@@ -1,16 +1,16 @@
 <div class="card my-4">
-    <h5 class="card-header">Search</h5>
+    <h5 class="card-header "th:text="#{search.title}"></h5>
     <div class="card-body">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
+            <input type="text" class="form-control" th:placeholder="#{search.placeholder}">
             <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">Go!</button>
+                <button class="btn btn-secondary" type="button" th:text="#{search.perform}"></button>
             </span>
         </div>
     </div>
 </div>
 <div class="card my-4">
-    <h5 class="card-header">Archives</h5>
+    <h5 class="card-header" th:text="#{archives.title}"></h5>
     <div class="card-body">
         <div class="row">
             <div class="col-lg-12">
@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="card my-4">
-    <h5 class="card-header">Categories</h5>
+    <h5 class="card-header" th:text="#{categories.title}"></h5>
     <div class="card-body">
         <div class="row">
             <div class="col-lg-12">
