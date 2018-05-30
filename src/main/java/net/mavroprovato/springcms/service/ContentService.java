@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.service;
 
+import com.rometools.rome.feed.atom.Category;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 import com.rometools.rome.feed.atom.Link;
@@ -21,10 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -330,6 +328,9 @@ public class ContentService {
             summary.setType("text/plain");
             summary.setValue(c.getContent());
             entry.setSummary(summary);
+            entry.setCreated(new Date(c.getCreatedAt().toInstant().toEpochMilli()));
+            entry.setUpdated(new Date(c.getUpdatedAt().toInstant().toEpochMilli()));
+            entry.setPublished(new Date(c.getPublishedAt().toInstant().toEpochMilli()));
 
             return entry;
         }).collect(Collectors.toList()));
