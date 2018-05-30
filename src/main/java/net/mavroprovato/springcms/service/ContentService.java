@@ -225,7 +225,7 @@ public class ContentService {
     private Map<String, ?> getListModel(Page<Content> contents, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
         model.put("contents", contents);
-        addSidebarModel(model);
+        addCommonModel(model);
         model.put("urlPrefix", urlPrefix);
 
         return model;
@@ -243,7 +243,7 @@ public class ContentService {
         content.ifPresent(c -> model.put("content", c));
         content.orElseThrow(ResourceNotFoundException::new);
         model.put("newComment", new Comment());
-        addSidebarModel(model);
+        addCommonModel(model);
 
         return model;
     }
@@ -260,19 +260,20 @@ public class ContentService {
         content.ifPresent(c -> model.put("content", c));
         content.orElseThrow(ResourceNotFoundException::new);
         model.put("newComment", new Comment());
-        addSidebarModel(model);
+        addCommonModel(model);
 
         return model;
     }
 
     /**
-     * Add model objects needed to display the sidebar.
+     * Add model objects common for all content pages.
      *
      * @param model The model.
      */
-    private void addSidebarModel(Map<String, Object> model) {
+    private void addCommonModel(Map<String, Object> model) {
         model.put("archives", contentRepository.countByMonth());
         model.put("categories", categoryRepository.findAllByOrderByNameAsc());
+        model.put("config", configurationParameterService.allParameters());
     }
 
     /**
@@ -297,22 +298,24 @@ public class ContentService {
      * @return a feed with the latest content.
      */
     public Feed latestContentFeed() {
+        // Create the feed
         Feed feed = new Feed();
         feed.setFeedType("atom_1.0");
         feed.setTitle("Blog title");
         Link feedLink = new Link();
         feedLink.setHref("http://localhost:8080/");
         feed.setAlternateLinks(Collections.singletonList(feedLink));
-
         com.rometools.rome.feed.atom.Content subtitle = new com.rometools.rome.feed.atom.Content();
         subtitle.setType("text/plain");
         subtitle.setValue("Blog subtitle");
         feed.setSubtitle(subtitle);
 
+        // Get the content items to include
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(0, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Content> contents = contentRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
 
+        // Add a feed entry for each content item
         feed.setEntries(contents.stream().map(c -> {
             Entry entry = new Entry();
 

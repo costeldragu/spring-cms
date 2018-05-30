@@ -5,7 +5,9 @@ import net.mavroprovato.springcms.entity.Parameter;
 import net.mavroprovato.springcms.repository.ConfigurationParameterRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The configuration parameter service.
@@ -23,6 +25,16 @@ public class ConfigurationParameterService {
      */
     public ConfigurationParameterService(ConfigurationParameterRepository configurationParameterRepository) {
         this.configurationParameterRepository = configurationParameterRepository;
+    }
+
+    /**
+     * Return all parameters as a map.
+     *
+     * @return All parameters as a map.
+     */
+    public Map<String, String> allParameters() {
+        return configurationParameterRepository.findAll().stream().collect(
+                Collectors.toMap(ConfigurationParameter::getName, ConfigurationParameter::getValue));
     }
 
     /**

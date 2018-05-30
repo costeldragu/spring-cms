@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title th:text="@{${content.title} + ' - Blog Home'}"></title>
-
+    <title th:text="${config.TITLE}"></title>
+    <link rel="alternate" type="application/rss+xml" th:title="#{feed.title(${config.TITLE})}" href="/feed" />
     <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/blog.css" rel="stylesheet">
 </head>

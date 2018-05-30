@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>Blog Home</title>
-
-    <link rel="alternate" type="application/rss+xml" title="Blog Home &raquo; Feed" href="/feed" />
+    <title th:text="${config.TITLE}"></title>
+    <link rel="alternate" type="application/rss+xml" th:title="#{feed.title(${config.TITLE})}" href="/feed" />
     <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/blog.css" rel="stylesheet">
 </head>
@@ -19,8 +17,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <h1 class="my-4">Page Heading
-                    <small>Secondary Text</small>
+                <h1 class="my-4">
+                    <span th:text="${config.TITLE}"></span>
+                    <small th:text="${config.SUBTITLE}"></small>
                 </h1>
                 <div th:each="content: ${contents}" class="card mb-4">
                     <div class="card-body">

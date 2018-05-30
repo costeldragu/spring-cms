@@ -4,6 +4,10 @@ package net.mavroprovato.springcms.entity;
  * An enumeration of the defined configuration parameters.
  */
 public enum Parameter {
+    /** The site title. */
+    TITLE("", String.class),
+    /** How the site subtitle. */
+    SUBTITLE("", String.class),
     /** How many posts to display in the list page. */
     POSTS_PER_PAGE(10, Integer.class);
 
