@@ -55,6 +55,12 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- ROME Atom/RSS -->
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.10.0</version>
+        </dependency>
         <!-- Webjars Dependencies -->
         <dependency>
             <groupId>org.webjars</groupId>

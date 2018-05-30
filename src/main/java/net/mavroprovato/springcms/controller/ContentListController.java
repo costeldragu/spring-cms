@@ -1,10 +1,13 @@
 package net.mavroprovato.springcms.controller;
 
+import com.rometools.rome.feed.atom.Feed;
 import net.mavroprovato.springcms.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -216,5 +219,14 @@ public class ContentListController {
     @GetMapping(value = "/category/{slug:\\D\\S+}/page/{page:\\d+}")
     public ModelAndView byCategorySlugPage(@PathVariable("slug") String slug, @PathVariable("page") int page) {
         return new ModelAndView("contents", contentService.listByCategorySlug(slug, page));
+    }
+
+    /**
+     *
+     */
+    @GetMapping(value = "/feed")
+    @ResponseBody
+    public Feed feed() {
+        return contentService.latestContentFeed();
     }
 }

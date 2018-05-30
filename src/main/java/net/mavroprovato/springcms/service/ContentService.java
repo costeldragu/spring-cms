@@ -1,5 +1,8 @@
 package net.mavroprovato.springcms.service;
 
+import com.rometools.rome.feed.atom.Entry;
+import com.rometools.rome.feed.atom.Feed;
+import com.rometools.rome.feed.atom.Link;
 import net.mavroprovato.springcms.entity.Comment;
 import net.mavroprovato.springcms.entity.ConfigurationParameter;
 import net.mavroprovato.springcms.entity.Content;
@@ -18,9 +21,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The content service.
@@ -290,5 +295,45 @@ public class ContentService {
             commentRepository.save(comment);
         });
         content.orElseThrow(ResourceNotFoundException::new);
+    }
+
+    /**
+     * Return a feed with the latest content.
+     *
+     * @return a feed with the latest content.
+     */
+    public Feed latestContentFeed() {
+        Feed feed = new Feed();
+        feed.setFeedType("atom_1.0");
+        feed.setTitle("Blog title");
+        Link feedLink = new Link();
+        feedLink.setHref("http://localhost:8080/");
+        feed.setAlternateLinks(Collections.singletonList(feedLink));
+
+        com.rometools.rome.feed.atom.Content subtitle = new com.rometools.rome.feed.atom.Content();
+        subtitle.setType("text/plain");
+        subtitle.setValue("Blog subtitle");
+        feed.setSubtitle(subtitle);
+
+        int postsPerPage = configurationParameterService.getInteger(ConfigurationParameter.Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(0, postsPerPage, Sort.Direction.DESC, "publishedAt");
+        Page<Content> contents = contentRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
+
+        feed.setEntries(contents.stream().map(c -> {
+            Entry entry = new Entry();
+
+            entry.setTitle(c.getTitle());
+            Link link = new Link();
+            link.setHref("http://localhost:8080/post/" + c.getId());
+            entry.setAlternateLinks(Collections.singletonList(link));
+            com.rometools.rome.feed.atom.Content summary = new com.rometools.rome.feed.atom.Content();
+            summary.setType("text/plain");
+            summary.setValue(c.getContent());
+            entry.setSummary(summary);
+
+            return entry;
+        }).collect(Collectors.toList()));
+
+        return feed;
     }
 }
