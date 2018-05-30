@@ -5,7 +5,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,16 +44,16 @@ public class Content {
     /** The content item creation date */
     @Column(nullable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     /** The content item update date */
     @Column(nullable = false)
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
     /** The content item publication date */
     @Column
-    private LocalDateTime publishedAt;
+    private OffsetDateTime publishedAt;
 
     /** The tags applied to the content item */
     @ManyToMany
@@ -169,7 +169,7 @@ public class Content {
      *
      * @return The content item creating date.
      */
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -178,7 +178,7 @@ public class Content {
      *
      * @return The content item creating date.
      */
-    public LocalDateTime getUpdatedAt() {
+    public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
 
@@ -187,7 +187,7 @@ public class Content {
      *
      * @return The content item publication date.
      */
-    public LocalDateTime getPublishedAt() {
+    public OffsetDateTime getPublishedAt() {
         return publishedAt;
     }
 
@@ -196,7 +196,7 @@ public class Content {
      *
      * @param publishedAt The publication date.
      */
-    public void setPublishedAt(LocalDateTime publishedAt) {
+    public void setPublishedAt(OffsetDateTime publishedAt) {
         this.publishedAt = publishedAt;
     }
 

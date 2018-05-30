@@ -10,12 +10,13 @@ import net.mavroprovato.springcms.repository.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.*;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.context.annotation.ComponentScan;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
@@ -37,10 +38,10 @@ public class GenerateContentCommand implements ApplicationRunner {
     private static final int DEFAULT_COUNT = 100;
 
     /** The default minimum publication date for the content items */
-    private static final LocalDateTime DEFAULT_START_DATE = LocalDateTime.now().minus(1, ChronoUnit.YEARS);
+    private static final OffsetDateTime DEFAULT_START_DATE = OffsetDateTime.now().minus(1, ChronoUnit.YEARS);
 
     /** The default maximum publication date for the content items */
-    private static final LocalDateTime DEFAULT_END_DATE = LocalDateTime.now();
+    private static final OffsetDateTime DEFAULT_END_DATE = OffsetDateTime.now();
 
     /** The default number of tags to apply to a content item */
     private static final int DEFAULT_TAG_COUNT = 2;
@@ -65,8 +66,8 @@ public class GenerateContentCommand implements ApplicationRunner {
      */
     private static final class Options {
         int count = DEFAULT_COUNT;
-        LocalDateTime startDate = DEFAULT_START_DATE;
-        LocalDateTime endDate = DEFAULT_END_DATE;
+        OffsetDateTime startDate = DEFAULT_START_DATE;
+        OffsetDateTime endDate = DEFAULT_END_DATE;
         int tagCount = DEFAULT_TAG_COUNT;
         int categoryCount = DEFAULT_CATEGORY_COUNT;
     }
@@ -153,7 +154,8 @@ public class GenerateContentCommand implements ApplicationRunner {
         if (args.containsOption("start-date")) {
             try {
                 String startDateString = args.getOptionValues("start-date").get(0);
-                options.startDate = LocalDate.parse(startDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
+                options.startDate = LocalDate.parse(
+                        startDateString, DateTimeFormatter.ISO_DATE).atStartOfDay().atOffset(ZoneOffset.UTC);
             } catch (DateTimeParseException e) {
                 logger.error("Start date ({}) cannot be parsed.", args.getOptionValues("start-date").get(0));
                 return null;
@@ -164,7 +166,8 @@ public class GenerateContentCommand implements ApplicationRunner {
         if (args.containsOption("end-date")) {
             try {
                 String endDateString = args.getOptionValues("end-date").get(0);
-                options.endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE).atStartOfDay();
+                options.endDate = LocalDate.parse(
+                        endDateString, DateTimeFormatter.ISO_DATE).atStartOfDay().atOffset(ZoneOffset.UTC);
             } catch (DateTimeParseException e) {
                 logger.error("End date ({}) cannot be parsed.", args.getOptionValues("end-date").get(0));
                 return null;
@@ -253,12 +256,12 @@ public class GenerateContentCommand implements ApplicationRunner {
      * @param endDate The maximum date.
      * @return The random date time.
      */
-    private LocalDateTime randomDateTime(LocalDateTime startDate, LocalDateTime endDate) {
-        long min = startDate.toEpochSecond(ZoneOffset.UTC);
-        long max = endDate.toEpochSecond(ZoneOffset.UTC);
+    private OffsetDateTime randomDateTime(OffsetDateTime startDate, OffsetDateTime endDate) {
+        long min = startDate.toEpochSecond();
+        long max = endDate.toEpochSecond();
         long random = ThreadLocalRandom.current().nextLong(min, max);
 
-        return LocalDateTime.ofEpochSecond(random, 0, ZoneOffset.UTC);
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(random), ZoneId.of("UTC"));
     }
 
     /**

@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 /**
  * A comment on a content item
@@ -46,12 +46,12 @@ public class Comment {
     /** The comment creation date */
     @Column(nullable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     /** The comment update date */
     @Column(nullable = false)
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
     /** The content that this comment belong to */
     @ManyToOne
@@ -144,17 +144,8 @@ public class Comment {
      *
      * @return The creation date of the comment.
      */
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    /**
-     * Set the creation date of the comment.
-     *
-     * @param createdAt The creation date of the comment.
-     */
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     /**
@@ -162,17 +153,8 @@ public class Comment {
      *
      * @return The update date of the comment.
      */
-    public LocalDateTime getUpdatedAt() {
+    public OffsetDateTime getUpdatedAt() {
         return updatedAt;
-    }
-
-    /**
-     * Set the update date of the comment.
-     *
-     * @param updatedAt The update date of the comment.
-     */
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     /**
