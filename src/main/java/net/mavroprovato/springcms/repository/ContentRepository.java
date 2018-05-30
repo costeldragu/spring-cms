@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +47,8 @@ public interface ContentRepository extends JpaRepository<Content, Integer> {
      * @param pageable The pagination parameters.
      * @return The content item page.
      */
-    Page<Content> findByStatusAndPublishedAtBetween(ContentStatus status, LocalDateTime startDateTime,
-                                                    LocalDateTime endDateTime, Pageable pageable);
+    Page<Content> findByStatusAndPublishedAtBetween(ContentStatus status, OffsetDateTime startDateTime,
+                                                    OffsetDateTime endDateTime, Pageable pageable);
 
     /**
      * Find content by status and tag identifier.

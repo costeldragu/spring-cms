@@ -14,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
+import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,7 +45,8 @@ public class ContentService {
      */
     @Autowired
     public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository,
-                          CommentRepository commentRepository, ConfigurationParameterService configurationParameterService) {
+                          CommentRepository commentRepository,
+                          ConfigurationParameterService configurationParameterService) {
         this.contentRepository = contentRepository;
         this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
@@ -113,25 +111,25 @@ public class ContentService {
     private Map<String, ?> listImpl(Integer year, Integer month, Integer day, int page) {
         // Calculate the start/end publication date to use for the content query, and the url prefix for the pagination
         // links.
-        LocalDateTime startDateTime = null;
-        LocalDateTime endDateTime = null;
+        OffsetDateTime startDateTime = null;
+        OffsetDateTime endDateTime = null;
         String urlPrefix = "";
         if (year != null && month != null && day != null) {
             LocalDate date = LocalDate.of(year, month, day);
-            startDateTime = LocalDateTime.of(date, LocalTime.MIN);
-            endDateTime = LocalDateTime.of(date, LocalTime.MAX);
+            startDateTime = OffsetDateTime.of(date, LocalTime.MIN, ZoneOffset.UTC);
+            endDateTime = OffsetDateTime.of(date, LocalTime.MAX, ZoneOffset.UTC);
             urlPrefix = String.format("/%02d/%02d/%02d", year, month, day);
         } else if (year != null && month != null) {
             LocalDate startDate = LocalDate.of(year, month, 1);
-            startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+            startDateTime = OffsetDateTime.of(startDate, LocalTime.MIN, ZoneOffset.UTC);
             LocalDate endDate = startDate.withDayOfMonth(startDate.getMonth().length(startDate.isLeapYear()));
-            endDateTime = LocalDateTime.of(endDate, LocalTime.MAX);
+            endDateTime = OffsetDateTime.of(endDate, LocalTime.MAX, ZoneOffset.UTC);
             urlPrefix = String.format("/%02d/%02d", year, month);
         } else if (year != null) {
             LocalDate startDate = LocalDate.of(year, Month.JANUARY.getValue(), 1);
-            startDateTime = LocalDateTime.of(startDate, LocalTime.MIN);
+            startDateTime = OffsetDateTime.of(startDate, LocalTime.MIN, ZoneOffset.UTC);
             LocalDate endDate = LocalDate.of(year, Month.DECEMBER.getValue(), 31);
-            endDateTime = LocalDateTime.of(endDate, LocalTime.MIN);
+            endDateTime = OffsetDateTime.of(endDate, LocalTime.MIN, ZoneOffset.UTC);
             urlPrefix = String.format("/%02d", year);
         }
 
