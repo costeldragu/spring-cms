@@ -53,10 +53,10 @@ public class Comment {
     @UpdateTimestamp
     private OffsetDateTime updatedAt;
 
-    /** The content that this comment belong to */
+    /** The post that this comment belong to */
     @ManyToOne
     @JoinColumn
-    private Content content;
+    private Post post;
 
     /**
      * Return the unique identifier of the comment.
@@ -158,20 +158,20 @@ public class Comment {
     }
 
     /**
-     * Return the content for this comment.
+     * Return the post for this comment.
      *
-     * @return The content for this comment.
+     * @return The post for this comment.
      */
-    public Content getContent() {
-        return content;
+    public Post getPost() {
+        return post;
     }
 
     /**
-     * Set the content for this comment.
+     * Set the post for this comment.
      *
-     * @param content The content for this comment.
+     * @param post The post for this comment.
      */
-    public void setContent(Content content) {
-        this.content = content;
+    public void setContent(Post post) {
+        this.post = post;
     }
 }

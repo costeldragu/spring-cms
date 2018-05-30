@@ -1,11 +1,8 @@
 package net.mavroprovato.springcms.command;
 
-import net.mavroprovato.springcms.entity.Category;
-import net.mavroprovato.springcms.entity.Content;
-import net.mavroprovato.springcms.entity.ContentStatus;
-import net.mavroprovato.springcms.entity.Tag;
+import net.mavroprovato.springcms.entity.*;
 import net.mavroprovato.springcms.repository.CategoryRepository;
-import net.mavroprovato.springcms.repository.ContentRepository;
+import net.mavroprovato.springcms.repository.PostRepository;
 import net.mavroprovato.springcms.repository.TagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +23,13 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * A command line command that generates test content.
+ * A command line command that generates test posts.
  */
 @ComponentScan("net.mavroprovato.springcms")
-public class GenerateContentCommand implements ApplicationRunner {
+public class GeneratePostsCommand implements ApplicationRunner {
 
     /** Logger for the class */
-    private static Logger logger = LoggerFactory.getLogger(GenerateContentCommand.class);
+    private static Logger logger = LoggerFactory.getLogger(GeneratePostsCommand.class);
 
     /** The default number of content items to generate */
     private static final int DEFAULT_COUNT = 100;
@@ -52,8 +49,8 @@ public class GenerateContentCommand implements ApplicationRunner {
     /** A random number generator */
     private static final Random RANDOM = new Random();
 
-    /** The content repository */
-    private final ContentRepository contentRepository;
+    /** The post repository */
+    private final PostRepository postRepository;
 
     /** The tag repository */
     private final TagRepository tagRepository;
@@ -75,13 +72,14 @@ public class GenerateContentCommand implements ApplicationRunner {
     /**
      * Create the generate content command.
      *
-     * @param contentRepository The content repository.
+     * @param postRepository The post repository.
      * @param tagRepository The tag repository.
+     * @param categoryRepository The category repository.
      */
     @Autowired
-    public GenerateContentCommand(ContentRepository contentRepository, TagRepository tagRepository,
-                                  CategoryRepository categoryRepository) {
-        this.contentRepository = contentRepository;
+    public GeneratePostsCommand(PostRepository postRepository, TagRepository tagRepository,
+                                CategoryRepository categoryRepository) {
+        this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.categoryRepository = categoryRepository;
     }
@@ -102,27 +100,28 @@ public class GenerateContentCommand implements ApplicationRunner {
         logger.info("Generating {} content items between {} and {}.", options.count, options.startDate,
                 options.endDate);
         for (int i = 0; i < options.count; i++) {
-            Content content = new Content();
-            content.setTitle("Test Title");
-            content.setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+            Post post = new Post();
+            post.setTitle("Test Title");
+            post.setContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
                     "ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit " +
                     "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat " +
                     "cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-            content.setStatus(ContentStatus.PUBLISHED);
-            content.setPublishedAt(randomDateTime(options.startDate, options.endDate));
+            post.setStatus(ContentStatus.PUBLISHED);
+            post.setPublishedAt(randomDateTime(options.startDate, options.endDate));
             for (Tag tag: getRandomTags(options.tagCount)) {
-                content.getTags().add(tag);
+                post.getTags().add(tag);
             }
             for (Category category: getRandomCategories(options.categoryCount)) {
-                content.getCategories().add(category);
+                post.getCategories().add(category);
             }
 
-            contentRepository.save(content);
+            // Save the post
+            postRepository.save(post);
 
             // Set the slug
-            content.setSlug("test-title-" + content.getId());
-            contentRepository.save(content);
+            post.setSlug("test-title-" + post.getId());
+            postRepository.save(post);
         }
         logger.info("Content items generated.");
     }
@@ -270,7 +269,7 @@ public class GenerateContentCommand implements ApplicationRunner {
      * @param args The command line arguments.
      */
     public static void main(String... args) {
-        SpringApplication command = new SpringApplication(GenerateContentCommand.class);
+        SpringApplication command = new SpringApplication(GeneratePostsCommand.class);
         command.setWebApplicationType(WebApplicationType.NONE);
         command.run(args);
     }

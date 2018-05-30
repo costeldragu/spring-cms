@@ -1,7 +1,7 @@
 package net.mavroprovato.springcms.controller;
 
 import net.mavroprovato.springcms.entity.Comment;
-import net.mavroprovato.springcms.service.ContentService;
+import net.mavroprovato.springcms.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -17,16 +17,16 @@ import javax.validation.Valid;
 public class ContentController {
 
     /** The content service */
-    private final ContentService contentService;
+    private final PostService postService;
 
     /**
      * Create the controller.
      *
-     * @param contentService The content service.
+     * @param postService The content service.
      */
     @Autowired
-    public ContentController(ContentService contentService) {
-        this.contentService = contentService;
+    public ContentController(PostService postService) {
+        this.postService = postService;
     }
 
     /**
@@ -37,7 +37,7 @@ public class ContentController {
      */
     @GetMapping(value = "/content/{id:\\d+}")
     public ModelAndView byId(@PathVariable("id") int id) {
-        return new ModelAndView("content", contentService.getById(id));
+        return new ModelAndView("content", postService.getById(id));
     }
 
     /**
@@ -48,7 +48,7 @@ public class ContentController {
      */
     @GetMapping("/content/{slug:\\D\\S+}")
     public ModelAndView bySlug(@PathVariable("slug") String slug) {
-        return new ModelAndView("content", contentService.getBySlug(slug));
+        return new ModelAndView("content", postService.getBySlug(slug));
     }
 
     /**
@@ -64,9 +64,9 @@ public class ContentController {
                                     BindingResult bindingResult) {
         // Validate the form
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("content", contentService.getById(id));
+            return new ModelAndView("content", postService.getById(id));
         }
-        contentService.addComment(id, comment);
+        postService.addComment(id, comment);
 
         return new ModelAndView("redirect:/content/" + id);
     }

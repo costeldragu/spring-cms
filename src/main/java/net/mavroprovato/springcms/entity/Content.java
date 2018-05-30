@@ -6,17 +6,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Object mapping for content items.
  */
 @Entity
 @Table(indexes = {
-        @Index(columnList = "publishedAt")
+        @Index(columnList = "type, status, publishedAt")
 })
-public class Content {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "type")
+public abstract class Content {
 
     /** The unique identifier of the content */
     @Id
@@ -54,34 +54,6 @@ public class Content {
     /** The content item publication date */
     @Column
     private OffsetDateTime publishedAt;
-
-    /** The tags applied to the content item */
-    @ManyToMany
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "content_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"),
-            indexes = {
-                    @Index(columnList = "content_id"),
-                    @Index(columnList = "tag_id")
-            }
-    )
-    private List<Tag> tags = new ArrayList<>();
-
-    /** The categories that this content item belongs to */
-    @ManyToMany
-    @JoinTable(
-            joinColumns = @JoinColumn(name = "content_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"),
-            indexes = {
-                    @Index(columnList = "content_id"),
-                    @Index(columnList = "category_id")
-            }
-    )
-    private List<Category> categories = new ArrayList<>();
-
-    /** The content item's comments */
-    @OneToMany(mappedBy = "content")
-    private List<Comment> comments = new ArrayList<>();
 
     /**
      * Return the content item identifier.
@@ -198,32 +170,5 @@ public class Content {
      */
     public void setPublishedAt(OffsetDateTime publishedAt) {
         this.publishedAt = publishedAt;
-    }
-
-    /**
-     * Return the tags for the content.
-     *
-     * @return The tags for the content.
-     */
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    /**
-     * Return the categories for the content item.
-     *
-     * @return The categories for the content item.
-     */
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    /**
-     * Return the comments for the content item.
-     *
-     * @return The comments for the content item.
-     */
-    public List<Comment> getComments() {
-        return comments;
     }
 }

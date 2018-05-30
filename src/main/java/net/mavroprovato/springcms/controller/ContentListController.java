@@ -1,12 +1,11 @@
 package net.mavroprovato.springcms.controller;
 
 import com.rometools.rome.feed.atom.Feed;
-import net.mavroprovato.springcms.service.ContentService;
+import net.mavroprovato.springcms.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,16 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class ContentListController {
 
     /** The content service */
-    private final ContentService contentService;
+    private final PostService contentService;
 
     /**
      * Create the controller.
      *
-     * @param contentService The content service.
+     * @param postService The content service.
      */
     @Autowired
-    public ContentListController(ContentService contentService) {
-        this.contentService = contentService;
+    public ContentListController(PostService postService) {
+        this.contentService = postService;
     }
 
     /**

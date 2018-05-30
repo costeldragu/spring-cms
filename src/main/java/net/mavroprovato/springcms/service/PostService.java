@@ -7,7 +7,7 @@ import net.mavroprovato.springcms.entity.*;
 import net.mavroprovato.springcms.exception.ResourceNotFoundException;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.CommentRepository;
-import net.mavroprovato.springcms.repository.ContentRepository;
+import net.mavroprovato.springcms.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,13 +19,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * The content service.
+ * The post service.
  */
 @Service
-public class ContentService {
+public class PostService {
 
-    /** The content repository */
-    private final ContentRepository contentRepository;
+    /** The post repository */
+    private final PostRepository postRepository;
 
     /** The category repository */
     private final CategoryRepository categoryRepository;
@@ -38,16 +38,16 @@ public class ContentService {
 
     /**
      * Create the content service.
-     * @param contentRepository The content repository.
+     * @param postRepository The post repository.
      * @param categoryRepository The category repository.
      * @param commentRepository The comment repository.
      * @param configurationParameterService The configuration parameter service.
      */
     @Autowired
-    public ContentService(ContentRepository contentRepository, CategoryRepository categoryRepository,
-                          CommentRepository commentRepository,
-                          ConfigurationParameterService configurationParameterService) {
-        this.contentRepository = contentRepository;
+    public PostService(PostRepository postRepository, CategoryRepository categoryRepository,
+                       CommentRepository commentRepository,
+                       ConfigurationParameterService configurationParameterService) {
+        this.postRepository = postRepository;
         this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
         this.configurationParameterService = configurationParameterService;
@@ -136,15 +136,15 @@ public class ContentService {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents;
+        Page<Post> posts;
         if (startDateTime == null) {
-            contents = contentRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
+            posts = postRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
         } else {
-            contents = contentRepository.findByStatusAndPublishedAtBetween(
+            posts = postRepository.findByStatusAndPublishedAtBetween(
                     ContentStatus.PUBLISHED, startDateTime, endDateTime, pageRequest);
         }
 
-        return getListModel(contents, urlPrefix);
+        return getListModel(posts, urlPrefix);
     }
 
     /**
@@ -158,9 +158,9 @@ public class ContentService {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByStatusAndTagsId(ContentStatus.PUBLISHED, id, pageRequest);
+        Page<Post> posts = postRepository.findByStatusAndTagsId(ContentStatus.PUBLISHED, id, pageRequest);
 
-        return getListModel(contents, String.format("/tag/%d", id));
+        return getListModel(posts, String.format("/tag/%d", id));
     }
 
     /**
@@ -174,9 +174,9 @@ public class ContentService {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
+        Page<Post> posts = postRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
 
-        return getListModel(contents, String.format("/tag/%s", slug));
+        return getListModel(posts, String.format("/tag/%s", slug));
     }
 
     /**
@@ -190,10 +190,10 @@ public class ContentService {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByStatusAndCategoriesId(
+        Page<Post> posts = postRepository.findByStatusAndCategoriesId(
                 ContentStatus.PUBLISHED, id, pageRequest);
 
-        return getListModel(contents, String.format("/category/%d", id));
+        return getListModel(posts, String.format("/category/%d", id));
     }
 
     /**
@@ -207,22 +207,22 @@ public class ContentService {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByStatusAndCategoriesSlug(
+        Page<Post> posts = postRepository.findByStatusAndCategoriesSlug(
                 ContentStatus.PUBLISHED, slug, pageRequest);
 
-        return getListModel(contents, String.format("/category/%s", slug));
+        return getListModel(posts, String.format("/category/%s", slug));
     }
 
     /**
      * Return the content page page model.
      *
-     * @param contents The page contents.
+     * @param posts The posts.
      * @param urlPrefix The URL prefix.
      * @return The page model.
      */
-    private Map<String, ?> getListModel(Page<Content> contents, String urlPrefix) {
+    private Map<String, ?> getListModel(Page<Post> posts, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
-        model.put("contents", contents);
+        model.put("contents", posts);
         addCommonModel(model);
         model.put("urlPrefix", urlPrefix);
 
@@ -237,9 +237,9 @@ public class ContentService {
      */
     public Map<String, ?> getById(int id) {
         Map<String, Object> model = new HashMap<>();
-        Optional<Content> content = contentRepository.findById(id);
-        content.ifPresent(c -> model.put("content", c));
-        content.orElseThrow(ResourceNotFoundException::new);
+        Optional<Post> post = postRepository.findById(id);
+        post.ifPresent(p -> model.put("content", p));
+        post.orElseThrow(ResourceNotFoundException::new);
         model.put("newComment", new Comment());
         addCommonModel(model);
 
@@ -254,9 +254,9 @@ public class ContentService {
      */
     public Map<String, ?> getBySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
-        Optional<Content> content = contentRepository.findOneBySlug(slug);
-        content.ifPresent(c -> model.put("content", c));
-        content.orElseThrow(ResourceNotFoundException::new);
+        Optional<Post> post = postRepository.findOneBySlug(slug);
+        post.ifPresent(p -> model.put("content", p));
+        post.orElseThrow(ResourceNotFoundException::new);
         model.put("newComment", new Comment());
         addCommonModel(model);
 
@@ -269,7 +269,7 @@ public class ContentService {
      * @param model The model.
      */
     private void addCommonModel(Map<String, Object> model) {
-        model.put("archives", contentRepository.countByMonth());
+        model.put("archives", postRepository.countByMonth());
         model.put("categories", categoryRepository.findAllByOrderByNameAsc());
         model.put("config", configurationParameterService.allParameters());
     }
@@ -281,13 +281,13 @@ public class ContentService {
      * @param comment The comment.
      */
     public void addComment(int postId, Comment comment) {
-        Optional<Content> content = contentRepository.findById(postId);
-        content.ifPresent(c -> {
-            comment.setContent(c);
-            c.getComments().add(comment);
+        Optional<Post> post = postRepository.findById(postId);
+        post.ifPresent(p -> {
+            comment.setContent(p);
+            p.getComments().add(comment);
             commentRepository.save(comment);
         });
-        content.orElseThrow(ResourceNotFoundException::new);
+        post.orElseThrow(ResourceNotFoundException::new);
     }
 
     /**
@@ -311,10 +311,10 @@ public class ContentService {
         // Get the content items to include
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(0, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Content> contents = contentRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
+        Page<Post> posts = postRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
 
         // Add a feed entry for each content item
-        feed.setEntries(contents.stream().map(c -> {
+        feed.setEntries(posts.stream().map(c -> {
             Entry entry = new Entry();
 
             entry.setTitle(c.getTitle());
