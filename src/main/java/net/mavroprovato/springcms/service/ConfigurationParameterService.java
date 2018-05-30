@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.entity.ConfigurationParameter;
+import net.mavroprovato.springcms.entity.Parameter;
 import net.mavroprovato.springcms.repository.ConfigurationParameterRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class ConfigurationParameterService {
      * @param parameter The configuration parameter.
      * @return The configuration parameter value.
      */
-    public String getString(ConfigurationParameter.Parameter parameter) {
+    public String getString(Parameter parameter) {
         Optional<ConfigurationParameter> configurationParameter = configurationParameterRepository.findOneByName(
                 parameter.name());
         if (configurationParameter.isPresent()) {
@@ -46,7 +47,7 @@ public class ConfigurationParameterService {
      * @param parameter The configuration parameter.
      * @return The configuration parameter value.
      */
-    public int getInteger(ConfigurationParameter.Parameter parameter) {
+    public int getInteger(Parameter parameter) {
         Optional<ConfigurationParameter> configurationParameter = configurationParameterRepository.findOneByName(
                 parameter.name());
         if (configurationParameter.isPresent()) {
