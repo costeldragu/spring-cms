@@ -11,10 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 
 /**
- * The content controller.
+ * The post controller.
  */
 @Controller
-public class ContentController {
+public class PostController {
 
     /** The content service */
     private final PostService postService;
@@ -25,7 +25,7 @@ public class ContentController {
      * @param postService The content service.
      */
     @Autowired
-    public ContentController(PostService postService) {
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 
@@ -35,9 +35,9 @@ public class ContentController {
      * @param id The content id.
      * @return The model and view.
      */
-    @GetMapping(value = "/content/{id:\\d+}")
+    @GetMapping(value = "/post/{id:\\d+}")
     public ModelAndView byId(@PathVariable("id") int id) {
-        return new ModelAndView("content", postService.getById(id));
+        return new ModelAndView("post", postService.getById(id));
     }
 
     /**
@@ -46,9 +46,9 @@ public class ContentController {
      * @param slug The content slug.
      * @return The model and view.
      */
-    @GetMapping("/content/{slug:\\D\\S+}")
+    @GetMapping("/post/{slug:\\D\\S+}")
     public ModelAndView bySlug(@PathVariable("slug") String slug) {
-        return new ModelAndView("content", postService.getBySlug(slug));
+        return new ModelAndView("post", postService.getBySlug(slug));
     }
 
     /**
@@ -59,15 +59,15 @@ public class ContentController {
      * @param bindingResult The form binding result.
      * @return The model and view.
      */
-    @PostMapping("/content/{id:\\d+}/comment")
+    @PostMapping("/post/{id:\\d+}/comment")
     public ModelAndView postComment(@PathVariable("id") int id, @Valid @ModelAttribute("newComment") Comment comment,
                                     BindingResult bindingResult) {
         // Validate the form
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("content", postService.getById(id));
+            return new ModelAndView("post", postService.getById(id));
         }
         postService.addComment(id, comment);
 
-        return new ModelAndView("redirect:/content/" + id);
+        return new ModelAndView("redirect:/post/" + id);
     }
 }

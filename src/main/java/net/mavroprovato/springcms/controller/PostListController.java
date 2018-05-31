@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
  * The content page controller.
  */
 @Controller
-public class ContentListController {
+public class PostListController {
 
     /** The content service */
     private final PostService contentService;
@@ -24,7 +24,7 @@ public class ContentListController {
      * @param postService The content service.
      */
     @Autowired
-    public ContentListController(PostService postService) {
+    public PostListController(PostService postService) {
         this.contentService = postService;
     }
 
@@ -46,7 +46,7 @@ public class ContentListController {
      */
     @GetMapping(value = "/page/{page:\\d+}")
     public ModelAndView page(@PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.list(page));
+        return new ModelAndView("posts", contentService.list(page));
     }
 
     /**
@@ -69,7 +69,7 @@ public class ContentListController {
      */
     @GetMapping(value = "/{year:\\d+}/page/{page:\\d+}")
     public ModelAndView yearPage(@PathVariable("year") int year, @PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.list(year, page));
+        return new ModelAndView("posts", contentService.list(year, page));
     }
 
     /**
@@ -95,7 +95,7 @@ public class ContentListController {
     @GetMapping(value = "/{year:\\d+}/{month:\\d+}/page/{page:\\d+}")
     public ModelAndView monthPage(@PathVariable("year") int year, @PathVariable("month") int month,
                                   @PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.list(year, month, page));
+        return new ModelAndView("posts", contentService.list(year, month, page));
     }
 
     /**
@@ -124,7 +124,7 @@ public class ContentListController {
     @GetMapping(value = "/{year:\\d+}/{month:\\d+}/{day:\\d+}/page/{page:\\d+}")
     public ModelAndView dayPage(@PathVariable("year") int year, @PathVariable("month") int month,
                                 @PathVariable("day") int day, @PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.list(year, month, day, page));
+        return new ModelAndView("posts", contentService.list(year, month, day, page));
     }
 
     /**
@@ -148,7 +148,7 @@ public class ContentListController {
      */
     @GetMapping(value = "/tag/{id:\\d+}/page/{page:\\d+}")
     public ModelAndView byTagIdPage(@PathVariable("id") int id, @PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.listByTagId(id, page));
+        return new ModelAndView("posts", contentService.listByTagId(id, page));
     }
 
     /**
@@ -171,7 +171,7 @@ public class ContentListController {
      */
     @GetMapping(value = "/tag/{slug:\\D\\S+}/page/{page:\\d+}")
     public ModelAndView byTagSlugPage(@PathVariable("slug") String slug, @PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.listByTagSlug(slug, page));
+        return new ModelAndView("posts", contentService.listByTagSlug(slug, page));
     }
 
     /**
@@ -194,7 +194,7 @@ public class ContentListController {
      */
     @GetMapping(value = "/category/{id:\\d+}/page/{page:\\d+}")
     public ModelAndView byCategoryIdPage(@PathVariable("id") int id, @PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.listByCategoryId(id, page));
+        return new ModelAndView("posts", contentService.listByCategoryId(id, page));
     }
 
     /**
@@ -217,15 +217,15 @@ public class ContentListController {
      */
     @GetMapping(value = "/category/{slug:\\D\\S+}/page/{page:\\d+}")
     public ModelAndView byCategorySlugPage(@PathVariable("slug") String slug, @PathVariable("page") int page) {
-        return new ModelAndView("contents", contentService.listByCategorySlug(slug, page));
+        return new ModelAndView("posts", contentService.listByCategorySlug(slug, page));
     }
 
     /**
-     *
+     * Return the feed with the latest posts.
      */
     @GetMapping(value = "/feed")
     @ResponseBody
     public Feed feed() {
-        return contentService.latestContentFeed();
+        return contentService.latestPostFeed();
     }
 }

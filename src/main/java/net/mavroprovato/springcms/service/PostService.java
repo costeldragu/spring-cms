@@ -222,7 +222,7 @@ public class PostService {
      */
     private Map<String, ?> getListModel(Page<Post> posts, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
-        model.put("contents", posts);
+        model.put("posts", posts);
         addCommonModel(model);
         model.put("urlPrefix", urlPrefix);
 
@@ -238,7 +238,7 @@ public class PostService {
     public Map<String, ?> getById(int id) {
         Map<String, Object> model = new HashMap<>();
         Optional<Post> post = postRepository.findById(id);
-        post.ifPresent(p -> model.put("content", p));
+        post.ifPresent(p -> model.put("post", p));
         post.orElseThrow(ResourceNotFoundException::new);
         model.put("newComment", new Comment());
         addCommonModel(model);
@@ -255,7 +255,7 @@ public class PostService {
     public Map<String, ?> getBySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
         Optional<Post> post = postRepository.findOneBySlug(slug);
-        post.ifPresent(p -> model.put("content", p));
+        post.ifPresent(p -> model.put("post", p));
         post.orElseThrow(ResourceNotFoundException::new);
         model.put("newComment", new Comment());
         addCommonModel(model);
@@ -291,11 +291,11 @@ public class PostService {
     }
 
     /**
-     * Return a feed with the latest content.
+     * Return a feed with the latest posts.
      *
-     * @return a feed with the latest content.
+     * @return a feed with the latest posts.
      */
-    public Feed latestContentFeed() {
+    public Feed latestPostFeed() {
         // Create the feed
         Feed feed = new Feed();
         feed.setFeedType("atom_1.0");
