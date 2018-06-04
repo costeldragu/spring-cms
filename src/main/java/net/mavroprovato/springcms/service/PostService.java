@@ -358,14 +358,16 @@ public class PostService {
     private Feed createFeed(List<Entry> entries) {
         Feed feed = new Feed();
         feed.setFeedType("atom_1.0");
-        feed.setTitle("Blog title");
+        feed.setTitle(configurationParameterService.getString(Parameter.TITLE));
+
+        com.rometools.rome.feed.atom.Content subtitle = new com.rometools.rome.feed.atom.Content();
+        subtitle.setType("text/plain");
+        subtitle.setValue(configurationParameterService.getString(Parameter.SUBTITLE));
+        feed.setSubtitle(subtitle);
+
         Link feedLink = new Link();
         feedLink.setHref("http://localhost:8080/");
         feed.setAlternateLinks(Collections.singletonList(feedLink));
-        com.rometools.rome.feed.atom.Content subtitle = new com.rometools.rome.feed.atom.Content();
-        subtitle.setType("text/plain");
-        subtitle.setValue("Blog subtitle");
-        feed.setSubtitle(subtitle);
         feed.setEntries(entries);
 
         return feed;
