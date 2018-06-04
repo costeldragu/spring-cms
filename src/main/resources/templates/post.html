@@ -34,7 +34,7 @@
                 <div class="card my-4">
                     <h5 class="card-header" th:text="#{post.post.comment}"></h5>
                     <div class="card-body">
-                        <form th:action="@{'/content/' + ${post.id} + '/comment'}" th:object="${newComment}" method="post">
+                        <form th:action="@{'/post/' + ${post.id} + '/comment'}" th:object="${newComment}" method="post">
                               <div class="form-group">
                                 <label for="name" th:text="#{post.comment.name}"></label>
                                 <input th:field="*{name}" type="text" class="form-control" id="name" required>

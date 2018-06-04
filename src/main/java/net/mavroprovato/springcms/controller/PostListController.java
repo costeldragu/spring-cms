@@ -226,6 +226,15 @@ public class PostListController {
     @GetMapping(value = "/feed")
     @ResponseBody
     public Feed feed() {
-        return contentService.latestPostFeed();
+        return contentService.latestPostsFeed();
+    }
+
+    /**
+     * Return the feed with the latest posts.
+     */
+    @GetMapping(value = "/comments/feed")
+    @ResponseBody
+    public Feed commentsFeed() {
+        return contentService.latestCommentsFeed();
     }
 }

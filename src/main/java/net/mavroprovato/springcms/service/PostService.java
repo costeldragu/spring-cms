@@ -295,26 +295,13 @@ public class PostService {
      *
      * @return a feed with the latest posts.
      */
-    public Feed latestPostFeed() {
-        // Create the feed
-        Feed feed = new Feed();
-        feed.setFeedType("atom_1.0");
-        feed.setTitle("Blog title");
-        Link feedLink = new Link();
-        feedLink.setHref("http://localhost:8080/");
-        feed.setAlternateLinks(Collections.singletonList(feedLink));
-        com.rometools.rome.feed.atom.Content subtitle = new com.rometools.rome.feed.atom.Content();
-        subtitle.setType("text/plain");
-        subtitle.setValue("Blog subtitle");
-        feed.setSubtitle(subtitle);
-
-        // Get the content items to include
+    public Feed latestPostsFeed() {
+        // Get the posts to include
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(0, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Post> posts = postRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
 
-        // Add a feed entry for each content item
-        feed.setEntries(posts.stream().map(c -> {
+        return createFeed(posts.stream().map(c -> {
             Entry entry = new Entry();
 
             entry.setTitle(c.getTitle());
@@ -331,6 +318,55 @@ public class PostService {
 
             return entry;
         }).collect(Collectors.toList()));
+    }
+
+    /**
+     * Return a feed with the latest comments.
+     *
+     * @return a feed with the latest comments.
+     */
+    public Feed latestCommentsFeed() {
+        // Get the comments items to include
+        int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(0, postsPerPage, Sort.Direction.DESC, "createdAt");
+        Page<Comment> comments = commentRepository.findPublished(pageRequest);
+
+        return createFeed(comments.stream().map(c -> {
+            Entry entry = new Entry();
+
+            entry.setTitle("Comment");
+            Link link = new Link();
+            link.setHref("http://localhost:8080/post/" + c.getPost().getId() + "#comment-" + c.getId());
+            entry.setAlternateLinks(Collections.singletonList(link));
+            com.rometools.rome.feed.atom.Content summary = new com.rometools.rome.feed.atom.Content();
+            summary.setType("text/plain");
+            summary.setValue(c.getComment());
+            entry.setSummary(summary);
+            entry.setCreated(new Date(c.getCreatedAt().toInstant().toEpochMilli()));
+            entry.setUpdated(new Date(c.getUpdatedAt().toInstant().toEpochMilli()));
+
+            return entry;
+        }).collect(Collectors.toList()));
+    }
+
+    /**
+     * Create a feed.
+     *
+     * @param entries The feed entries.
+     * @return The feed.
+     */
+    private Feed createFeed(List<Entry> entries) {
+        Feed feed = new Feed();
+        feed.setFeedType("atom_1.0");
+        feed.setTitle("Blog title");
+        Link feedLink = new Link();
+        feedLink.setHref("http://localhost:8080/");
+        feed.setAlternateLinks(Collections.singletonList(feedLink));
+        com.rometools.rome.feed.atom.Content subtitle = new com.rometools.rome.feed.atom.Content();
+        subtitle.setType("text/plain");
+        subtitle.setValue("Blog subtitle");
+        feed.setSubtitle(subtitle);
+        feed.setEntries(entries);
 
         return feed;
     }
