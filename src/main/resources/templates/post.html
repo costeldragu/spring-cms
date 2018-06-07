@@ -21,7 +21,7 @@
                 <span th:text="${post.content}"></span>
                 <hr>
                 <h5 th:text="#{post.comments}"></h5>
-                <div th:each="comment: ${post.comments}" class="media mb-4">
+                <div th:each="comment: ${post.comments}" th:id="'comment-' + ${comment.id}" class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
 
                     <div class="media-body">

@@ -68,6 +68,6 @@ public class PostController {
         }
         postService.addComment(id, comment);
 
-        return new ModelAndView("redirect:/post/" + id);
+        return new ModelAndView("redirect:" + postService.getCommentUrl(comment));
     }
 }

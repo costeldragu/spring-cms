@@ -289,6 +289,34 @@ public class PostService {
     }
 
     /**
+     * Return the post url.
+     *
+     * @param post The post.
+     * @return The post url.
+     */
+    public String getPostUrl(Post post) {
+        if (post.getSlug() == null) {
+            return "/post/" + post.getId();
+        } else {
+            return "/post/" + post.getSlug();
+        }
+    }
+
+    /**
+     * Return the comment url.
+     *
+     * @param comment The comment.
+     * @return The comment url.
+     */
+    public String getCommentUrl(Comment comment) {
+        if (comment.getPost().getSlug() == null) {
+            return "/post/" + comment.getPost().getId() + "#comment-" + comment.getId();
+        } else {
+            return "/post/" + comment.getPost().getSlug() + "#comment-" + comment.getId();
+        }
+    }
+
+    /**
      * Return a feed with the latest posts.
      *
      * @return a feed with the latest posts.
@@ -299,20 +327,20 @@ public class PostService {
         PageRequest pageRequest = PageRequest.of(0, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Post> posts = postRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
 
-        return createFeed(posts.stream().map(c -> {
+        return createFeed(posts.stream().map(post -> {
             Entry entry = new Entry();
 
-            entry.setTitle(c.getTitle());
+            entry.setTitle(post.getTitle());
             Link link = new Link();
-            link.setHref("http://localhost:8080/post/" + c.getId());
+            link.setHref(getPostUrl(post));
             entry.setAlternateLinks(Collections.singletonList(link));
             com.rometools.rome.feed.atom.Content summary = new com.rometools.rome.feed.atom.Content();
             summary.setType("text/plain");
-            summary.setValue(c.getContent());
+            summary.setValue(post.getContent());
             entry.setSummary(summary);
-            entry.setCreated(new Date(c.getCreatedAt().toInstant().toEpochMilli()));
-            entry.setUpdated(new Date(c.getUpdatedAt().toInstant().toEpochMilli()));
-            entry.setPublished(new Date(c.getPublishedAt().toInstant().toEpochMilli()));
+            entry.setCreated(new Date(post.getCreatedAt().toInstant().toEpochMilli()));
+            entry.setUpdated(new Date(post.getUpdatedAt().toInstant().toEpochMilli()));
+            entry.setPublished(new Date(post.getPublishedAt().toInstant().toEpochMilli()));
 
             return entry;
         }).collect(Collectors.toList()));
@@ -329,19 +357,19 @@ public class PostService {
         PageRequest pageRequest = PageRequest.of(0, postsPerPage, Sort.Direction.DESC, "createdAt");
         Page<Comment> comments = commentRepository.findPublished(pageRequest);
 
-        return createFeed(comments.stream().map(c -> {
+        return createFeed(comments.stream().map(comment -> {
             Entry entry = new Entry();
 
             entry.setTitle("Comment");
             Link link = new Link();
-            link.setHref("http://localhost:8080/post/" + c.getPost().getId() + "#comment-" + c.getId());
+            link.setHref(getCommentUrl(comment));
             entry.setAlternateLinks(Collections.singletonList(link));
             com.rometools.rome.feed.atom.Content summary = new com.rometools.rome.feed.atom.Content();
             summary.setType("text/plain");
-            summary.setValue(c.getComment());
+            summary.setValue(comment.getComment());
             entry.setSummary(summary);
-            entry.setCreated(new Date(c.getCreatedAt().toInstant().toEpochMilli()));
-            entry.setUpdated(new Date(c.getUpdatedAt().toInstant().toEpochMilli()));
+            entry.setCreated(new Date(comment.getCreatedAt().toInstant().toEpochMilli()));
+            entry.setUpdated(new Date(comment.getUpdatedAt().toInstant().toEpochMilli()));
 
             return entry;
         }).collect(Collectors.toList()));
