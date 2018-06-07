@@ -36,7 +36,7 @@ public class PostController {
      * @return The model and view.
      */
     @GetMapping(value = "/post/{id:\\d+}")
-    public ModelAndView byId(@PathVariable("id") int id) {
+    public ModelAndView byId(@PathVariable("id") int id, @ModelAttribute("newComment") Comment comment) {
         return new ModelAndView("post", postService.getById(id));
     }
 
@@ -47,7 +47,7 @@ public class PostController {
      * @return The model and view.
      */
     @GetMapping("/post/{slug:\\D\\S+}")
-    public ModelAndView bySlug(@PathVariable("slug") String slug) {
+    public ModelAndView bySlug(@PathVariable("slug") String slug, @ModelAttribute("newComment") Comment comment) {
         return new ModelAndView("post", postService.getBySlug(slug));
     }
 

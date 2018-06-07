@@ -240,7 +240,6 @@ public class PostService {
         Optional<Post> post = postRepository.findById(id);
         post.ifPresent(p -> model.put("post", p));
         post.orElseThrow(ResourceNotFoundException::new);
-        model.put("newComment", new Comment());
         addCommonModel(model);
 
         return model;
@@ -257,7 +256,6 @@ public class PostService {
         Optional<Post> post = postRepository.findOneBySlug(slug);
         post.ifPresent(p -> model.put("post", p));
         post.orElseThrow(ResourceNotFoundException::new);
-        model.put("newComment", new Comment());
         addCommonModel(model);
 
         return model;
