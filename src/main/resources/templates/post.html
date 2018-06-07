@@ -35,22 +35,22 @@
                     <h5 class="card-header" th:text="#{post.post.comment}"></h5>
                     <div class="card-body">
                         <form th:action="@{'/post/' + ${post.id} + '/comment'}" th:object="${newComment}" method="post">
-                            <div class="form-row">
+                            <div class="form-group">
                                 <label for="name" th:text="#{post.comment.name}"></label>
                                 <input th:field="*{name}" type="text" class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" id="name" required>
                                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-group">
                                 <label for="email" th:text="#{post.comment.email}"></label>
                                 <input th:field="*{email}" type="email" class="form-control" th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}" id="email" required>
                                 <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-group">
                                 <label for="web-site" th:text="#{post.comment.web.site}"></label>
                                 <input th:field="*{webSite}" type="url" class="form-control" th:classappend="${#fields.hasErrors('webSite') ? 'is-invalid' : ''}" id="web-site">
                                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{webSite}" class="invalid-feedback">Web site Error</div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-group">
                                 <label for="comment" th:text="#{post.comment.comment}"></label>
                                 <textarea th:field="*{comment}" id="comment" class="form-control" th:classappend="${#fields.hasErrors('comment') ? 'is-invalid' : ''}" rows="5" required></textarea>
                                 <div th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="invalid-feedback">Comment Error</div>
