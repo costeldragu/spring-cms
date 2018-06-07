@@ -283,7 +283,7 @@ public class PostService {
     public void addComment(int postId, Comment comment) {
         Optional<Post> post = postRepository.findById(postId);
         post.ifPresent(p -> {
-            comment.setContent(p);
+            comment.setPost(p);
             p.getComments().add(comment);
             commentRepository.save(comment);
         });

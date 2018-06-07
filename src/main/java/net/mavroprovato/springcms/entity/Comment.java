@@ -27,7 +27,7 @@ public class Comment {
     private String comment;
 
     /** The name of the user that posted the comment */
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     @NotNull
     @Size(min = 2, max = 255)
     private String name;
@@ -171,7 +171,7 @@ public class Comment {
      *
      * @param post The post for this comment.
      */
-    public void setContent(Post post) {
+    public void setPost(Post post) {
         this.post = post;
     }
 }
