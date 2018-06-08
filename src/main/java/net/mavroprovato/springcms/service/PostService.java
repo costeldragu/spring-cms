@@ -7,6 +7,7 @@ import net.mavroprovato.springcms.entity.*;
 import net.mavroprovato.springcms.exception.ResourceNotFoundException;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.CommentRepository;
+import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,9 @@ public class PostService {
     /** The post repository */
     private final PostRepository postRepository;
 
+    /** The page repository */
+    private final PageRepository pageRepository;
+
     /** The category repository */
     private final CategoryRepository categoryRepository;
 
@@ -38,16 +42,18 @@ public class PostService {
 
     /**
      * Create the content service.
+     *
      * @param postRepository The post repository.
      * @param categoryRepository The category repository.
      * @param commentRepository The comment repository.
      * @param configurationParameterService The configuration parameter service.
      */
     @Autowired
-    public PostService(PostRepository postRepository, CategoryRepository categoryRepository,
-                       CommentRepository commentRepository,
+    public PostService(PostRepository postRepository, PageRepository pageRepository,
+                       CategoryRepository categoryRepository, CommentRepository commentRepository,
                        ConfigurationParameterService configurationParameterService) {
         this.postRepository = postRepository;
+        this.pageRepository = pageRepository;
         this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
         this.configurationParameterService = configurationParameterService;
@@ -270,6 +276,7 @@ public class PostService {
         model.put("archives", postRepository.countByMonth());
         model.put("categories", categoryRepository.findAllByOrderByNameAsc());
         model.put("config", configurationParameterService.allParameters());
+        model.put("pages", pageRepository.findAll());
     }
 
     /**
