@@ -3,10 +3,10 @@ package net.mavroprovato.springcms.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.OffsetDateTime;
 
 /**
@@ -23,24 +23,27 @@ public class Comment {
     /** The comment content */
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.TextType")
-    @NotNull
+    @NotNull(message = "{comment.comment.notNull}")
+    @Size(min = 10, message = "{comment.comment.size}")
     private String comment;
 
     /** The name of the user that posted the comment */
     @Column(nullable = false)
-    @NotNull
-    @Size(min = 2, max = 255)
+    @NotNull(message = "{comment.name.notNull}")
+    @Size(min = 5, max = 255, message = "{comment.name.size}")
     private String name;
 
     /** The email of the user that posted the comment */
     @Column(nullable = false)
-    @NotNull
-    @Size(min = 2, max = 255)
+    @NotNull(message = "{comment.email.notNull}")
+    @Size(min = 5, max = 255, message = "{comment.email.size}")
+    @Email(message = "{comment.email.email}")
     private String email;
 
     /** The web site of the user that posted the comment */
     @Column
-    @Size(min = 2, max = 255)
+    @Size(min = 10, max = 255, message = "{comment.webSite.size}")
+    @URL(message = "{comment.webSite.url}")
     private String webSite;
 
     /** The comment creation date */
