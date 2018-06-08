@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <label for="web-site" th:text="#{post.comment.web.site}"></label>
                                 <input th:field="*{webSite}" type="url" class="form-control" th:classappend="${#fields.hasErrors('webSite') ? 'is-invalid' : ''}" id="web-site">
-                                <div th:if="${#fields.hasErrors('name')}" th:errors="*{webSite}" class="invalid-feedback">Web site Error</div>
+                                <div th:if="${#fields.hasErrors('webSite')}" th:errors="*{webSite}" class="invalid-feedback">Web site Error</div>
                             </div>
                             <div class="form-group">
                                 <label for="comment" th:text="#{post.comment.comment}"></label>
