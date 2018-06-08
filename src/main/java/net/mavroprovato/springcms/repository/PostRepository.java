@@ -1,7 +1,6 @@
 package net.mavroprovato.springcms.repository;
 
 import net.mavroprovato.springcms.dto.CountByMonth;
-import net.mavroprovato.springcms.entity.Content;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.entity.Post;
 import org.springframework.data.domain.Page;
