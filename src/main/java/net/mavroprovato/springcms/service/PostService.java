@@ -160,7 +160,7 @@ public class PostService {
      * @param page The page.
      * @return The posts.
      */
-    public Map<String,?> listByTagId(int id, int page) {
+    public Map<String, ?> listByTagId(int id, int page) {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
@@ -176,7 +176,7 @@ public class PostService {
      * @param page The page.
      * @return The posts.
      */
-    public Map<String,?> listByTagSlug(String slug, int page) {
+    public Map<String, ?> listByTagSlug(String slug, int page) {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
@@ -192,7 +192,7 @@ public class PostService {
      * @param page The page.
      * @return The posts.
      */
-    public Map<String,?> listByCategoryId(int id, int page) {
+    public Map<String, ?> listByCategoryId(int id, int page) {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
@@ -209,7 +209,7 @@ public class PostService {
      * @param page The page.
      * @return The posts.
      */
-    public Map<String,?> listByCategorySlug(String slug, int page) {
+    public Map<String, ?> listByCategorySlug(String slug, int page) {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");

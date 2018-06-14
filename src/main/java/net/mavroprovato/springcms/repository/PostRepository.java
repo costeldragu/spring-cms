@@ -90,7 +90,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
      * Get a post by slug.
      *
      * @param slug The slug.
-     * @return The content.
+     * @return The post.
      */
     Optional<Post> findOneBySlug(String slug);
 }
