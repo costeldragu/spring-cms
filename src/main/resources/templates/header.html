@@ -12,7 +12,8 @@
                 </a>
             </li>
             <li th:each="page: ${pages}" class="nav-item">
-                <a class="nav-link" href="#" th:text="${page.title}"></a>
+                <a class="nav-link" th:if="${page.slug == null}" th:href="${'/page/id/' + page.id}" th:text="${page.title}"></a>
+                <a class="nav-link" th:if="${page.slug != null}" th:href="${'/page/' + page.slug}" th:text="${page.title}"></a>
             </li>
         </ul>
     </div>

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The page repository.
@@ -18,4 +19,12 @@ public interface PageRepository extends JpaRepository<Page, Integer>  {
      */
     @Query("SELECT p FROM Page p WHERE p.status = 'PUBLISHED' ORDER BY order")
     List<Page> findAll();
+
+    /**
+     * Get a page by slug.
+     *
+     * @param slug The slug.
+     * @return The page.
+     */
+    Optional<Page> findOneBySlug(String slug);
 }
