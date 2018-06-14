@@ -16,13 +16,13 @@ import javax.validation.Valid;
 @Controller
 public class PostController {
 
-    /** The content service */
+    /** The page service */
     private final PostService postService;
 
     /**
      * Create the controller.
      *
-     * @param postService The content service.
+     * @param postService The page service.
      */
     @Autowired
     public PostController(PostService postService) {
@@ -30,7 +30,7 @@ public class PostController {
     }
 
     /**
-     * Display the content by its id.
+     * Display the post by its id.
      *
      * @param id The content id.
      * @return The model and view.
@@ -41,7 +41,7 @@ public class PostController {
     }
 
     /**
-     * Display the content by its slug.
+     * Display the post by its slug.
      *
      * @param slug The content slug.
      * @return The model and view.
@@ -52,7 +52,7 @@ public class PostController {
     }
 
     /**
-     * Post a comment to a content item.
+     * Post a comment to a post.
      *
      * @param id The post identifier.
      * @param comment The submitted comment.

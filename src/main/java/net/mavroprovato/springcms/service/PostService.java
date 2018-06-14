@@ -41,7 +41,7 @@ public class PostService {
     private final ConfigurationParameterService configurationParameterService;
 
     /**
-     * Create the content service.
+     * Create the post service.
      *
      * @param postRepository The post repository.
      * @param categoryRepository The category repository.
@@ -60,7 +60,7 @@ public class PostService {
     }
 
     /**
-     * Get a content item page, ordered by publication date.
+     * Get a post page, ordered by publication date.
      *
      * @param page The page number.
      * @return The content items.
@@ -70,49 +70,49 @@ public class PostService {
     }
 
     /**
-     * Get a page of content items published in a year, ordered by publication date.
+     * Get a page of posts published in a year, ordered by publication date.
      *
      * @param year The year.
      * @param page The page number.
-     * @return The content items.
+     * @return The posts.
      */
     public Map<String, ?> list(int year, int page) {
         return listImpl(year, null, null, page);
     }
 
     /**
-     * Get a page of content items published in a month, ordered by publication date.
+     * Get a page of posts published in a month, ordered by publication date.
      *
      * @param year The year.
      * @param month The month number (1 for January, 12 for December)
      * @param page The page number.
-     * @return The content items.
+     * @return The posts.
      */
     public Map<String, ?> list(int year, int month, int page) {
         return listImpl(year, month, null, page);
     }
 
     /**
-     * Get a page of content items published in a day, ordered by publication date.
+     * Get a page of posts published in a day, ordered by publication date.
      *
      * @param year The year.
      * @param month The month number (1 for January, 12 for December)
      * @param day The day number.
      * @param page The page number.
-     * @return The content items.
+     * @return The posts.
      */
     public Map<String, ?> list(int year, int month, int day, int page) {
         return listImpl(year, month, day, page);
     }
 
     /**
-     * Get a page of content items, ordered by publication date.
+     * Get a page of posts, ordered by publication date.
      *
      * @param year The year.
      * @param month The month number (1 for January, 12 for December)
      * @param day The day number.
      * @param page The page number.
-     * @return The content items.
+     * @return The posts.
      */
     private Map<String, ?> listImpl(Integer year, Integer month, Integer day, int page) {
         // Calculate the start/end publication date to use for the content query, and the url prefix for the pagination
@@ -154,11 +154,11 @@ public class PostService {
     }
 
     /**
-     * Get a page of content items under a specific tag, specified by its id.
+     * Get a page of posts under a specific tag, specified by its id.
      *
      * @param id The tag identifier.
      * @param page The page.
-     * @return The content items.
+     * @return The posts.
      */
     public Map<String,?> listByTagId(int id, int page) {
         // Run the query
@@ -170,11 +170,11 @@ public class PostService {
     }
 
     /**
-     * Get a page of content items under a specific tag, specified by its slug.
+     * Get a page of posts under a specific tag, specified by its slug.
      *
      * @param slug The tag slug.
      * @param page The page.
-     * @return The content items.
+     * @return The posts.
      */
     public Map<String,?> listByTagSlug(String slug, int page) {
         // Run the query
@@ -186,11 +186,11 @@ public class PostService {
     }
 
     /**
-     * Get a page of content items categorized with a specific category, specified by its id.
+     * Get a page of posts categorized with a specific category, specified by its id.
      *
      * @param id The category identifier.
      * @param page The page.
-     * @return The content items.
+     * @return The posts.
      */
     public Map<String,?> listByCategoryId(int id, int page) {
         // Run the query
@@ -203,11 +203,11 @@ public class PostService {
     }
 
     /**
-     * Get a page of content items categorized with a specific category, specified by its slug.
+     * Get a page of posts categorized with a specific category, specified by its slug.
      *
      * @param slug The category slug.
      * @param page The page.
-     * @return The content items.
+     * @return The posts.
      */
     public Map<String,?> listByCategorySlug(String slug, int page) {
         // Run the query
@@ -220,11 +220,11 @@ public class PostService {
     }
 
     /**
-     * Return the content page page model.
+     * Return the posts page model.
      *
      * @param posts The posts.
      * @param urlPrefix The URL prefix.
-     * @return The page model.
+     * @return The posts page model.
      */
     private Map<String, ?> getListModel(Page<Post> posts, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
@@ -236,7 +236,7 @@ public class PostService {
     }
 
     /**
-     * Return the model for a content item page.
+     * Return the model for a post page.
      *
      * @param id The content item identifier.
      * @return The page model.
@@ -252,10 +252,10 @@ public class PostService {
     }
 
     /**
-     * Return the model for a content item page.
+     * Return the model for a post page.
      *
      * @param slug The content slug.
-     * @return The page model.
+     * @return The post model.
      */
     public Map<String, ?> getBySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
