@@ -1,12 +1,14 @@
 <div class="card my-4">
     <h5 class="card-header "th:text="#{search.title}"></h5>
     <div class="card-body">
-        <div class="input-group">
-            <input type="text" class="form-control" th:placeholder="#{search.placeholder}">
-            <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button" th:text="#{search.perform}"></button>
-            </span>
-        </div>
+        <form action="/search" method="get">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" th:placeholder="#{search.placeholder}">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="submit" th:text="#{search.perform}"></button>
+                </span>
+            </div>
+        </form>
     </div>
 </div>
 <div class="card my-4">

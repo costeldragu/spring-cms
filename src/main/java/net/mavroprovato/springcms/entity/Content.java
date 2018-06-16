@@ -3,6 +3,7 @@ package net.mavroprovato.springcms.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.search.annotations.Field;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -25,11 +26,13 @@ public abstract class Content {
 
     /** The content item title */
     @Column(nullable = false)
+    @Field
     private String title;
 
     /** The content */
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.TextType")
+    @Field
     private String content;
 
     /** The content status */

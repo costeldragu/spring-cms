@@ -1,5 +1,7 @@
 package net.mavroprovato.springcms.entity;
 
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.List;
  */
 @Entity
 @DiscriminatorValue(ContentType.Values.POST)
+@Indexed
 public class Post extends Content {
 
     /** The post comments */

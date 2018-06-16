@@ -16,16 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class PostListController {
 
     /** The content service */
-    private final PostService contentService;
+    private final PostService postService;
 
     /**
      * Create the controller.
      *
-     * @param postService The content service.
+     * @param postService The post service.
      */
     @Autowired
     public PostListController(PostService postService) {
-        this.contentService = postService;
+        this.postService = postService;
     }
 
     /**
@@ -46,7 +46,7 @@ public class PostListController {
      */
     @GetMapping(value = "/page/{page:\\d+}")
     public ModelAndView page(@PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.list(page));
+        return new ModelAndView("posts", postService.list(page));
     }
 
     /**
@@ -69,7 +69,7 @@ public class PostListController {
      */
     @GetMapping(value = "/{year:\\d+}/page/{page:\\d+}")
     public ModelAndView yearPage(@PathVariable("year") int year, @PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.list(year, page));
+        return new ModelAndView("posts", postService.list(year, page));
     }
 
     /**
@@ -95,7 +95,7 @@ public class PostListController {
     @GetMapping(value = "/{year:\\d+}/{month:\\d+}/page/{page:\\d+}")
     public ModelAndView monthPage(@PathVariable("year") int year, @PathVariable("month") int month,
                                   @PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.list(year, month, page));
+        return new ModelAndView("posts", postService.list(year, month, page));
     }
 
     /**
@@ -124,7 +124,7 @@ public class PostListController {
     @GetMapping(value = "/{year:\\d+}/{month:\\d+}/{day:\\d+}/page/{page:\\d+}")
     public ModelAndView dayPage(@PathVariable("year") int year, @PathVariable("month") int month,
                                 @PathVariable("day") int day, @PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.list(year, month, day, page));
+        return new ModelAndView("posts", postService.list(year, month, day, page));
     }
 
     /**
@@ -148,7 +148,7 @@ public class PostListController {
      */
     @GetMapping(value = "/tag/{id:\\d+}/page/{page:\\d+}")
     public ModelAndView byTagIdPage(@PathVariable("id") int id, @PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.listByTagId(id, page));
+        return new ModelAndView("posts", postService.listByTagId(id, page));
     }
 
     /**
@@ -171,7 +171,7 @@ public class PostListController {
      */
     @GetMapping(value = "/tag/{slug:\\D\\S+}/page/{page:\\d+}")
     public ModelAndView byTagSlugPage(@PathVariable("slug") String slug, @PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.listByTagSlug(slug, page));
+        return new ModelAndView("posts", postService.listByTagSlug(slug, page));
     }
 
     /**
@@ -194,7 +194,7 @@ public class PostListController {
      */
     @GetMapping(value = "/category/{id:\\d+}/page/{page:\\d+}")
     public ModelAndView byCategoryIdPage(@PathVariable("id") int id, @PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.listByCategoryId(id, page));
+        return new ModelAndView("posts", postService.listByCategoryId(id, page));
     }
 
     /**
@@ -217,7 +217,18 @@ public class PostListController {
      */
     @GetMapping(value = "/category/{slug:\\D\\S+}/page/{page:\\d+}")
     public ModelAndView byCategorySlugPage(@PathVariable("slug") String slug, @PathVariable("page") int page) {
-        return new ModelAndView("posts", contentService.listByCategorySlug(slug, page));
+        return new ModelAndView("posts", postService.listByCategorySlug(slug, page));
+    }
+
+
+    /**
+     * Show search results for the given query.
+     *
+     * @param q The search query.
+     */
+    @GetMapping("/search")
+    public ModelAndView search(String q) {
+        return new ModelAndView("posts", postService.search(q));
     }
 
     /**
@@ -226,7 +237,7 @@ public class PostListController {
     @GetMapping(value = "/feed")
     @ResponseBody
     public Feed feed() {
-        return contentService.latestPostsFeed();
+        return postService.latestPostsFeed();
     }
 
     /**
@@ -235,6 +246,6 @@ public class PostListController {
     @GetMapping(value = "/comments/feed")
     @ResponseBody
     public Feed commentsFeed() {
-        return contentService.latestCommentsFeed();
+        return postService.latestCommentsFeed();
     }
 }

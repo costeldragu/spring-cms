@@ -9,12 +9,20 @@ import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
+import org.apache.lucene.search.Query;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,6 +47,9 @@ public class PostService {
 
     /** The configuration parameter service */
     private final ConfigurationParameterService configurationParameterService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * Create the post service.
@@ -217,6 +228,36 @@ public class PostService {
                 ContentStatus.PUBLISHED, slug, pageRequest);
 
         return getListModel(posts, String.format("/category/%s", slug));
+    }
+
+    /**
+     * Perform a full text search on posts.
+     *
+     * @param queryString The query string.
+     * @return The posts.
+     */
+    public Map<String, ?> search(String queryString) {
+        // Perform the full text search
+        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(
+                Post.class).get();
+        Query query = queryBuilder
+                .keyword()
+                .onFields("title", "content")
+                .matching(queryString)
+                .createQuery();
+        int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
+        FullTextQuery jpaQuery = fullTextEntityManager
+                .createFullTextQuery(query, Post.class)
+                .setFirstResult(0)
+                .setMaxResults(postsPerPage);
+        @SuppressWarnings("unchecked")
+        List<Post> results = jpaQuery.getResultList();
+
+        // Create the page with the results.
+        Page<Post> posts = new PageImpl<>(results);
+
+        return getListModel(posts, String.format("/search/q?=%s", queryString));
     }
 
     /**
