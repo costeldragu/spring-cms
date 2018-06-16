@@ -41,16 +41,16 @@
                 </div>
                 <ul class="pagination justify-content-center mb-4">
                     <li th:if="not ${posts.last}" class="page-item">
-                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${posts.number + 2}}" th:text="#{posts.list.previous}"></a>
+                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${posts.number + 2}}" th:text="#{post.list.previous}"></a>
                     </li>
                     <li th:if="${posts.last}" class="page-item disabled">
                         <a class="page-link" href="#" th:text="#{post.list.previous}"></a>
                     </li>
                     <li th:if="not ${posts.first}" class="page-item">
-                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${posts.number}}" th:text="#{posts.list.next}"></a>
+                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${posts.number}}" th:text="#{post.list.next}"></a>
                     </li>
                     <li th:if="${posts.first}" class="page-item disabled">
-                        <a class="page-link" href="#" th:text="#{posts.list.next}"></a>
+                        <a class="page-link" href="#" th:text="#{post.list.next}"></a>
                     </li>
                 </ul>
             </div>
