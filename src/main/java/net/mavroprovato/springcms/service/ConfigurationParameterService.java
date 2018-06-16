@@ -5,6 +5,7 @@ import net.mavroprovato.springcms.entity.Parameter;
 import net.mavroprovato.springcms.repository.ConfigurationParameterRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
  * The configuration parameter service.
  */
 @Service
+@Transactional
 public class ConfigurationParameterService {
 
     /** The configuration parameter repository. */

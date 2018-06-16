@@ -8,6 +8,7 @@ import net.mavroprovato.springcms.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
  * The page service.
  */
 @Service
+@Transactional
 public class PageService {
 
     /** The post repository */

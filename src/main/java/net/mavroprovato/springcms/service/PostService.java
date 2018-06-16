@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * The post service.
  */
 @Service
+@Transactional
 public class PostService {
 
     /** The post repository */
@@ -285,7 +287,11 @@ public class PostService {
     public Map<String, ?> getById(int id) {
         Map<String, Object> model = new HashMap<>();
         Optional<Post> post = postRepository.findById(id);
-        post.ifPresent(p -> model.put("post", p));
+        post.ifPresent(p -> {
+            // Make sure comments are loaded
+            p.getComments().size();
+            model.put("post", p);
+        });
         post.orElseThrow(ResourceNotFoundException::new);
         addCommonModel(model);
 
@@ -301,7 +307,11 @@ public class PostService {
     public Map<String, ?> getBySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
         Optional<Post> post = postRepository.findOneBySlug(slug);
-        post.ifPresent(p -> model.put("post", p));
+        post.ifPresent(p -> {
+            // Make sure comments are loaded
+            p.getComments().size();
+            model.put("post", p);
+        });
         post.orElseThrow(ResourceNotFoundException::new);
         addCommonModel(model);
 

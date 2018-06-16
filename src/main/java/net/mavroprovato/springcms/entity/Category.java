@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Categories for content
@@ -86,5 +87,29 @@ public class Category {
      */
     public void setParent(Category parent) {
         this.parent = parent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Category category = (Category) o;
+
+        return Objects.equals(name, category.name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

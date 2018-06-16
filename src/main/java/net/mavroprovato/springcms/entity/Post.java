@@ -4,7 +4,9 @@ import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Object mapping for post.
@@ -19,7 +21,7 @@ public class Post extends Content {
     private List<Comment> comments = new ArrayList<>();
 
     /** The tags applied to the post */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"),
@@ -28,10 +30,10 @@ public class Post extends Content {
                     @Index(columnList = "tag_id")
             }
     )
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     /** The categories that this post belongs to */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"),
@@ -40,7 +42,7 @@ public class Post extends Content {
                     @Index(columnList = "category_id")
             }
     )
-    private List<Category> categories = new ArrayList<>();
+    private Set<Category> categories = new HashSet<>();
 
     /**
      * Return the comments for the content item.
@@ -51,13 +53,12 @@ public class Post extends Content {
         return comments;
     }
 
-
     /**
      * Return the tags for the content.
      *
      * @return The tags for the content.
      */
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
@@ -66,7 +67,7 @@ public class Post extends Content {
      *
      * @return The categories for the content item.
      */
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 }

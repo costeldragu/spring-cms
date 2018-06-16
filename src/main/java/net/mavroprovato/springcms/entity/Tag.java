@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Tags for content
@@ -63,5 +64,29 @@ public class Tag {
      */
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Tag tag = (Tag) o;
+
+        return Objects.equals(name, tag.name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
