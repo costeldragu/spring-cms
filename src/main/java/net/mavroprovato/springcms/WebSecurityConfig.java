@@ -15,8 +15,10 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/admin/**")
-                .authorizeRequests().anyRequest().hasRole("ADMIN").and().formLogin().loginPage("/login");
+        http.authorizeRequests()
+                .antMatchers("/admin/**").authenticated().and()
+                .formLogin()
+                .loginPage("/login");
     }
 
     @Bean
@@ -24,8 +26,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
-                        .username("admin")
-                        .password("admin")
+                        .username("user")
+                        .password("password")
                         .roles("USER")
                         .build();
 
