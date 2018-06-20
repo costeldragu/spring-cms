@@ -5,9 +5,9 @@ package net.mavroprovato.springcms.entity;
  */
 public enum Parameter {
     /** The site title. */
-    TITLE("", String.class),
+    TITLE("Title", String.class),
     /** How the site subtitle. */
-    SUBTITLE("", String.class),
+    SUBTITLE("Subtitle", String.class),
     /** How many posts to display in the list page. */
     POSTS_PER_PAGE(10, Integer.class);
 

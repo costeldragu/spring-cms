@@ -35,8 +35,16 @@ public class ConfigurationParameterService {
      * @return All parameters as a map.
      */
     public Map<String, String> allParameters() {
-        return configurationParameterRepository.findAll().stream().collect(
+        Map<String, String> params = configurationParameterRepository.findAll().stream().collect(
                 Collectors.toMap(ConfigurationParameter::getName, ConfigurationParameter::getValue));
+
+        // Put default values for missing parameters
+        for (Parameter parameter: Parameter.values()) {
+            if (!params.containsKey(parameter.name())) {
+                params.put(parameter.name(), parameter.defaultValue().toString());
+            }
+        }
+        return params;
     }
 
     /**
