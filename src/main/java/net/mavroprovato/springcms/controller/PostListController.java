@@ -33,7 +33,7 @@ public class PostListController {
      *
      * @return The page template name.
      */
-    @GetMapping(value = "/")
+    @GetMapping("/")
     public ModelAndView page() {
         return page(1);
     }
@@ -44,7 +44,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/page/{page:\\d+}")
+    @GetMapping("/page/{page:\\d+}")
     public ModelAndView page(@PathVariable("page") int page) {
         return new ModelAndView("posts", postService.list(page));
     }
@@ -55,7 +55,7 @@ public class PostListController {
      * @param year The year.
      * @return The model and view.
      */
-    @GetMapping(value = "/{year:\\d+}")
+    @GetMapping("/{year:\\d+}")
     public ModelAndView year(@PathVariable("year") int year) {
         return yearPage(year, 1);
     }
@@ -67,7 +67,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/{year:\\d+}/page/{page:\\d+}")
+    @GetMapping("/{year:\\d+}/page/{page:\\d+}")
     public ModelAndView yearPage(@PathVariable("year") int year, @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.list(year, page));
     }
@@ -79,7 +79,7 @@ public class PostListController {
      * @param month The month number (1 for January, 12 for December).
      * @return The model and view.
      */
-    @GetMapping(value = "/{year:\\d+}/{month:\\d{1,2}}")
+    @GetMapping("/{year:\\d+}/{month:\\d{1,2}}")
     public ModelAndView month(@PathVariable("year") int year, @PathVariable("month") int month) {
         return monthPage(year, month, 1);
     }
@@ -92,7 +92,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/{year:\\d+}/{month:\\d+}/page/{page:\\d+}")
+    @GetMapping("/{year:\\d+}/{month:\\d+}/page/{page:\\d+}")
     public ModelAndView monthPage(@PathVariable("year") int year, @PathVariable("month") int month,
                                   @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.list(year, month, page));
@@ -106,7 +106,7 @@ public class PostListController {
      * @param day The day number.
      * @return The model and view.
      */
-    @GetMapping(value = "/{year:\\d+}/{month:\\d+}/{day:\\d+}")
+    @GetMapping("/{year:\\d+}/{month:\\d+}/{day:\\d+}")
     public ModelAndView day(@PathVariable("year") int year, @PathVariable("month") int month,
                             @PathVariable("day") int day) {
         return dayPage(year, month, day, 1);
@@ -121,7 +121,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/{year:\\d+}/{month:\\d+}/{day:\\d+}/page/{page:\\d+}")
+    @GetMapping("/{year:\\d+}/{month:\\d+}/{day:\\d+}/page/{page:\\d+}")
     public ModelAndView dayPage(@PathVariable("year") int year, @PathVariable("month") int month,
                                 @PathVariable("day") int day, @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.list(year, month, day, page));
@@ -134,7 +134,7 @@ public class PostListController {
      * @param id The tag identifier.
      * @return The model and view.
      */
-    @GetMapping(value = "/tag/{id:\\d+}")
+    @GetMapping("/tag/{id:\\d+}")
     public ModelAndView byTagId(@PathVariable("id") int id) {
         return byTagIdPage(id, 1);
     }
@@ -146,7 +146,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/tag/{id:\\d+}/page/{page:\\d+}")
+    @GetMapping("/tag/{id:\\d+}/page/{page:\\d+}")
     public ModelAndView byTagIdPage(@PathVariable("id") int id, @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.listByTagId(id, page));
     }
@@ -157,7 +157,7 @@ public class PostListController {
      * @param slug The tag slug.
      * @return The model and view.
      */
-    @GetMapping(value = "/tag/{slug:\\D\\S+}")
+    @GetMapping("/tag/{slug:\\D\\S+}")
     public ModelAndView byTagSlug(@PathVariable("slug") String slug) {
         return byTagSlugPage(slug, 1);
     }
@@ -169,7 +169,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/tag/{slug:\\D\\S+}/page/{page:\\d+}")
+    @GetMapping("/tag/{slug:\\D\\S+}/page/{page:\\d+}")
     public ModelAndView byTagSlugPage(@PathVariable("slug") String slug, @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.listByTagSlug(slug, page));
     }
@@ -180,7 +180,7 @@ public class PostListController {
      * @param id The category identifier.
      * @return The model and view.
      */
-    @GetMapping(value = "/category/{id:\\d+}")
+    @GetMapping("/category/{id:\\d+}")
     public ModelAndView byCategoryId(@PathVariable("id") int id) {
         return byCategoryIdPage(id, 1);
     }
@@ -192,7 +192,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/category/{id:\\d+}/page/{page:\\d+}")
+    @GetMapping("/category/{id:\\d+}/page/{page:\\d+}")
     public ModelAndView byCategoryIdPage(@PathVariable("id") int id, @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.listByCategoryId(id, page));
     }
@@ -203,7 +203,7 @@ public class PostListController {
      * @param slug The tag slug.
      * @return The model and view.
      */
-    @GetMapping(value = "/category/{slug:\\D\\S+}")
+    @GetMapping("/category/{slug:\\D\\S+}")
     public ModelAndView byCategorySlug(@PathVariable("slug") String slug) {
         return byCategorySlugPage(slug, 1);
     }
@@ -215,7 +215,7 @@ public class PostListController {
      * @param page The page number.
      * @return The model and view.
      */
-    @GetMapping(value = "/category/{slug:\\D\\S+}/page/{page:\\d+}")
+    @GetMapping("/category/{slug:\\D\\S+}/page/{page:\\d+}")
     public ModelAndView byCategorySlugPage(@PathVariable("slug") String slug, @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.listByCategorySlug(slug, page));
     }
@@ -234,7 +234,7 @@ public class PostListController {
     /**
      * Return the feed with the latest posts.
      */
-    @GetMapping(value = "/feed")
+    @GetMapping("/feed")
     @ResponseBody
     public Feed feed() {
         return postService.latestPostsFeed();
@@ -243,7 +243,7 @@ public class PostListController {
     /**
      * Return the feed with the latest posts.
      */
-    @GetMapping(value = "/comments/feed")
+    @GetMapping("/comments/feed")
     @ResponseBody
     public Feed commentsFeed() {
         return postService.latestCommentsFeed();

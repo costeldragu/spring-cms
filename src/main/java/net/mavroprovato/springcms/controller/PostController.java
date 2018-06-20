@@ -38,7 +38,7 @@ public class PostController {
      * @param id The content id.
      * @return The model and view.
      */
-    @GetMapping(value = "/post/{id:\\d+}")
+    @GetMapping("/post/{id:\\d+}")
     public ModelAndView byId(@PathVariable("id") int id, @ModelAttribute("newComment") Comment comment) {
         return new ModelAndView("post", postService.getById(id));
     }
