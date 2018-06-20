@@ -10,15 +10,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+/**
+ * Spring security configuration.
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                // Form authentication for URLs starting with admin
                 .antMatchers("/admin/**").authenticated().and()
-                .formLogin()
-                .loginPage("/login");
+                // Configure login
+                .formLogin().loginPage("/login")
+                // Configure logout
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
     }
 
     @Bean
