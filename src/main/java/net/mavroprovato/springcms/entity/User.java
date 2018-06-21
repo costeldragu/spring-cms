@@ -11,7 +11,7 @@ import javax.persistence.Id;
 /**
  * Application users
  */
-@Entity(name = "application_user")
+@Entity(name = "users")
 public class User {
 
     /** The unique identifier of the user */
@@ -163,5 +163,23 @@ public class User {
      */
     public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    /**
+     * Get the user role.
+     *
+     * @return The user role.
+     */
+    public Role getRole() {
+        return role;
+    }
+
+    /**
+     * Set the user role.
+     *
+     * @param role The user role.
+     */
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
