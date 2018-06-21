@@ -15,17 +15,19 @@
     <div th:if="${param.error}" class="alert alert-danger" role="alert">
         Invalid username and password.
     </div>
-    <label for="username" class="sr-only">User name</label>
-    <input type="text" id="username" name="username" class="form-control" placeholder="User name" required autofocus>
-    <label for="password" class="sr-only">Password</label>
-    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+    <label for="username" class="sr-only" th:text="#{login.userName}"></label>
+    <input type="text" id="username" name="username" class="form-control" th:placeholder="#{login.userName}"
+           required autofocus>
+    <label for="password" class="sr-only" th:text="#{login.password}"></label>
+    <input type="password" id="password" name="password" class="form-control" th:placeholder="#{login.password}"
+           required>
     <div class="checkbox mb-3">
         <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input type="checkbox" value="remember-me"><span th:text="#{login.rememberMe}"></span>
         </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{login.login}"></button>
+    <p class="mt-5 mb-3 text-muted" th:text="#{footer.copyright}"></p>
 </form>
 </body>
 </html>
