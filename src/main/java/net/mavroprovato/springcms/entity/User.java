@@ -1,5 +1,8 @@
 package net.mavroprovato.springcms.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.OffsetDateTime;
 
 /**
  * Application users
@@ -42,6 +46,16 @@ public class User {
     /** The user web site */
     @Column
     private String webSite;
+
+    /** The user creation date */
+    @Column(nullable = false)
+    @CreationTimestamp
+    private OffsetDateTime createdAt;
+
+    /** The user update date */
+    @Column(nullable = false)
+    @UpdateTimestamp
+    private OffsetDateTime updatedAt;
 
     /** The content status */
     @Enumerated(EnumType.STRING)
@@ -163,6 +177,24 @@ public class User {
      */
     public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    /**
+     * Return the content item creation date.
+     *
+     * @return The content item creating date.
+     */
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     * Return the content item update date.
+     *
+     * @return The content item creating date.
+     */
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     /**

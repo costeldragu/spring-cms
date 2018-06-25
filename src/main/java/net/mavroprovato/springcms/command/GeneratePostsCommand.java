@@ -66,7 +66,7 @@ public class GeneratePostsCommand implements ApplicationRunner {
     private final CategoryRepository categoryRepository;
 
     /**
-     * Private class to hold the options passed through the command line arguments
+     * Value class to hold the options passed through the command line arguments
      */
     private static final class Options {
         int count = DEFAULT_COUNT;
@@ -137,7 +137,7 @@ public class GeneratePostsCommand implements ApplicationRunner {
      * Parse the command line arguments.
      *
      * @param args The command line arguments.
-     * @return The parsed command line arguments as options.
+     * @return The parsed command line arguments as options, or null if a parsing error has occurred.
      */
     private Options parseArguments(ApplicationArguments args) {
         Options options = new Options();
