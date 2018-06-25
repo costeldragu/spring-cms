@@ -273,7 +273,7 @@ public class PostService {
         // Create the page with the results.
         Page<Post> posts = new PageImpl<>(results, pageRequest, totalResults);
 
-        return getListModel(posts, String.format("/search/q?=%s", queryString));
+        return getListModel(posts, "/search");
     }
 
     /**

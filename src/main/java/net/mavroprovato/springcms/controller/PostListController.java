@@ -221,15 +221,23 @@ public class PostListController {
         return new ModelAndView("posts", postService.listByCategorySlug(slug, page));
     }
 
-
     /**
-     * Show search results for the given query.
+     * Show search results for a full text query.
      *
      * @param q The search query.
-     * @param page The page to get, 1 if missing.
      */
     @GetMapping("/search")
-    public ModelAndView search(@RequestParam String q, @RequestParam(required = false, defaultValue = "1") int page) {
+    public ModelAndView search(@RequestParam String q) {
+        return search(q, 1);
+    }
+
+    /**
+     * Show search results page for the given query.
+     *
+     * @param q The search query.
+     */
+    @GetMapping("/search/page/{page:\\d+}")
+    public ModelAndView search(@RequestParam String q, @PathVariable("page") int page) {
         return new ModelAndView("posts", postService.search(q, page));
     }
 
