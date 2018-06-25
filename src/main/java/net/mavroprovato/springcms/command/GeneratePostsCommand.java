@@ -4,9 +4,12 @@ import net.mavroprovato.springcms.entity.Category;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.entity.Post;
 import net.mavroprovato.springcms.entity.Tag;
+import net.mavroprovato.springcms.entity.User;
 import net.mavroprovato.springcms.repository.CategoryRepository;
+import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
 import net.mavroprovato.springcms.repository.TagRepository;
+import net.mavroprovato.springcms.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +56,6 @@ public class GeneratePostsCommand implements ApplicationRunner {
     /** The default number of categories to apply to a content item */
     private static final int DEFAULT_CATEGORY_COUNT = 2;
 
-    /** A random number generator */
-    private static final Random RANDOM = new Random();
-
     /** The post repository */
     private final PostRepository postRepository;
 
@@ -64,6 +64,9 @@ public class GeneratePostsCommand implements ApplicationRunner {
 
     /** The category repository */
     private final CategoryRepository categoryRepository;
+
+    /** The user repository */
+    private final UserRepository userRepository;
 
     /**
      * Value class to hold the options passed through the command line arguments
@@ -85,10 +88,11 @@ public class GeneratePostsCommand implements ApplicationRunner {
      */
     @Autowired
     public GeneratePostsCommand(PostRepository postRepository, TagRepository tagRepository,
-                                CategoryRepository categoryRepository) {
+                                CategoryRepository categoryRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -122,6 +126,7 @@ public class GeneratePostsCommand implements ApplicationRunner {
             for (Category category: getRandomCategories(options.categoryCount)) {
                 post.getCategories().add(category);
             }
+            post.setAuthor(getRandomAuthor());
 
             // Save the post
             postRepository.save(post);
@@ -231,7 +236,7 @@ public class GeneratePostsCommand implements ApplicationRunner {
         List<Tag> postTags = new ArrayList<>();
 
         for (int i = 0; i < postTagCount; i++) {
-            postTags.add(allTags.remove(RANDOM.nextInt(allTags.size())));
+            postTags.add(allTags.remove(ThreadLocalRandom.current().nextInt(allTags.size())));
         }
 
         return postTags;
@@ -249,7 +254,7 @@ public class GeneratePostsCommand implements ApplicationRunner {
         List<Category> postCategories = new ArrayList<>();
 
         for (int i = 0; i < postCategoryCount; i++) {
-            postCategories.add(allCategories.remove(RANDOM.nextInt(allCategories.size())));
+            postCategories.add(allCategories.remove(ThreadLocalRandom.current().nextInt(allCategories.size())));
         }
 
         return postCategories;
@@ -268,6 +273,17 @@ public class GeneratePostsCommand implements ApplicationRunner {
         long random = ThreadLocalRandom.current().nextLong(min, max);
 
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(random), ZoneId.of("UTC"));
+    }
+
+    /**
+     * Return a random author from the list of users.
+     *
+     * @return The random author.
+     */
+    private User getRandomAuthor() {
+        List<User> allUsers = userRepository.findAll();
+
+        return allUsers.get(ThreadLocalRandom.current().nextInt(allUsers.size()));
     }
 
     /**
