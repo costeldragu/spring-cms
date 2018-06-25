@@ -32,7 +32,6 @@ public class PageService {
     /** The configuration parameter service */
     private final ConfigurationParameterService configurationParameterService;
 
-
     /**
      * Create the page service.
      *
@@ -51,6 +50,12 @@ public class PageService {
         this.configurationParameterService = configurationParameterService;
     }
 
+    /**
+     * Return a page by its identifier.
+     *
+     * @param id The page identifier.
+     * @return The page model.
+     */
     public Map<String, ?> getById(int id) {
         Map<String, Object> model = new HashMap<>();
         Optional<Page> page = pageRepository.findById(id);
@@ -61,6 +66,12 @@ public class PageService {
         return model;
     }
 
+    /**
+     * Return a page by its slug.
+     *
+     * @param slug The page slug.
+     * @return The page model.
+     */
     public Map<String, ?> getBySlug(String slug) {
         Map<String, Object> model = new HashMap<>();
         Optional<Page> page = pageRepository.findOneBySlug(slug);
@@ -71,6 +82,11 @@ public class PageService {
         return model;
     }
 
+    /**
+     * Add model items common for all pages.
+     *
+     * @param model The model.
+     */
     private void addCommonModel(Map<String,Object> model) {
         model.put("archives", postRepository.countByMonth());
         model.put("categories", categoryRepository.findAllByOrderByNameAsc());
