@@ -6,7 +6,6 @@ import net.mavroprovato.springcms.entity.Post;
 import net.mavroprovato.springcms.entity.Tag;
 import net.mavroprovato.springcms.entity.User;
 import net.mavroprovato.springcms.repository.CategoryRepository;
-import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
 import net.mavroprovato.springcms.repository.TagRepository;
 import net.mavroprovato.springcms.repository.UserRepository;
@@ -29,7 +28,6 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
