@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
 
@@ -69,6 +70,10 @@ public abstract class Content {
     /** The content item publication date */
     @Column
     private OffsetDateTime publishedAt;
+
+    /** The author of the content item */
+    @ManyToOne(optional = false)
+    private User author;
 
     /**
      * Return the content item identifier.
@@ -185,5 +190,23 @@ public abstract class Content {
      */
     public void setPublishedAt(OffsetDateTime publishedAt) {
         this.publishedAt = publishedAt;
+    }
+
+    /**
+     * Return the author of the content item.
+     *
+     * @return The author of the content item.
+     */
+    public User getAuthor() {
+        return author;
+    }
+
+    /**
+     * Set the author of the content item.
+     *
+     * @param author The author of the content item.
+     */
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }
