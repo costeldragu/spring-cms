@@ -250,7 +250,9 @@ public class PostService {
      * @param queryString The query string.
      * @return The posts.
      */
-    public Map<String, ?> search(String queryString) {
+    public Map<String, ?> search(String queryString, int page) {
+        int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
+        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage);
         // Perform the full text search
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(
@@ -260,16 +262,16 @@ public class PostService {
                 .onFields("title", "content")
                 .matching(queryString)
                 .createQuery();
-        int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         FullTextQuery jpaQuery = fullTextEntityManager
                 .createFullTextQuery(query, Post.class)
-                .setFirstResult(0)
+                .setFirstResult(postsPerPage * pageRequest.getPageNumber())
                 .setMaxResults(postsPerPage);
         @SuppressWarnings("unchecked")
         List<Post> results = jpaQuery.getResultList();
+        int totalResults = jpaQuery.getResultSize();
 
         // Create the page with the results.
-        Page<Post> posts = new PageImpl<>(results);
+        Page<Post> posts = new PageImpl<>(results, pageRequest, totalResults);
 
         return getListModel(posts, String.format("/search/q?=%s", queryString));
     }
