@@ -15,7 +15,7 @@ public class ViewUtils {
      */
     public static String getOlderPage(String urlPrefix, Page<?> page) {
         if (page.isLast()) {
-            return "#";
+            return urlPrefix;
         }
 
         return urlPrefix + "page/" + (page.getNumber() + 2);
@@ -30,7 +30,7 @@ public class ViewUtils {
      */
     public static String getNewerPage(String urlPrefix, Page<?> page) {
         if (page.isFirst()) {
-            return "#";
+            return urlPrefix;
         }
 
         if (page.getNumber() == 1) {
