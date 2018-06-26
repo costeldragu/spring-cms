@@ -144,7 +144,7 @@ public class PostService {
         // links.
         OffsetDateTime startDateTime = null;
         OffsetDateTime endDateTime = null;
-        String urlPrefix = "";
+        String urlPrefix = "/";
         if (year != null && month != null && day != null) {
             LocalDate date = LocalDate.of(year, month, day);
             startDateTime = OffsetDateTime.of(date, LocalTime.MIN, ZoneOffset.UTC);

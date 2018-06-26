@@ -39,17 +39,11 @@
                     </div>
                 </div>
                 <ul class="pagination justify-content-center mb-4">
-                    <li th:if="not ${posts.last}" class="page-item">
-                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${posts.number + 2}}" th:text="#{post.list.previous}"></a>
+                    <li class="page-item" th:classappend="${posts.last} ? 'disabled' : ''">
+                        <a class="page-link" th:href="${@viewUtils.getOlderPage(urlPrefix, posts)}" th:text="#{post.list.older}"></a>
                     </li>
-                    <li th:if="${posts.last}" class="page-item disabled">
-                        <a class="page-link" href="#" th:text="#{post.list.previous}"></a>
-                    </li>
-                    <li th:if="not ${posts.first}" class="page-item">
-                        <a class="page-link" th:href="@{${urlPrefix} + '/page/' + ${posts.number}}" th:text="#{post.list.next}"></a>
-                    </li>
-                    <li th:if="${posts.first}" class="page-item disabled">
-                        <a class="page-link" href="#" th:text="#{post.list.next}"></a>
+                    <li class="page-item" th:classappend="${posts.first} ? 'disabled' : ''">
+                        <a class="page-link" th:href="${@viewUtils.getNewerPage(urlPrefix, posts)}" th:text="#{post.list.newer}"></a>
                     </li>
                 </ul>
             </div>
