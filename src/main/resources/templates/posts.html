@@ -40,10 +40,10 @@
                 </div>
                 <ul class="pagination justify-content-center mb-4">
                     <li class="page-item" th:classappend="${posts.last} ? 'disabled' : ''">
-                        <a class="page-link" th:href="${@viewUtils.getOlderPage(urlPrefix, posts)}" th:text="#{post.list.older}"></a>
+                        <a class="page-link" th:href="${@urlUtils.getOlderPage(urlPrefix, posts)}" th:text="#{post.list.older}"></a>
                     </li>
                     <li class="page-item" th:classappend="${posts.first} ? 'disabled' : ''">
-                        <a class="page-link" th:href="${@viewUtils.getNewerPage(urlPrefix, posts)}" th:text="#{post.list.newer}"></a>
+                        <a class="page-link" th:href="${@urlUtils.getNewerPage(urlPrefix, posts)}" th:text="#{post.list.newer}"></a>
                     </li>
                 </ul>
             </div>
