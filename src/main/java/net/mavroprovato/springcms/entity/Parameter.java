@@ -9,7 +9,9 @@ public enum Parameter {
     /** How the site subtitle. */
     SUBTITLE("Subtitle", String.class),
     /** How many posts to display in the list page. */
-    POSTS_PER_PAGE(10, Integer.class);
+    POSTS_PER_PAGE(10, Integer.class),
+    /** The site absolute URL */
+    SITE_URL("", String.class);
 
     /** The default value of the parameter */
     private final Object defaultValue;

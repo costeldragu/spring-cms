@@ -3,6 +3,7 @@ package net.mavroprovato.springcms.service;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 import com.rometools.rome.feed.atom.Link;
+import net.mavroprovato.springcms.component.UrlUtils;
 import net.mavroprovato.springcms.entity.Comment;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.entity.Parameter;
@@ -62,6 +63,8 @@ public class PostService {
     /** The configuration parameter service */
     private final ConfigurationParameterService configurationParameterService;
 
+    private final UrlUtils urlUtils;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -76,12 +79,13 @@ public class PostService {
     @Autowired
     public PostService(PostRepository postRepository, PageRepository pageRepository,
                        CategoryRepository categoryRepository, CommentRepository commentRepository,
-                       ConfigurationParameterService configurationParameterService) {
+                       ConfigurationParameterService configurationParameterService, UrlUtils urlUtils) {
         this.postRepository = postRepository;
         this.pageRepository = pageRepository;
         this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
         this.configurationParameterService = configurationParameterService;
+        this.urlUtils = urlUtils;
     }
 
     /**
@@ -464,7 +468,7 @@ public class PostService {
         feed.setSubtitle(subtitle);
 
         Link feedLink = new Link();
-        feedLink.setHref("http://localhost:8080/");
+        feedLink.setHref(urlUtils.getAbsoluteUrl("/"));
         feed.setAlternateLinks(Collections.singletonList(feedLink));
         feed.setEntries(entries);
 
