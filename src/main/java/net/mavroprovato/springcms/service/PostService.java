@@ -63,8 +63,10 @@ public class PostService {
     /** The configuration parameter service */
     private final ConfigurationParameterService configurationParameterService;
 
+    /** The URL utilities */
     private final UrlUtils urlUtils;
 
+    /** The entity manager */
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -72,9 +74,11 @@ public class PostService {
      * Create the post service.
      *
      * @param postRepository The post repository.
+     * @param pageRepository The page repository
      * @param categoryRepository The category repository.
      * @param commentRepository The comment repository.
      * @param configurationParameterService The configuration parameter service.
+     * @param urlUtils The URL utilities.
      */
     @Autowired
     public PostService(PostRepository postRepository, PageRepository pageRepository,
