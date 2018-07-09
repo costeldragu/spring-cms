@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.controller;
 
+import net.mavroprovato.springcms.component.UrlUtils;
 import net.mavroprovato.springcms.entity.Comment;
 import net.mavroprovato.springcms.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,11 @@ import javax.validation.Valid;
 @Controller
 public class PostController {
 
-    /** The page service */
+    /** The post service */
     private final PostService postService;
+
+    /** The URL utils **/
+    private final UrlUtils urlUtils;
 
     /**
      * Create the controller.
@@ -28,8 +32,9 @@ public class PostController {
      * @param postService The page service.
      */
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, UrlUtils urlUtils) {
         this.postService = postService;
+        this.urlUtils = urlUtils;
     }
 
     /**
@@ -71,6 +76,6 @@ public class PostController {
         }
         postService.addComment(id, comment);
 
-        return new ModelAndView("redirect:" + postService.getCommentUrl(comment));
+        return new ModelAndView("redirect:" + urlUtils.comment(comment));
     }
 }

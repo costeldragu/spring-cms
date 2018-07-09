@@ -22,28 +22,25 @@
                 </h1>
                 <div th:each="post: ${posts}" class="card mb-4">
                     <div class="card-body">
-                        <a th:if="${post.slug != null}" th:href="@{'/post/' + ${post.slug}}"><h2 th:text="${post.title}" class="card-title"></h2></a>
-                        <a th:if="${post.slug == null}" th:href="@{'/post/' + ${post.id}}"><h2 th:text="${post.title}" class="card-title"></h2></a>
+                        <a th:href="${@urlUtils.post(post)}"><h2 th:text="${post.title}" class="card-title"></h2></a>
                         <p th:text="${post.content}" class="card-text"></p>
-                        <a th:if="${post.slug != null}" th:href="@{'/post/' + ${post.slug}}" class="btn btn-primary">Read More &rarr;</a>
-                        <a th:if="${post.slug == null}" th:href="@{'/post/' + ${post.id}}" class="btn btn-primary">Read More &rarr;</a>
+                        <a th:href="${@urlUtils.post(post)}" class="btn btn-primary">Read More &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">
                         <span th:text="#{post.published.at}"></span>
                         <span th:text="${#temporals.format(post.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
                         <span th:text="#{post.tags}"></span>
                         <th:block th:each="tag: ${post.tags}">
-                            <a th:if="${tag.slug == null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.id}}"></a>
-                            <a th:if="${tag.slug != null}" th:text="${tag.name}" th:href="@{'/tag/' + ${tag.slug}}"></a>
+                            <a th:text="${tag.name}" th:href="${@urlUtils.postListByTag(tag)}"></a>
                         </th:block>
                     </div>
                 </div>
                 <ul class="pagination justify-content-center mb-4">
                     <li class="page-item" th:classappend="${posts.last} ? 'disabled' : ''">
-                        <a class="page-link" th:href="${@urlUtils.getOlderPage(urlPrefix, posts)}" th:text="#{post.list.older}"></a>
+                        <a class="page-link" th:href="${@urlUtils.olderPage(urlPrefix, posts)}" th:text="#{post.list.older}"></a>
                     </li>
                     <li class="page-item" th:classappend="${posts.first} ? 'disabled' : ''">
-                        <a class="page-link" th:href="${@urlUtils.getNewerPage(urlPrefix, posts)}" th:text="#{post.list.newer}"></a>
+                        <a class="page-link" th:href="${@urlUtils.newerPage(urlPrefix, posts)}" th:text="#{post.list.newer}"></a>
                     </li>
                 </ul>
             </div>

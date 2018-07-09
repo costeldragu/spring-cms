@@ -1,8 +1,10 @@
 package net.mavroprovato.springcms.repository;
 
 import net.mavroprovato.springcms.dto.CountByMonth;
+import net.mavroprovato.springcms.entity.Category;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.entity.Post;
+import net.mavroprovato.springcms.entity.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -51,40 +53,22 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
                                                  OffsetDateTime endDateTime, Pageable pageable);
 
     /**
-     * Find post by status and tag identifier.
+     * Find posts by status and tag.
      *
-     * @param tagId The tag identifier.
+     * @param tag The tag.
      * @param pageable The pagination parameters.
      * @return The post page.
      */
-    Page<Post> findByStatusAndTagsId(ContentStatus status, int tagId, Pageable pageable);
+    Page<Post> findByStatusAndTags(ContentStatus status, Tag tag, Pageable pageable);
 
     /**
-     * Find post by status and tag slug.
+     * Find post by status and category.
      *
-     * @param tagSlug The tag slug.
+     * @param category The category.
      * @param pageable The pagination parameters.
      * @return The post page.
      */
-    Page<Post> findByStatusAndTagsSlug(ContentStatus status, String tagSlug, Pageable pageable);
-
-    /**
-     * Find post by status and category id.
-     *
-     * @param categoryId The category identifier.
-     * @param pageable The pagination parameters.
-     * @return The post page.
-     */
-    Page<Post> findByStatusAndCategoriesId(ContentStatus status, int categoryId, Pageable pageable);
-
-    /**
-     * Find post by status and category slug.
-     *
-     * @param slug The category slug.
-     * @param pageable The pagination parameters.
-     * @return The post page.
-     */
-    Page<Post> findByStatusAndCategoriesSlug(ContentStatus published, String slug, Pageable pageable);
+    Page<Post> findByStatusAndCategories(ContentStatus status, Category category, Pageable pageable);
 
     /**
      * Get a post by slug.

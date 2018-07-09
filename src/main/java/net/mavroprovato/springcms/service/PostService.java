@@ -4,15 +4,18 @@ import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.atom.Feed;
 import com.rometools.rome.feed.atom.Link;
 import net.mavroprovato.springcms.component.UrlUtils;
+import net.mavroprovato.springcms.entity.Category;
 import net.mavroprovato.springcms.entity.Comment;
 import net.mavroprovato.springcms.entity.ContentStatus;
 import net.mavroprovato.springcms.entity.Parameter;
 import net.mavroprovato.springcms.entity.Post;
+import net.mavroprovato.springcms.entity.Tag;
 import net.mavroprovato.springcms.exception.ResourceNotFoundException;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
+import net.mavroprovato.springcms.repository.TagRepository;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -54,6 +57,9 @@ public class PostService {
     /** The page repository */
     private final PageRepository pageRepository;
 
+    /** The tag repository */
+    private final TagRepository tagRepository;
+
     /** The category repository */
     private final CategoryRepository categoryRepository;
 
@@ -75,17 +81,19 @@ public class PostService {
      *
      * @param postRepository The post repository.
      * @param pageRepository The page repository
+     * @param tagRepository The tag repository
      * @param categoryRepository The category repository.
      * @param commentRepository The comment repository.
      * @param configurationParameterService The configuration parameter service.
      * @param urlUtils The URL utilities.
      */
     @Autowired
-    public PostService(PostRepository postRepository, PageRepository pageRepository,
+    public PostService(PostRepository postRepository, PageRepository pageRepository, TagRepository tagRepository,
                        CategoryRepository categoryRepository, CommentRepository commentRepository,
                        ConfigurationParameterService configurationParameterService, UrlUtils urlUtils) {
         this.postRepository = postRepository;
         this.pageRepository = pageRepository;
+        this.tagRepository = tagRepository;
         this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
         this.configurationParameterService = configurationParameterService;
@@ -152,24 +160,24 @@ public class PostService {
         // links.
         OffsetDateTime startDateTime = null;
         OffsetDateTime endDateTime = null;
-        String urlPrefix = "/";
+        String urlPrefix = urlUtils.postList();
         if (year != null && month != null && day != null) {
             LocalDate date = LocalDate.of(year, month, day);
             startDateTime = OffsetDateTime.of(date, LocalTime.MIN, ZoneOffset.UTC);
             endDateTime = OffsetDateTime.of(date, LocalTime.MAX, ZoneOffset.UTC);
-            urlPrefix = String.format("/%02d/%02d/%02d", year, month, day);
+            urlPrefix = urlUtils.postListDay(year, month, day);
         } else if (year != null && month != null) {
             LocalDate startDate = LocalDate.of(year, month, 1);
             startDateTime = OffsetDateTime.of(startDate, LocalTime.MIN, ZoneOffset.UTC);
             LocalDate endDate = startDate.withDayOfMonth(startDate.getMonth().length(startDate.isLeapYear()));
             endDateTime = OffsetDateTime.of(endDate, LocalTime.MAX, ZoneOffset.UTC);
-            urlPrefix = String.format("/%02d/%02d", year, month);
+            urlPrefix = urlUtils.postListMonth(year, month);
         } else if (year != null) {
             LocalDate startDate = LocalDate.of(year, Month.JANUARY.getValue(), 1);
             startDateTime = OffsetDateTime.of(startDate, LocalTime.MIN, ZoneOffset.UTC);
             LocalDate endDate = LocalDate.of(year, Month.DECEMBER.getValue(), 31);
             endDateTime = OffsetDateTime.of(endDate, LocalTime.MIN, ZoneOffset.UTC);
-            urlPrefix = String.format("/%02d", year);
+            urlPrefix = urlUtils.postListYear(year);
         }
 
         // Run the query
@@ -194,12 +202,12 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByTagId(int id, int page) {
-        // Run the query
-        int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
-        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Post> posts = postRepository.findByStatusAndTagsId(ContentStatus.PUBLISHED, id, pageRequest);
+        Optional<Tag> tag = tagRepository.findById(id);
+        Map<String, Object> model = new HashMap<>();
+        tag.ifPresent(t -> getTagListModel(t, page, model));
+        tag.orElseThrow(ResourceNotFoundException::new);
 
-        return getListModel(posts, String.format("/tag/%d", id));
+        return model;
     }
 
     /**
@@ -210,12 +218,19 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByTagSlug(String slug, int page) {
-        // Run the query
+        Optional<Tag> tag = tagRepository.findBySlug(slug);
+        Map<String, Object> model = new HashMap<>();
+        tag.ifPresent(t -> getTagListModel(t, page, model));
+        tag.orElseThrow(ResourceNotFoundException::new);
+
+        return model;
+    }
+
+    private void getTagListModel(Tag tag, int page, Map<String, Object> model) {
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Post> posts = postRepository.findByStatusAndTagsSlug(ContentStatus.PUBLISHED, slug, pageRequest);
-
-        return getListModel(posts, String.format("/tag/%s", slug));
+        Page<Post> posts = postRepository.findByStatusAndTags(ContentStatus.PUBLISHED, tag, pageRequest);
+        model.putAll(getListModel(posts, urlUtils.postListByTag(tag)));
     }
 
     /**
@@ -226,13 +241,12 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByCategoryId(int id, int page) {
-        // Run the query
-        int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
-        PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Post> posts = postRepository.findByStatusAndCategoriesId(
-                ContentStatus.PUBLISHED, id, pageRequest);
+        Optional<Category> category = categoryRepository.findById(id);
+        Map<String, Object> model = new HashMap<>();
+        category.ifPresent(c -> getCategoryListModel(c, page, model));
+        category.orElseThrow(ResourceNotFoundException::new);
 
-        return getListModel(posts, String.format("/category/%d", id));
+        return model;
     }
 
     /**
@@ -243,13 +257,19 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByCategorySlug(String slug, int page) {
-        // Run the query
+        Optional<Category> category = categoryRepository.findBySlug(slug);
+        Map<String, Object> model = new HashMap<>();
+        category.ifPresent(c -> getCategoryListModel(c, page, model));
+        category.orElseThrow(ResourceNotFoundException::new);
+
+        return model;
+    }
+
+    private void getCategoryListModel(Category category, int page, Map<String,Object> model) {
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Post> posts = postRepository.findByStatusAndCategoriesSlug(
-                ContentStatus.PUBLISHED, slug, pageRequest);
-
-        return getListModel(posts, String.format("/category/%s", slug));
+        Page<Post> posts = postRepository.findByStatusAndCategories(ContentStatus.PUBLISHED, category, pageRequest);
+        model.putAll(getListModel(posts, urlUtils.postListByCategory(category)));
     }
 
     /**
@@ -263,8 +283,8 @@ public class PostService {
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage);
         // Perform the full text search
         FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(
-                Post.class).get();
+        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
+                .forEntity(Post.class).get();
         Query query = queryBuilder
                 .keyword()
                 .onFields("title", "content")
@@ -294,8 +314,8 @@ public class PostService {
     private Map<String, ?> getListModel(Page<Post> posts, String urlPrefix) {
         Map<String, Object> model = new HashMap<>();
         model.put("posts", posts);
-        addCommonModel(model);
         model.put("urlPrefix", urlPrefix);
+        addCommonModel(model);
 
         return model;
     }
@@ -313,9 +333,9 @@ public class PostService {
             // Make sure comments are loaded
             p.getComments().size();
             model.put("post", p);
+            addCommonModel(model);
         });
         post.orElseThrow(ResourceNotFoundException::new);
-        addCommonModel(model);
 
         return model;
     }
@@ -333,9 +353,9 @@ public class PostService {
             // Make sure comments are loaded
             p.getComments().size();
             model.put("post", p);
+            addCommonModel(model);
         });
         post.orElseThrow(ResourceNotFoundException::new);
-        addCommonModel(model);
 
         return model;
     }
@@ -369,34 +389,6 @@ public class PostService {
     }
 
     /**
-     * Return the post url.
-     *
-     * @param post The post.
-     * @return The post url.
-     */
-    public String getPostUrl(Post post) {
-        if (post.getSlug() == null) {
-            return "/post/" + post.getId();
-        } else {
-            return "/post/" + post.getSlug();
-        }
-    }
-
-    /**
-     * Return the comment url.
-     *
-     * @param comment The comment.
-     * @return The comment url.
-     */
-    public String getCommentUrl(Comment comment) {
-        if (comment.getPost().getSlug() == null) {
-            return "/post/" + comment.getPost().getId() + "#comment-" + comment.getId();
-        } else {
-            return "/post/" + comment.getPost().getSlug() + "#comment-" + comment.getId();
-        }
-    }
-
-    /**
      * Return a feed with the latest posts.
      *
      * @return a feed with the latest posts.
@@ -412,7 +404,7 @@ public class PostService {
 
             entry.setTitle(post.getTitle());
             Link link = new Link();
-            link.setHref(getPostUrl(post));
+            link.setHref(urlUtils.post(post));
             entry.setAlternateLinks(Collections.singletonList(link));
             com.rometools.rome.feed.atom.Content summary = new com.rometools.rome.feed.atom.Content();
             summary.setType("text/plain");
@@ -442,7 +434,7 @@ public class PostService {
 
             entry.setTitle("Comment");
             Link link = new Link();
-            link.setHref(getCommentUrl(comment));
+            link.setHref(urlUtils.comment(comment));
             entry.setAlternateLinks(Collections.singletonList(link));
             com.rometools.rome.feed.atom.Content summary = new com.rometools.rome.feed.atom.Content();
             summary.setType("text/plain");
@@ -472,7 +464,7 @@ public class PostService {
         feed.setSubtitle(subtitle);
 
         Link feedLink = new Link();
-        feedLink.setHref(urlUtils.getAbsoluteUrl("/"));
+        feedLink.setHref(urlUtils.postList());
         feed.setAlternateLinks(Collections.singletonList(feedLink));
         feed.setEntries(entries);
 
