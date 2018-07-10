@@ -74,6 +74,7 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("post", postService.getById(id));
         }
+        // Add the comment
         postService.addComment(id, comment);
 
         return new ModelAndView("redirect:" + urlUtils.comment(comment));

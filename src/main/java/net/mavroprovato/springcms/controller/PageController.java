@@ -34,7 +34,7 @@ public class PageController {
      * @param id The content id.
      * @return The model and view.
      */
-    @GetMapping(value = "/id/{id:\\d+}")
+    @GetMapping("/id/{id:\\d+}")
     public ModelAndView byId(@PathVariable("id") int id) {
         return new ModelAndView("page", pageService.getById(id));
     }
