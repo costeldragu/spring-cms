@@ -57,13 +57,9 @@ public class PageService {
      * @return The page model.
      */
     public Map<String, ?> getById(int id) {
-        Map<String, Object> model = new HashMap<>();
         Optional<Page> page = pageRepository.findById(id);
-        page.ifPresent(p -> model.put("page", p));
-        page.orElseThrow(ResourceNotFoundException::new);
-        addCommonModel(model);
 
-        return model;
+        return page.map(this::getModel).orElseThrow(ResourceNotFoundException::new);
     }
 
     /**
@@ -73,24 +69,25 @@ public class PageService {
      * @return The page model.
      */
     public Map<String, ?> getBySlug(String slug) {
-        Map<String, Object> model = new HashMap<>();
         Optional<Page> page = pageRepository.findOneBySlug(slug);
-        page.ifPresent(p -> model.put("page", p));
-        page.orElseThrow(ResourceNotFoundException::new);
-        addCommonModel(model);
 
-        return model;
+        return page.map(this::getModel).orElseThrow(ResourceNotFoundException::new);
     }
 
     /**
-     * Add model items common for all pages.
+     * Return the page model.
      *
-     * @param model The model.
+     * @param page The page.
      */
-    private void addCommonModel(Map<String,Object> model) {
+    private Map<String, Object> getModel(Page page) {
+        Map<String, Object> model = new HashMap<>();
+
+        model.put("page", page);
         model.put("archives", postRepository.countByMonth());
         model.put("categories", categoryRepository.findAllByOrderByNameAsc());
         model.put("config", configurationParameterService.allParameters());
         model.put("pages", pageRepository.findAll());
+
+        return model;
     }
 }

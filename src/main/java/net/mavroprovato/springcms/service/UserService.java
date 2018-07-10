@@ -44,15 +44,11 @@ public class UserService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.findOneByUserName(userName);
-        if (user == null) {
-            throw new UsernameNotFoundException(userName);
-        }
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getUserName(), user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString()))
-        );
+        return userRepository.findOneByUserName(userName)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getUserName(), user.getPassword(),
+                        Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString()))))
+                .orElseThrow(() -> new UsernameNotFoundException(userName));
     }
 
     /**

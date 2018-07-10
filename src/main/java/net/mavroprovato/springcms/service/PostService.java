@@ -183,13 +183,10 @@ public class PostService {
         // Run the query
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
-        Page<Post> posts;
-        if (startDateTime == null) {
-            posts = postRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest);
-        } else {
-            posts = postRepository.findByStatusAndPublishedAtBetween(
-                    ContentStatus.PUBLISHED, startDateTime, endDateTime, pageRequest);
-        }
+        Page<Post> posts = startDateTime == null ?
+                postRepository.findByStatus(ContentStatus.PUBLISHED, pageRequest) :
+                postRepository.findByStatusAndPublishedAtBetween(
+                        ContentStatus.PUBLISHED, startDateTime, endDateTime, pageRequest);
 
         return getListModel(posts, urlPrefix);
     }
@@ -202,12 +199,9 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByTagId(int id, int page) {
-        Optional<Tag> tag = tagRepository.findById(id);
-        Map<String, Object> model = new HashMap<>();
-        tag.ifPresent(t -> getTagListModel(t, page, model));
-        tag.orElseThrow(ResourceNotFoundException::new);
-
-        return model;
+        return tagRepository.findById(id)
+                .map(t -> getTagListModel(t, page))
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     /**
@@ -218,19 +212,24 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByTagSlug(String slug, int page) {
-        Optional<Tag> tag = tagRepository.findBySlug(slug);
-        Map<String, Object> model = new HashMap<>();
-        tag.ifPresent(t -> getTagListModel(t, page, model));
-        tag.orElseThrow(ResourceNotFoundException::new);
-
-        return model;
+        return tagRepository.findBySlug(slug)
+                .map(t -> getTagListModel(t, page))
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
-    private void getTagListModel(Tag tag, int page, Map<String, Object> model) {
+    /**
+     * Return the model for the list posts by tag.
+     *
+     * @param tag The tag.
+     * @param page The page number.
+     * @return The model.
+     */
+    private Map<String, ?> getTagListModel(Tag tag, int page) {
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Post> posts = postRepository.findByStatusAndTags(ContentStatus.PUBLISHED, tag, pageRequest);
-        model.putAll(getListModel(posts, urlUtils.postListByTag(tag)));
+
+        return getListModel(posts, urlUtils.postListByTag(tag));
     }
 
     /**
@@ -241,12 +240,9 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByCategoryId(int id, int page) {
-        Optional<Category> category = categoryRepository.findById(id);
-        Map<String, Object> model = new HashMap<>();
-        category.ifPresent(c -> getCategoryListModel(c, page, model));
-        category.orElseThrow(ResourceNotFoundException::new);
-
-        return model;
+        return categoryRepository.findById(id)
+                .map(c -> getCategoryListModel(c, page))
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     /**
@@ -257,19 +253,24 @@ public class PostService {
      * @return The posts.
      */
     public Map<String, ?> listByCategorySlug(String slug, int page) {
-        Optional<Category> category = categoryRepository.findBySlug(slug);
-        Map<String, Object> model = new HashMap<>();
-        category.ifPresent(c -> getCategoryListModel(c, page, model));
-        category.orElseThrow(ResourceNotFoundException::new);
-
-        return model;
+        return categoryRepository.findBySlug(slug)
+                .map(c -> getCategoryListModel(c, page))
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
-    private void getCategoryListModel(Category category, int page, Map<String,Object> model) {
+    /**
+     * Return the model for the list posts by category.
+     *
+     * @param category The category.
+     * @param page The page number.
+     * @return The model.
+     */
+    private Map<String, ?> getCategoryListModel(Category category, int page) {
         int postsPerPage = configurationParameterService.getInteger(Parameter.POSTS_PER_PAGE);
         PageRequest pageRequest = PageRequest.of(page - 1, postsPerPage, Sort.Direction.DESC, "publishedAt");
         Page<Post> posts = postRepository.findByStatusAndCategories(ContentStatus.PUBLISHED, category, pageRequest);
-        model.putAll(getListModel(posts, urlUtils.postListByCategory(category)));
+
+        return getListModel(posts, urlUtils.postListByCategory(category));
     }
 
     /**
@@ -327,17 +328,7 @@ public class PostService {
      * @return The page model.
      */
     public Map<String, ?> getById(int id) {
-        Map<String, Object> model = new HashMap<>();
-        Optional<Post> post = postRepository.findById(id);
-        post.ifPresent(p -> {
-            // Make sure comments are loaded
-            p.getComments().size();
-            model.put("post", p);
-            addCommonModel(model);
-        });
-        post.orElseThrow(ResourceNotFoundException::new);
-
-        return model;
+        return postRepository.findById(id).map(this::getPostModel).orElseThrow(ResourceNotFoundException::new);
     }
 
     /**
@@ -347,15 +338,21 @@ public class PostService {
      * @return The post model.
      */
     public Map<String, ?> getBySlug(String slug) {
+        return postRepository.findOneBySlug(slug).map(this::getPostModel).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    /**
+     * Get the model for the post page.
+     *
+     * @param post The post.
+     * @return The model for the post page.
+     */
+    private Map<String, ?> getPostModel(Post post) {
         Map<String, Object> model = new HashMap<>();
-        Optional<Post> post = postRepository.findOneBySlug(slug);
-        post.ifPresent(p -> {
-            // Make sure comments are loaded
-            p.getComments().size();
-            model.put("post", p);
-            addCommonModel(model);
-        });
-        post.orElseThrow(ResourceNotFoundException::new);
+        // Make sure comments are loaded
+        post.getComments().size();
+        model.put("post", post);
+        addCommonModel(model);
 
         return model;
     }

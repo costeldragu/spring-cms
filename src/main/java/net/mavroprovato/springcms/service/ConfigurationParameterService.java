@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The configuration parameter service.
@@ -39,11 +40,10 @@ public class ConfigurationParameterService {
                 Collectors.toMap(ConfigurationParameter::getName, ConfigurationParameter::getValue));
 
         // Put default values for missing parameters
-        for (Parameter parameter: Parameter.values()) {
-            if (!params.containsKey(parameter.name())) {
-                params.put(parameter.name(), parameter.defaultValue().toString());
-            }
-        }
+        Stream.of(Parameter.values())
+                .filter(p -> !params.containsKey(p.name()))
+                .forEach(p -> params.put(p.name(), p.defaultValue().toString()));
+
         return params;
     }
 
@@ -56,11 +56,8 @@ public class ConfigurationParameterService {
     public String getString(Parameter parameter) {
         Optional<ConfigurationParameter> configurationParameter = configurationParameterRepository.findOneByName(
                 parameter.name());
-        if (configurationParameter.isPresent()) {
-            return configurationParameter.get().getValue();
-        }
 
-        return parameter.defaultValue().toString();
+        return configurationParameter.map(ConfigurationParameter::getValue).orElse(parameter.defaultValue().toString());
     }
 
     /**
@@ -72,10 +69,9 @@ public class ConfigurationParameterService {
     public int getInteger(Parameter parameter) {
         Optional<ConfigurationParameter> configurationParameter = configurationParameterRepository.findOneByName(
                 parameter.name());
-        if (configurationParameter.isPresent()) {
-            return Integer.valueOf(configurationParameter.get().getValue());
-        }
 
-        return Integer.valueOf(parameter.defaultValue().toString());
+        return configurationParameter
+                .map(c -> Integer.valueOf(c.getValue()))
+                .orElse(Integer.valueOf(parameter.defaultValue().toString()));
     }
 }
