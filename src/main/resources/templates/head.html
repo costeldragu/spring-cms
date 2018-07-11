@@ -1,8 +1,13 @@
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
-<title th:text="${config.TITLE}"></title>
-<link rel="alternate" type="application/rss+xml" th:title="#{feed.title(${config.TITLE})}" href="/feed" />
-<link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/blog.css" rel="stylesheet">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title th:text="${config.TITLE}"></title>
+    <link rel="alternate" type="application/rss+xml" th:title="#{feed.title(${config.TITLE})}" href="/feed" />
+    <link rel="alternate" type="application/rss+xml" th:title="#{feed.comments(${config.TITLE})}" href="/comments/feed" />
+    <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/blog.css" rel="stylesheet">
+</head>

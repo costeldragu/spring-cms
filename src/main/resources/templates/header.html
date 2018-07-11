@@ -1,4 +1,6 @@
-<div class="container">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header" class="container">
     <a class="navbar-brand" href="/" th:text="${config.TITLE}"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

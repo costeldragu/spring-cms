@@ -1,4 +1,7 @@
-<div class="card my-4" xmlns:th="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="sidebar">
+<div class="card my-4">
     <h5 class="card-header" th:text="#{search.title}"></h5>
     <div class="card-body">
         <form action="/search" method="get">
@@ -62,3 +65,4 @@
         </div>
     </div>
 </div>
+</th:block>
