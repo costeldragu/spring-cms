@@ -18,21 +18,30 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class UrlUtils {
 
-    /** The current HTTP request */
-    private final HttpServletRequest request;
-
     /** The configuration parameter service */
     private final ConfigurationParameterService configurationParameterService;
+
+    /** The current HTTP request */
+    private HttpServletRequest request;
 
     /**
      * Create the URL utilities.
      *
-     * @param request The current HTTP request.
+     * @param configurationParameterService The configuration parameter service.
      */
     @Autowired
-    public UrlUtils(HttpServletRequest request, ConfigurationParameterService configurationParameterService) {
-        this.request = request;
+    public UrlUtils(ConfigurationParameterService configurationParameterService) {
         this.configurationParameterService = configurationParameterService;
+    }
+
+    /**
+     * Set the current HTTP request.
+     *
+     * @param request The current HTTP request.
+     */
+    @Autowired(required = false)
+    public void setMyServiceB(HttpServletRequest request) {
+        this.request = request;
     }
 
     /**

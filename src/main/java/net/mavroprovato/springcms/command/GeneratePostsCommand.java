@@ -280,6 +280,9 @@ public class GeneratePostsCommand implements ApplicationRunner {
      */
     private User getRandomAuthor() {
         List<User> allUsers = userRepository.findAll();
+        if (allUsers.isEmpty()) {
+            throw new IllegalStateException("No users are defined.");
+        }
 
         return allUsers.get(ThreadLocalRandom.current().nextInt(allUsers.size()));
     }
