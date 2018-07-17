@@ -1,16 +1,13 @@
 package net.mavroprovato.springcms.service;
 
-import net.mavroprovato.springcms.entity.Parameter;
+import net.mavroprovato.springcms.datatables.DataTableRequest;
 import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,13 +62,12 @@ public class AdminService {
      *
      * @return Posts in order to be displayed in a data table.
      */
-    public Map<String, Object> listAllPosts() {
+    public Map<String, Object> listPosts(DataTableRequest datatablesRequest) {
         Map<String, Object> model = new HashMap<>();
-        model.put("draw", 1);
+        model.put("draw", datatablesRequest.getDraw());
         model.put("recordsTotal", postRepository.count());
         model.put("recordsFiltered", postRepository.count());
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "updatedAt");
-        model.put("data", postRepository.findAll(pageRequest).stream().map(p -> new Object[] {
+        model.put("data", postRepository.findAll(datatablesRequest.getPageRequest()).stream().map(p -> new Object[] {
                 p.getTitle(), p.getAuthor().getUserName(), p.getUpdatedAt()
         }));
 

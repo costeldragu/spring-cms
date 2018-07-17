@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.controller;
 
+import net.mavroprovato.springcms.datatables.DataTableRequest;
 import net.mavroprovato.springcms.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -58,7 +58,7 @@ public class AdminController {
      */
     @GetMapping("post/list")
     @ResponseBody
-    public Map<String, Object> ajaxListPosts() {
-        return adminService.listAllPosts();
+    public Map<String, Object> ajaxListPosts(DataTableRequest datatablesRequest) {
+        return adminService.listPosts(datatablesRequest);
     }
 }
