@@ -6,103 +6,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Administration</title>
+    <title th:text="#{admin.title}"></title>
     <link href="/webjars/bootstrap/4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="/webjars/datatables/1.10.19/media/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="css/admin.css" rel="stylesheet">
+    <link href="/css/admin.css" rel="stylesheet">
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand" href="/admin" th:text="#{admin.title}"></a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="settingsAccordion">
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" th:title="#{admin.dashboard}">
+                <a class="nav-link" href="/admin">
                     <i class="fa fa-fw fa-dashboard"></i>
-                    <span class="nav-link-text">Dashboard</span>
+                    <span class="nav-link-text" th:text="#{admin.dashboard}"></span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Posts">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" th:title="#{admin.posts}">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePosts" data-parent="#settingsAccordion">
                     <i class="fa fa-fw fa-thumb-tack"></i>
-                    <span class="nav-link-text">Posts</span>
+                    <span class="nav-link-text" th:text="#{admin.posts}"></span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapsePosts">
                     <li>
-                        <a href="/admin/posts">All Posts</a>
+                        <a href="/admin/posts" th:text="#{admin.posts.all}"></a>
                     </li>
                     <li>
-                        <a href="/admin/newPost">Add New</a>
+                        <a href="/admin/newPost" th:text="#{admin.posts.add.new}"></a>
                     </li>
                     <li>
-                        <a href="/admin/categories">Categories</a>
+                        <a href="/admin/categories" th:text="#{admin.posts.categories}"></a>
                     </li>
                     <li>
-                        <a href="/admin/tags">Tags</a>
+                        <a href="/admin/tags" th:text="#{admin.posts.tags}"></a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Pages">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" th:title="#{admin.pages}">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePages" data-parent="#settingsAccordion">
                     <i class="fa fa-fw fa-file"></i>
-                    <span class="nav-link-text">Pages</span>
+                    <span class="nav-link-text" th:text="#{admin.pages}"></span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapsePages">
                     <li>
-                        <a href="/admin/pages">All Pages</a>
+                        <a href="/admin/pages" th:text="#{admin.pages.all}"></a>
                     </li>
                     <li>
-                        <a href="/admin/newPage">Add New</a>
+                        <a href="/admin/newPage" th:text="#{admin.pages.add.new}"></a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Comments">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" th:title="#{admin.comments}">
+                <a class="nav-link" href="/admin/comments">
                     <i class="fa fa-fw fa-comments"></i>
-                    <span class="nav-link-text">Comments</span>
+                    <span class="nav-link-text" th:text="#{admin.comments}"></span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Users">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" th:title="#{admin.users}">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseUsers" data-parent="#settingsAccordion">
                     <i class="fa fa-fw fa-user"></i>
-                    <span class="nav-link-text">Users</span>
+                    <span class="nav-link-text" th:text="#{admin.users}"></span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseUsers">
                     <li>
-                        <a href="/admin/users">All Users</a>
+                        <a href="/admin/users" th:text="#{admin.users.all}"></a>
                     </li>
                     <li>
-                        <a href="/admin/addUser">Add New</a>
+                        <a href="/admin/addUser" th:text="#{admin.users.add}"></a>
                     </li>
                     <li>
-                        <a href="/profile">Your Profile</a>
+                        <a href="/profile" th:text="#{admin.users.profile}"></a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" th:title="#{admin.settings}">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSettings" data-parent="#settingsAccordion">
                     <i class="fa fa-fw fa-sliders"></i>
-                    <span class="nav-link-text">Settings</span>
+                    <span class="nav-link-text" th:text="#{admin.settings}"></span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseSettings">
                     <li>
-                        <a href="/admin/generalSettings">General</a>
+                        <a href="/admin/generalSettings" th:text="#{admin.settings.general}"></a>
                     </li>
                     <li>
-                        <a href="/admin/writing">Writing</a>
+                        <a href="/admin/writing" th:text="#{admin.settings.writing}"></a>
                     </li>
                     <li>
-                        <a href="/admin/reading">Reading</a>
+                        <a href="/admin/reading" th:text="#{admin.settings.reading}"></a>
                     </li>
                     <li>
-                        <a href="/admin/discussion">Discussion</a>
+                        <a href="/admin/discussion" th:text="#{admin.settings.discussion}"></a>
                     </li>
                     <li>
-                        <a href="/admin/permalinks">Permalinks</a>
+                        <a href="/admin/permalinks" th:text="#{admin.settings.permalinks}"></a>
                     </li>
                 </ul>
             </li>
@@ -120,9 +120,9 @@
     <div class="container-fluid">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Dashboard</a>
+                <a href="/admin" th:text="#{admin.dashboard}"></a>
             </li>
-            <li class="breadcrumb-item active">My Dashboard</li>
+            <li class="breadcrumb-item active" th:text="#{admin.my.dashboard}"></li>
         </ol>
         <div class="row">
             <div class="col-xl-4 col-sm-6 mb-3">
@@ -131,10 +131,10 @@
                         <div class="card-body-icon">
                             <i class="fa fa-fw fa-thumb-tack"></i>
                         </div>
-                        <div class="mr-5"><span th:text="${post_count}"></span> Posts</div>
+                        <div class="mr-5"><span th:text="#{admin.dashboard.posts(${post_count})}"></span></div>
                     </div>
                     <a class="card-footer text-white clearfix small z-1" href="#">
-                        <span class="float-left">View Details</span>
+                        <span class="float-left" th:text="#{admin.dashboard.view.details}"></span>
                         <span class="float-right">
                             <i class="fa fa-angle-right"></i>
                         </span>
@@ -147,10 +147,10 @@
                         <div class="card-body-icon">
                             <i class="fa fa-fw fa-file"></i>
                         </div>
-                        <div class="mr-5"><span th:text="${page_count}"></span> Pages</div>
+                        <div class="mr-5"><span th:text="#{admin.dashboard.pages(${page_count})}"></span></div>
                     </div>
                     <a class="card-footer text-white clearfix small z-1" href="#">
-                        <span class="float-left">View Details</span>
+                        <span class="float-left" th:text="#{admin.dashboard.view.details}"></span>
                         <span class="float-right">
                             <i class="fa fa-angle-right"></i>
                         </span>
@@ -163,10 +163,10 @@
                         <div class="card-body-icon">
                             <i class="fa fa-fw fa-comments"></i>
                         </div>
-                        <div class="mr-5"><span th:text="${comment_count}"></span> Comments</div>
+                        <div class="mr-5"><span th:text="#{admin.dashboard.comments(${comment_count})}"></span></div>
                     </div>
                     <a class="card-footer text-white clearfix small z-1" href="#">
-                        <span class="float-left">View Details</span>
+                        <span class="float-left" th:text="#{admin.dashboard.view.details}"></span>
                         <span class="float-right">
                             <i class="fa fa-angle-right"></i>
                         </span>
@@ -178,39 +178,20 @@
     <footer class="sticky-footer">
         <div class="container">
             <div class="text-center">
-                <small>Copyright © Your Website 2018</small>
+                <small th:text="#{footer.copyright}"></small>
             </div>
         </div>
     </footer>
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fa fa-angle-up"></i>
     </a>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.1.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/webjars/jquery-easing-original/1.4.1/jquery.easing.min.js"></script>
-    <script src="/webjars/chart.js/2.7.2/dist/Chart.js"></script>
     <script src="/webjars/datatables/1.10.19/media/js/jquery.dataTables.min.js"></script>
     <script src="/webjars/datatables/1.10.19/media/js/dataTables.bootstrap4.min.js"></script>
-    <script src="js/admin.js"></script>
-    <script src="js/admin-datatables.js"></script>
-    <script src="js/admin-charts.js"></script>
+    <script src="/js/admin.js"></script>
+    <script src="/js/admin-datatables.js"></script>
 </div>
 </body>
 </html>
