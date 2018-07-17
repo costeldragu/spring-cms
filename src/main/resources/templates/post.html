@@ -9,7 +9,7 @@
             <div class="col-md-8">
                 <h1 class="mt-4" th:text="${post.title}"></h1>
                 <p class="lead">
-                    by <a href="#">Start Bootstrap</a>
+                    by <a href="#" th:text="${post.author.userName}"></a>
                 </p>
                 <hr>
                 <p>
@@ -22,7 +22,6 @@
                 <h5 th:text="#{post.comments}"></h5>
                 <div th:each="comment: ${post.comments}" th:id="'comment-' + ${comment.id}" class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
-
                     <div class="media-body">
                         <h5 th:text="${comment.name}" class="mt-0"></h5>
                         <h6 th:text="${#temporals.format(comment.createdAt, 'MMMM dd, YYYY HH:mm')}"></h6>
