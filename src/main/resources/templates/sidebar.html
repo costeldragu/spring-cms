@@ -53,6 +53,9 @@
                     <input hidden type="submit" />
                 </form>
             </div>
+            <div class="col-lg-12" sec:authorize="isFullyAuthenticated()">
+                <a th:text="#{meta.admin}" href="/admin"></a>
+            </div>
             <div class="col-lg-12" sec:authorize="!isFullyAuthenticated()">
                 <a th:text="#{meta.login}" href="/login"></a>
             </div>
