@@ -62,14 +62,12 @@ public class AdminService {
      *
      * @return Posts in order to be displayed in a data table.
      */
-    public Map<String, Object> listPosts(DataTableRequest datatablesRequest) {
+    public Map<String, Object> listPosts(DataTableRequest dataTableRequest) {
         Map<String, Object> model = new HashMap<>();
-        model.put("draw", datatablesRequest.getDraw());
+        model.put("draw", dataTableRequest.getDraw());
         model.put("recordsTotal", postRepository.count());
         model.put("recordsFiltered", postRepository.count());
-        model.put("data", postRepository.findAll(datatablesRequest.getPageRequest()).stream().map(p -> new Object[] {
-                p.getTitle(), p.getAuthor().getUserName(), p.getUpdatedAt()
-        }));
+        model.put("data", postRepository.findAll(dataTableRequest.getPageRequest()).getContent());
 
         return model;
     }

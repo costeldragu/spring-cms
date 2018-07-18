@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.DiscriminatorValue;
@@ -25,6 +26,7 @@ public class Post extends Content {
 
     /** The post comments */
     @OneToMany(mappedBy = "post")
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     /** The tags applied to the post */
