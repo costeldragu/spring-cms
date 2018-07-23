@@ -58,7 +58,7 @@ public class AdminController {
      */
     @GetMapping("post/list")
     @ResponseBody
-    public Map<String, Object> ajaxListPosts(DataTableRequest datatablesRequest) {
-        return adminService.listPosts(datatablesRequest);
+    public Map<String, Object> ajaxListPosts(DataTableRequest dataTableRequest) {
+        return adminService.listPosts(dataTableRequest);
     }
 }
