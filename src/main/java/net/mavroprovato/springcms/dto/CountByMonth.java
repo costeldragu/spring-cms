@@ -1,17 +1,14 @@
 package net.mavroprovato.springcms.dto;
 
+import lombok.Value;
+
 import java.time.YearMonth;
 
 /**
- * An object that holds counts per month.
+ * An object that holds counts of objects per month.
  */
+@Value
 public final class CountByMonth {
-
-    /** The month **/
-    private final YearMonth month;
-
-    /** The object count .*/
-    private final long count;
 
     /**
      * Create the object.
@@ -25,21 +22,10 @@ public final class CountByMonth {
         this.count = count;
     }
 
-    /**
-     * Return the month.
-     *
-     * @return The month.
-     */
-    public YearMonth getMonth() {
-        return month;
-    }
 
-    /**
-     * Return the object count.
-     *
-     * @return The object count.
-     */
-    public long getCount() {
-        return count;
-    }
+    /** The month. **/
+    private final YearMonth month;
+
+    /** The object count. */
+    private final long count;
 }

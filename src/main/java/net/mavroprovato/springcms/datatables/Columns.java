@@ -1,9 +1,12 @@
 package net.mavroprovato.springcms.datatables;
 
+import lombok.Data;
+
 /**
  * A Data table's column.
  */
-public class Columns {
+@Data
+class Columns {
 
     /** The column's data source */
     private String data;
@@ -19,44 +22,4 @@ public class Columns {
 
     /** Search value to apply to this specific column. */
     private Search search;
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isSearchable() {
-        return searchable;
-    }
-
-    public void setSearchable(boolean searchable) {
-        this.searchable = searchable;
-    }
-
-    public boolean isOrderable() {
-        return orderable;
-    }
-
-    public void setOrderable(boolean orderable) {
-        this.orderable = orderable;
-    }
-
-    public Search getSearch() {
-        return search;
-    }
-
-    public void setSearch(Search search) {
-        this.search = search;
-    }
 }

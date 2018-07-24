@@ -1,9 +1,12 @@
 package net.mavroprovato.springcms.datatables;
 
+import lombok.Data;
+
 /**
  * The ordering for a column.
  */
-public class Order {
+@Data
+class Order {
     /** Enumeration for the orderings. */
     public enum Direction {
         /** Sort ascending. */
@@ -19,20 +22,4 @@ public class Order {
     /** Ordering direction for this column. It will be asc or desc to indicate ascending ordering or descending
      * ordering, respectively. */
     private Direction dir;
-
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
-    }
-
-    public Direction getDir() {
-        return dir;
-    }
-
-    public void setDir(Direction dir) {
-        this.dir = dir;
-    }
 }

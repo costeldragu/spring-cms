@@ -1,5 +1,8 @@
 package net.mavroprovato.springcms.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -13,23 +16,6 @@ public class Page extends Content {
 
     /** The page order */
     @Column(name="page_order")
+    @Getter @Setter
     private int order;
-
-    /**
-     * Return the order of the page.
-     *
-     * @return The order of the page.
-     */
-    public int getOrder() {
-        return order;
-    }
-
-    /**
-     * Set the order of the page.
-     *
-     * @param order The order of the page.
-     */
-    public void setOrder(int order) {
-        this.order = order;
-    }
 }

@@ -1,5 +1,6 @@
 package net.mavroprovato.springcms.datatables;
 
+import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -9,7 +10,8 @@ import java.util.List;
 /**
  * Represents the request that is sent by the data table javascript library.
  */
-public class DataTableRequest {
+@Data
+public final class DataTableRequest {
 
     /** Draw counter. This is used by DataTables to ensure that the Ajax returns from server-side processing requests
      * are drawn in sequence by DataTables. */
@@ -31,84 +33,6 @@ public class DataTableRequest {
 
     /** The ordering list. */
     private List<Order> order;
-
-    /**
-     * Return the draw counter.
-     *
-     * @return The draw counter.
-     */
-    public int getDraw() {
-        return draw;
-    }
-
-    /**
-     * Set the draw counter.
-     *
-     * @param draw The draw counter.
-     */
-    public void setDraw(int draw) {
-        this.draw = draw;
-    }
-
-    /**
-     * Return the paging first record indicator.
-     *
-     * @return The paging first record indicator.
-     */
-    public int getStart() {
-        return start;
-    }
-
-    /**
-     * Set the paging first record indicator.
-     *
-     * @param start The paging first record indicator.
-     */
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    /**
-     * Return the number of records that the table can display in the current draw.
-     *
-     * @return The number of records that the table can display in the current draw.
-     */
-    public int getLength() {
-        return length;
-    }
-
-    /**
-     * Set the number of records that the table can display in the current draw.
-     *
-     * @param length The number of records that the table can display in the current draw.
-     */
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public List<Columns> getColumns() {
-        return columns;
-    }
-
-    public void setColumns(List<Columns> columns) {
-        this.columns = columns;
-    }
-
-    public Search getSearch() {
-        return search;
-    }
-
-    public void setSearch(Search search) {
-        this.search = search;
-    }
-
-    public List<Order> getOrder() {
-        return order;
-    }
-
-    public void setOrder(List<Order> order) {
-        this.order = order;
-    }
 
     /**
      * Returns the page request for the data table request.

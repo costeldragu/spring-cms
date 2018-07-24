@@ -1,6 +1,8 @@
 package net.mavroprovato.springcms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,198 +24,56 @@ public class User {
     /** The unique identifier of the user */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private int id;
 
     /** The user name */
     @Column(nullable = false, unique = true)
+    @Getter @Setter
     private String userName;
 
     /** The user password */
     @Column(nullable = false)
     @JsonIgnore
+    @Getter @Setter
     private String password;
 
     /** The user email */
     @Column(nullable = false, unique = true)
+    @Getter @Setter
     private String email;
 
     /** The user first name */
     @Column
+    @Getter @Setter
     private String firstName;
 
     /** The user last name */
     @Column
+    @Getter @Setter
     private String lastName;
 
     /** The user web site */
     @Column
+    @Getter @Setter
     private String webSite;
 
     /** The user creation date */
     @Column(nullable = false)
     @CreationTimestamp
+    @Getter
     private OffsetDateTime createdAt;
 
     /** The user update date */
     @Column(nullable = false)
     @UpdateTimestamp
+    @Getter
     private OffsetDateTime updatedAt;
 
-    /** The content status */
+    /** The user role */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Getter @Setter
     private Role role;
 
-    /**
-     * Return the user unique identifier.
-     *
-     * @return The user unique identifier.
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Return the user name.
-     *
-     * @return The user name.
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * Set the user name.
-     *
-     * @param userName The user name.
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * Get the user password.
-     *
-     * @return The user password.
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Set the user password.
-     *
-     * @param password The user password.
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * Get the user email.
-     *
-     * @return The user email.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Set the user email.
-     *
-     * @param email The user email.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Get the user first name.
-     *
-     * @return The user first name.
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Set the user first name.
-     *
-     * @param firstName The user first name.
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Get the user last name.
-     *
-     * @return The user last name.
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Set the user last name.
-     *
-     * @param lastName The user last name.
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Get the user web site.
-     *
-     * @return The user web site.
-     */
-    public String getWebSite() {
-        return webSite;
-    }
-
-    /**
-     * Set the user web site.
-     *
-     * @param webSite The user web site.
-     */
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    /**
-     * Return the content item creation date.
-     *
-     * @return The content item creating date.
-     */
-    public OffsetDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    /**
-     * Return the content item update date.
-     *
-     * @return The content item creating date.
-     */
-    public OffsetDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     * Get the user role.
-     *
-     * @return The user role.
-     */
-    public Role getRole() {
-        return role;
-    }
-
-    /**
-     * Set the user role.
-     *
-     * @param role The user role.
-     */
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

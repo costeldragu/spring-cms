@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.DiscriminatorValue;
@@ -26,6 +27,7 @@ public class Post extends Content {
 
     /** The post comments */
     @OneToMany(mappedBy = "post")
+    @Getter
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
@@ -39,6 +41,7 @@ public class Post extends Content {
                     @Index(columnList = "tag_id")
             }
     )
+    @Getter
     private Set<Tag> tags = new HashSet<>();
 
     /** The categories that this post belongs to */
@@ -51,32 +54,6 @@ public class Post extends Content {
                     @Index(columnList = "category_id")
             }
     )
+    @Getter
     private Set<Category> categories = new HashSet<>();
-
-    /**
-     * Return the comments for the content item.
-     *
-     * @return The comments for the content item.
-     */
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    /**
-     * Return the tags for the content.
-     *
-     * @return The tags for the content.
-     */
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    /**
-     * Return the categories for the content item.
-     *
-     * @return The categories for the content item.
-     */
-    public Set<Category> getCategories() {
-        return categories;
-    }
 }
