@@ -4,8 +4,8 @@ import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents the request that is sent by the data table javascript library.
@@ -29,7 +29,7 @@ public final class DataTableRequest {
     private Search search;
 
     /** The data table column specification. */
-    private List<Columns> columns;
+    private List<Column> columns;
 
     /** The ordering list. */
     private List<Order> order;
@@ -40,16 +40,9 @@ public final class DataTableRequest {
      * @return The page request for the data table request.
      */
     public PageRequest getPageRequest() {
-        List<Sort.Order> orders = new ArrayList<>();
-        for (int i = 0; i < order.size(); i++) {
-            if (columns.get(i).isOrderable()) {
-                orders.add(new Sort.Order(
-                        Sort.Direction.valueOf(order.get(i).getDir().toString().toUpperCase()),
-                        columns.get(i).getData()
-                ));
-            }
-        }
-
-        return PageRequest.of(start / length, length, Sort.by(orders));
+        return PageRequest.of(start / length, length, Sort.by(this.order.stream().map(o -> new Sort.Order(
+                Sort.Direction.valueOf(o.getDir().toString().toUpperCase()),
+                this.columns.get(o.getColumn()).getData()
+        )).collect(Collectors.toList())));
     }
 }

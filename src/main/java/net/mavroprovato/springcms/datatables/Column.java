@@ -6,7 +6,7 @@ import lombok.Data;
  * A Data table's column.
  */
 @Data
-class Columns {
+class Column {
 
     /** The column's data source */
     private String data;

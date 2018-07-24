@@ -24,7 +24,6 @@ $(document).ready(function() {
                     d['columns[' + i + '].searchable'] = data.columns[i].searchable;
                     d['columns[' + i + '].orderable'] = data.columns[i].orderable;
                 }
-                console.log(d);
 
                 return d;
             }
@@ -33,13 +32,37 @@ $(document).ready(function() {
             {
                 data: "title",
                 orderable: true
-            },
-            {
+            }, {
                 data: "author.userName",
                 orderable: false
-            },
-            {
-                data: "updatedAt",
+            }, {
+                data: "categories",
+                orderable: false,
+                render: function(data) {
+                    var str = '';
+                    for (var i = 0; i < data.length; i++) {
+                        str += data[i].name;
+                        if (i !== data.length - 1) {
+                            str += ', '
+                        }
+                    }
+                    return str;
+                }
+            }, {
+                data: "tags",
+                orderable: false,
+                render: function(data) {
+                    var str = '';
+                    for (var i = 0; i < data.length; i++) {
+                        str += data[i].name;
+                        if (i !== data.length - 1) {
+                            str += ', '
+                        }
+                    }
+                    return str;
+                }
+            }, {
+                data: "publishedAt",
                 orderable: true
             }
         ]
