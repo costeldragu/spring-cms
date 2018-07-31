@@ -5,6 +5,7 @@ import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -63,11 +64,25 @@ public class AdminService {
      * @return Posts in order to be displayed in a data table.
      */
     public Map<String, Object> listPosts(DataTableRequest dataTableRequest) {
+        return getDataTablesModel(dataTableRequest, postRepository);
+    }
+
+    /**
+     * Return pages in order to be displayed in a data table.
+     *
+     * @return Pages in order to be displayed in a data table.
+     */
+    public Map<String, Object> listPages(DataTableRequest dataTableRequest) {
+        return getDataTablesModel(dataTableRequest, pageRepository);
+    }
+
+    private Map<String, Object> getDataTablesModel(
+            DataTableRequest dataTableRequest, PagingAndSortingRepository<?, ?> repository) {
         Map<String, Object> model = new HashMap<>();
         model.put("draw", dataTableRequest.getDraw());
-        model.put("recordsTotal", postRepository.count());
-        model.put("recordsFiltered", postRepository.count());
-        model.put("data", postRepository.findAll(dataTableRequest.getPageRequest()).getContent());
+        model.put("recordsTotal", repository.count());
+        model.put("recordsFiltered", repository.count());
+        model.put("data", repository.findAll(dataTableRequest.getPageRequest()).getContent());
 
         return model;
     }

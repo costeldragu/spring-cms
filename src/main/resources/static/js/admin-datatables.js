@@ -27,7 +27,11 @@ function renderList(data, mapFunc) {
 }
 
 function renderDate(date) {
-    return date.slice(0, date.indexOf('T'));
+    if (date) {
+        return date.slice(0, date.indexOf('T'));
+    }
+
+    return '';
 }
 
 function createDataTable(id, url, columns) {
