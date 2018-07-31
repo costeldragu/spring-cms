@@ -16,7 +16,7 @@
                 <i class="fa fa-table"></i> Data Table Example</div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="postsDataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -48,5 +48,34 @@
 <script src="/webjars/datatables/1.10.19/media/js/dataTables.bootstrap4.min.js"></script>
 <script src="/js/admin.js"></script>
 <script src="/js/admin-datatables.js"></script>
+<script>
+    $(document).ready(function() {
+        createDataTable('postsDataTable', '/admin/post/list', [
+            {
+                data: "title",
+                orderable: true
+            }, {
+                data: "author.userName",
+                orderable: false
+            }, {
+                data: "categories",
+                orderable: false,
+                render: function(data) {
+                    return renderList(data, x => `<a href="#">${x.name}</a>`);
+                }
+            }, {
+                data: "tags",
+                orderable: false,
+                render: function(data) {
+                    return renderList(data, x => `<a href="#">${x.name}</a>`);
+                }
+            }, {
+                data: "publishedAt",
+                orderable: true,
+                render: renderDate
+            }
+        ]);
+    })
+</script>
 </body>
 </html>
