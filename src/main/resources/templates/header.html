@@ -12,7 +12,7 @@
                 </a>
             </li>
             <li th:each="page: ${pages}" class="nav-item">
-                <a class="nav-link" th:href="${@urlUtils.getPage(page}" th:text="${page.title}"></a>
+                <a class="nav-link" th:href="${@urlUtils.page(page)}" th:text="${page.title}"></a>
             </li>
         </ul>
     </div>

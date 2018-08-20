@@ -316,7 +316,7 @@ public class UrlUtils {
      * @return The post URL.
      */
     public String page(Page page) {
-        return post(page, false);
+        return page(page, false);
     }
 
     /**
@@ -326,13 +326,13 @@ public class UrlUtils {
      * @param absolute If the URL should be absolute.
      * @return The post URL.
      */
-    public String post(Page page, boolean absolute) {
+    public String page(Page page, boolean absolute) {
         String path;
 
         if (page.getSlug() == null) {
-            path = String.format("/post/%d", page.getId());
+            path = String.format("/page/%d", page.getId());
         } else {
-            path = String.format("/post/%s", page.getSlug());
+            path = String.format("/page/%s", page.getSlug());
         }
 
         if (absolute) {
