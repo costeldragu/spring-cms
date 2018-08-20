@@ -1,31 +1,47 @@
-function toSpringData(data) {
-    let d = {
-        draw: data.draw,
-        start: data.start,
-        length: data.length,
-        'search.value': data.search.value,
-        'search.regex': data.search.regex
-    };
+"use strict";
 
-    for (let i = 0; i < data.order.length; i++) {
-        d['order[' + i + '].column'] = data.order[i].column;
-        d['order[' + i + '].dir'] = data.order[i].dir;
+/**
+ * Converts the datatable parameters to a format that can be parsed by the Spring Framework.
+ *
+ * @param data The object that is created by the datatable.
+ * @param features The datatable features.
+ * @param prefix The prefix for the object properties.
+ * @param springData The Spring framework data.
+ * @returns {*} The object format that can be parsed by the Spring framework.
+ */
+function toSpringData(data, features, prefix = '', springData = {}) {
+    for (let key of Object.keys(data)) {
+        if (Array.isArray(data[key])) {
+            data[key].forEach(
+                (element, index) => toSpringData(element, features, key + '[' + index + '].', springData)
+            );
+        } else if (data[key] === Object(data[key])) {
+            toSpringData(data[key], features, key + '.', springData)
+        } else {
+            springData[prefix + key]  = data[key];
+        }
     }
 
-    for (let i = 0; i < data.columns.length; i++) {
-        d['columns[' + i + '].data'] = data.columns[i].data;
-        d['columns[' + i + '].name'] = data.columns[i].name;
-        d['columns[' + i + '].searchable'] = data.columns[i].searchable;
-        d['columns[' + i + '].orderable'] = data.columns[i].orderable;
-    }
-
-    return d;
+    return springData;
 }
 
+/**
+ * Renders a list of items to be displayed in a datatable.
+ *
+ * @param data The list of items. Must be an array.
+ * @param mapFunc The function to apply to each item.
+ * @returns {string} The string to display.
+ */
 function renderList(data, mapFunc) {
     return data.map(mapFunc).join(', ');
 }
 
+/**
+ * Render a date to a string.
+ *
+ * @param date The date to render.
+ * @returns {string} The rendered string.
+ */
 function renderDate(date) {
     if (date) {
         return date.slice(0, date.indexOf('T'));
@@ -34,6 +50,13 @@ function renderDate(date) {
     return '';
 }
 
+/**
+ * Create a datatable from a table.
+ *
+ * @param id The element identifier of the table.
+ * @param url The URL from which to fetch the data.
+ * @param columns The column configuration.
+ */
 function createDataTable(id, url, columns) {
     $(`#${id}`).DataTable({
         processing: true,
