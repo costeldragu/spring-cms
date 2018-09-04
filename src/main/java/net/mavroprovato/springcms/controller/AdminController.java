@@ -94,7 +94,7 @@ public class AdminController {
     }
 
     /**
-     * Return all posts as a JSON string.
+     * Return all categories as a JSON string.
      *
      * @return The response body.
      */
@@ -102,5 +102,26 @@ public class AdminController {
     @ResponseBody
     public Map<String, Object> ajaxListCategories(DataTableRequest dataTableRequest) {
         return adminService.listCategories(dataTableRequest);
+    }
+
+    /**
+     * Display the list of tags.
+     *
+     * @return The model and view.
+     */
+    @GetMapping("tags")
+    public ModelAndView allTags() {
+        return new ModelAndView("admin/tags");
+    }
+
+    /**
+     * Return all tags as a JSON string.
+     *
+     * @return The response body.
+     */
+    @GetMapping("tags/list")
+    @ResponseBody
+    public Map<String, Object> ajaxListTags(DataTableRequest dataTableRequest) {
+        return adminService.listTags(dataTableRequest);
     }
 }
