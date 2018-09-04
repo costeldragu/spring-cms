@@ -82,4 +82,25 @@ public class AdminController {
     public Map<String, Object> ajaxListPages(DataTableRequest dataTableRequest) {
         return adminService.listPages(dataTableRequest);
     }
+
+    /**
+     * Display the list of categories.
+     *
+     * @return The model and view.
+     */
+    @GetMapping("categories")
+    public ModelAndView allCategories() {
+        return new ModelAndView("admin/categories");
+    }
+
+    /**
+     * Return all posts as a JSON string.
+     *
+     * @return The response body.
+     */
+    @GetMapping("categories/list")
+    @ResponseBody
+    public Map<String, Object> ajaxListCategories(DataTableRequest dataTableRequest) {
+        return adminService.listCategories(dataTableRequest);
+    }
 }

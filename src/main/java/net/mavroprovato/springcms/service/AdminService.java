@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.datatables.DataTableRequest;
+import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
@@ -25,6 +26,9 @@ public class AdminService {
     /** The page repository */
     private final PageRepository pageRepository;
 
+    /** The page repository */
+    private final CategoryRepository categoryRepository;
+
     /** The comment repository */
     private final CommentRepository commentRepository;
 
@@ -33,13 +37,15 @@ public class AdminService {
      *
      * @param postRepository The post repository.
      * @param pageRepository The page repository.
+     * @param categoryRepository The category repository.
      * @param commentRepository The comment repository.
      */
     @Autowired
     public AdminService(PostRepository postRepository, PageRepository pageRepository,
-                        CommentRepository commentRepository) {
+                        CategoryRepository categoryRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.pageRepository = pageRepository;
+        this.categoryRepository = categoryRepository;
         this.commentRepository = commentRepository;
     }
 
@@ -74,6 +80,15 @@ public class AdminService {
      */
     public Map<String, Object> listPages(DataTableRequest dataTableRequest) {
         return getDataTablesModel(dataTableRequest, pageRepository);
+    }
+
+    /**
+     * Return categories in order to be displayed in a data table.
+     *
+     * @return Categories in order to be displayed in a data table.
+     */
+    public Map<String, Object> listCategories(DataTableRequest dataTableRequest) {
+        return getDataTablesModel(dataTableRequest, categoryRepository);
     }
 
     private Map<String, Object> getDataTablesModel(
