@@ -28,6 +28,11 @@ public class Category {
     @Getter @Setter
     private String name;
 
+    /** The category description */
+    @Column()
+    @Getter @Setter
+    private String description;
+
     /** The category slug */
     @Column(unique = true)
     @Getter @Setter

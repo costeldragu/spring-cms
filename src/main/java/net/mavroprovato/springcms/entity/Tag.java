@@ -27,6 +27,11 @@ public class Tag {
     @Getter @Setter
     private String name;
 
+    /** The tag description */
+    @Column()
+    @Getter @Setter
+    private String description;
+
     /** The tag slug */
     @Column(unique = true)
     @Getter @Setter
