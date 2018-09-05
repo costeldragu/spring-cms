@@ -22,7 +22,7 @@ public class AdminCategoriesController {
     private final AdminService adminService;
 
     /**
-     * Create the admin controller.
+     * Create the admin categories controller.
      *
      * @param adminService The admin service.
      */

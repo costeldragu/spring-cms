@@ -22,7 +22,7 @@ public class AdminTagsController {
     private final AdminService adminService;
 
     /**
-     * Create the admin controller.
+     * Create the admin tags controller.
      *
      * @param adminService The admin service.
      */

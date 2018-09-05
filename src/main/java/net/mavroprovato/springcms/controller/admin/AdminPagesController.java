@@ -22,7 +22,7 @@ public class AdminPagesController {
     private final AdminService adminService;
 
     /**
-     * Create the admin controller.
+     * Create the admin pages controller.
      *
      * @param adminService The admin service.
      */
