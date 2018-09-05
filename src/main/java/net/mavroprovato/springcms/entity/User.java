@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Application users
@@ -76,4 +77,12 @@ public class User {
     @Getter @Setter
     private Role role;
 
+    /**
+     * Get the user full name.
+     *
+     * @return The user full name.
+     */
+    public String getFullName() {
+        return Objects.toString(firstName, "") + " " + Objects.toString(lastName, "");
+    }
 }

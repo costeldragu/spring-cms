@@ -6,6 +6,7 @@ import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.PageRepository;
 import net.mavroprovato.springcms.repository.PostRepository;
 import net.mavroprovato.springcms.repository.TagRepository;
+import net.mavroprovato.springcms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,9 @@ public class AdminService {
     /** The comment repository */
     private final CommentRepository commentRepository;
 
+    /** The user repository */
+    private final UserRepository userRepository;
+
     /**
      * Create the administration service.
      *
@@ -48,12 +52,13 @@ public class AdminService {
     @Autowired
     public AdminService(PostRepository postRepository, PageRepository pageRepository,
                         CategoryRepository categoryRepository, TagRepository tagRepository,
-                        CommentRepository commentRepository) {
+                        CommentRepository commentRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.pageRepository = pageRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -105,6 +110,15 @@ public class AdminService {
      */
     public Map<String, Object> listTags(DataTableRequest dataTableRequest) {
         return getDataTablesModel(dataTableRequest, tagRepository);
+    }
+
+    /**
+     * Return users in order to be displayed in a data table.
+     *
+     * @return Users in order to be displayed in a data table.
+     */
+    public Map<String, Object> listUsers(DataTableRequest dataTableRequest) {
+        return getDataTablesModel(dataTableRequest, userRepository);
     }
 
     private Map<String, Object> getDataTablesModel(DataTableRequest dataTableRequest,
