@@ -15,7 +15,7 @@
         <div class="card mb-3">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="postsDataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="usersDataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th th:text="#{admin.users.userName}"></th>
@@ -47,7 +47,7 @@
 <script src="/js/admin-datatables.js"></script>
 <script>
     $(document).ready(function() {
-        createDataTable('postsDataTable', '/admin/users/list', [
+        createDataTable('usersDataTable', '/admin/users/list', [
             {
                 data: "userName",
                 orderable: true
