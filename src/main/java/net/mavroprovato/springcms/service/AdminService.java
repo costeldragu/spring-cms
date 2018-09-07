@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.datatables.DataTableRequest;
+import net.mavroprovato.springcms.exception.ResourceNotFoundException;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.CommentRepository;
 import net.mavroprovato.springcms.repository.PageRepository;
@@ -110,6 +111,14 @@ public class AdminService {
      */
     public Map<String, Object> listTags(DataTableRequest dataTableRequest) {
         return getDataTablesModel(dataTableRequest, tagRepository);
+    }
+
+    public Map<String, Object> tag(Integer id) {
+        return tagRepository.findById(id).map(tag -> {
+            Map<String, Object> model = new HashMap<>();
+            model.put("tag", tag);
+            return model;
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
     /**

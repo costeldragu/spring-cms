@@ -1,0 +1,39 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{admin/head :: head}"></head>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav" th:insert="~{admin/navigation}"></nav>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h1 th:text="#{admin.tags.edit}"></h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/admin" th:text="#{admin.tags}"></a>
+            </li>
+            <li class="breadcrumb-item active" th:text="${tag.name}"></li>
+        </ol>
+        <form method="post" th:object="${tag}">
+            <div class="form-group">
+                <label for="name" th:text="#{admin.tags.name}"></label>
+                <input type="text" class="form-control" id="name" aria-describedby="nameHelp" th:field="*{name}" required>
+                <small id="nameHelp" class="form-text text-muted" th:text="#{admin.tags.name.help}"></small>
+            </div>
+            <div class="form-group">
+                <label for="slug" th:text="#{admin.tags.slug}"></label>
+                <input type="text" class="form-control" id="slug" aria-describedby="slugHelp" th:field="*{slug}" required>
+                <small id="slugHelp" class="form-text text-muted" th:text="#{admin.tags.slug.help}"></small>
+            </div>
+            <div class="form-group">
+                <label for="description" th:text="#{admin.tags.description}"></label>
+                <textarea class="form-control" id="description" rows="5" aria-describedby="descriptionHelp" th:field="*{description}"></textarea>
+                <small id="descriptionHelp" class="form-text text-muted" th:text="#{admin.tags.description.help}"></small>
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="#{admin.tags.update}"></button>
+        </form>
+    </div>
+</div>
+<script src="/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.1.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/webjars/jquery-easing-original/1.4.1/jquery.easing.min.js"></script>
+</body>
+</html>
