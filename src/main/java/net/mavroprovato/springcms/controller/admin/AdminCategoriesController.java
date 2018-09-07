@@ -37,7 +37,7 @@ public class AdminCategoriesController {
      * @return The model and view.
      */
     @GetMapping("")
-    public ModelAndView allCategories() {
+    public ModelAndView listCategories() {
         return new ModelAndView("admin/categories");
     }
 

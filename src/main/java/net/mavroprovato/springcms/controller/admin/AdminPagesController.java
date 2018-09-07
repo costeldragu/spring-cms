@@ -37,7 +37,7 @@ public class AdminPagesController {
      * @return The model and view.
      */
     @GetMapping("")
-    public ModelAndView allPages() {
+    public ModelAndView listPages() {
         return new ModelAndView("admin/pages");
     }
 

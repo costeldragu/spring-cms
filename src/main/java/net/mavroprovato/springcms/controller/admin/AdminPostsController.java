@@ -37,7 +37,7 @@ public class AdminPostsController {
      * @return The model and view.
      */
     @GetMapping("")
-    public ModelAndView allPosts() {
+    public ModelAndView listPosts() {
         return new ModelAndView("admin/posts");
     }
 

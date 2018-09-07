@@ -37,7 +37,7 @@ public class AdminTagsController {
      * @return The model and view.
      */
     @GetMapping("")
-    public ModelAndView allTags() {
+    public ModelAndView listTags() {
         return new ModelAndView("admin/tags");
     }
 

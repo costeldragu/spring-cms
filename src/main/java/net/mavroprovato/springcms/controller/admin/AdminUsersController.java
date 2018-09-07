@@ -37,7 +37,7 @@ public class AdminUsersController {
      * @return The model and view.
      */
     @GetMapping("")
-    public ModelAndView allUsers() {
+    public ModelAndView listUsers() {
         return new ModelAndView("admin/users");
     }
 
