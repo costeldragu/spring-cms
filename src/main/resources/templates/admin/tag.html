@@ -8,11 +8,11 @@
         <h1 th:text="#{admin.tags.edit}"></h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="/admin" th:text="#{admin.tags}"></a>
+                <a href="/admin/tags" th:text="#{admin.tags}"></a>
             </li>
             <li class="breadcrumb-item active" th:text="${tag.name}"></li>
         </ol>
-        <form method="post" th:object="${tag}">
+        <form method="post" th:action="@{'/admin/tags/' + ${tag.id} + '/edit'}" th:object="${tag}">
             <div class="form-group">
                 <label for="name" th:text="#{admin.tags.name}"></label>
                 <input type="text" class="form-control" id="name" aria-describedby="nameHelp" th:field="*{name}" required>
@@ -28,6 +28,7 @@
                 <textarea class="form-control" id="description" rows="5" aria-describedby="descriptionHelp" th:field="*{description}"></textarea>
                 <small id="descriptionHelp" class="form-text text-muted" th:text="#{admin.tags.description.help}"></small>
             </div>
+            <input type="hidden" th:path="id" />
             <button type="submit" class="btn btn-primary" th:text="#{admin.tags.update}"></button>
         </form>
     </div>

@@ -1,6 +1,7 @@
 package net.mavroprovato.springcms.service;
 
 import net.mavroprovato.springcms.datatables.DataTableRequest;
+import net.mavroprovato.springcms.entity.Tag;
 import net.mavroprovato.springcms.exception.ResourceNotFoundException;
 import net.mavroprovato.springcms.repository.CategoryRepository;
 import net.mavroprovato.springcms.repository.CommentRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * The administration service.
@@ -113,12 +115,30 @@ public class AdminService {
         return getDataTablesModel(dataTableRequest, tagRepository);
     }
 
+    /**
+     * Loads a tag.
+     *
+     * @param id The tag identifier.
+     * @return The page model.
+     */
     public Map<String, Object> tag(Integer id) {
         return tagRepository.findById(id).map(tag -> {
             Map<String, Object> model = new HashMap<>();
             model.put("tag", tag);
             return model;
         }).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    /**
+     * Edits a tag.
+     *
+     * @param id The tag identifier.
+     * @param tag The tag data.
+     */
+    public void editTag(int id, Tag tag) {
+        Optional<Tag> t = tagRepository.findById(id);
+        t.ifPresent(tt -> tagRepository.save(tag));
+        t.orElseThrow(ResourceNotFoundException::new);
     }
 
     /**

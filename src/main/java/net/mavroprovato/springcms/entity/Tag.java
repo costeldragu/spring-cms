@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -19,21 +20,23 @@ public class Tag {
     /** The unique identifier of the tag */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
+    @Getter @Setter
     private Integer id;
 
     /** The tag name */
     @Column(nullable = false)
     @Getter @Setter
+    @NotNull(message = "{tag.name.notNull}")
     private String name;
+
+    /** The tag slug */
+    @Column(unique = true)
+    @Getter @Setter
+    @NotNull(message = "{tag.slug.notNull}")
+    private String slug;
 
     /** The tag description */
     @Column()
     @Getter @Setter
     private String description;
-
-    /** The tag slug */
-    @Column(unique = true)
-    @Getter @Setter
-    private String slug;
 }
