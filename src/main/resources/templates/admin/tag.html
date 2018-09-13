@@ -15,12 +15,14 @@
         <form method="post" th:action="@{'/admin/tags/' + ${tag.id} + '/edit'}" th:object="${tag}">
             <div class="form-group">
                 <label for="name" th:text="#{admin.tags.name}"></label>
-                <input type="text" class="form-control" id="name" aria-describedby="nameHelp" th:field="*{name}" required>
+                <input th:field="*{name}"  type="text" class="form-control" id="name" aria-describedby="nameHelp" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" required>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="invalid-feedback"></div>
                 <small id="nameHelp" class="form-text text-muted" th:text="#{admin.tags.name.help}"></small>
             </div>
             <div class="form-group">
                 <label for="slug" th:text="#{admin.tags.slug}"></label>
-                <input type="text" class="form-control" id="slug" aria-describedby="slugHelp" th:field="*{slug}" required>
+                <input th:field="*{slug}" type="text" class="form-control" id="slug" aria-describedby="slugHelp" th:classappend="${#fields.hasErrors('slug') ? 'is-invalid' : ''}" required>
+                <div th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}" class="invalid-feedback"></div>
                 <small id="slugHelp" class="form-text text-muted" th:text="#{admin.tags.slug.help}"></small>
             </div>
             <div class="form-group">

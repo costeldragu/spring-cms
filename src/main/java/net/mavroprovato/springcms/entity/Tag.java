@@ -26,13 +26,13 @@ public class Tag {
     /** The tag name */
     @Column(nullable = false)
     @Getter @Setter
-    @NotNull(message = "{tag.name.notNull}")
+    @NotNull(message = "{admin.tag.name.notNull}")
     private String name;
 
     /** The tag slug */
     @Column(unique = true)
     @Getter @Setter
-    @NotNull(message = "{tag.slug.notNull}")
+    @NotNull(message = "{admin.tag.slug.notNull}")
     private String slug;
 
     /** The tag description */

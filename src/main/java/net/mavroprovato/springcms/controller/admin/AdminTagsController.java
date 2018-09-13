@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -83,7 +84,7 @@ public class AdminTagsController {
                                 BindingResult bindingResult) {
         // Validate the form
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("admin/tag", adminService.tag(id));
+            return new ModelAndView("admin/tag");
         }
         // Update the tag
         adminService.editTag(id, tag);
