@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <a th:href="${@urlUtils.post(post)}"><h2 th:text="${post.title}" class="card-title"></h2></a>
                         <p th:text="${post.content}" class="card-text"></p>
-                        <a th:href="${@urlUtils.post(post)}" class="btn btn-primary">Read More &rarr;</a>
+                        <a th:text="#{post.read.more}" th:href="${@urlUtils.post(post)}" class="btn btn-primary"></a>
                     </div>
                     <div class="card-footer text-muted">
                         <span th:text="#{post.published.at}"></span>
