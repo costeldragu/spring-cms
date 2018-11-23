@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * Application users
  */
-@Entity(name = "users")
+@Entity(name = "app_user")
 public class User {
 
     /** The unique identifier of the user */
@@ -44,15 +44,10 @@ public class User {
     @Getter @Setter
     private String email;
 
-    /** The user first name */
+    /** The user name */
     @Column
     @Getter @Setter
-    private String firstName;
-
-    /** The user last name */
-    @Column
-    @Getter @Setter
-    private String lastName;
+    private String name;
 
     /** The user web site */
     @Column
@@ -76,13 +71,4 @@ public class User {
     @Column(nullable = false)
     @Getter @Setter
     private Role role;
-
-    /**
-     * Get the user full name.
-     *
-     * @return The user full name.
-     */
-    public String getFullName() {
-        return Objects.toString(firstName, "") + " " + Objects.toString(lastName, "");
-    }
 }
