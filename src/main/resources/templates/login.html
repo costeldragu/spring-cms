@@ -13,12 +13,15 @@
 <form class="form-signin" th:action="@{/login}" method="post">
     <h1 class="h3 mb-3 font-weight-normal" th:text="#{login.signIn}"></h1>
     <div th:if="${param.error}" class="alert alert-danger" role="alert" th:text="#{invalid.credentials}"></div>
+
     <label for="username" class="sr-only" th:text="#{login.userName}"></label>
     <input type="text" id="username" name="username" class="form-control" th:placeholder="#{login.userName}"
            required autofocus>
+
     <label for="password" class="sr-only" th:text="#{login.password}"></label>
     <input type="password" id="password" name="password" class="form-control" th:placeholder="#{login.password}"
            required>
+
     <div class="checkbox mb-3">
         <label>
             <input type="checkbox" value="remember-me"><span th:text="#{login.rememberMe}"></span>

@@ -17,8 +17,10 @@
                         <a th:text="#{post.read.more}" th:href="${@urlUtils.post(post)}" class="btn btn-primary"></a>
                     </div>
                     <div class="card-footer text-muted">
+                        <i class="fa fa-clock-o"></i>
                         <span th:text="#{post.published.at}"></span>
                         <span th:text="${#temporals.format(post.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
+                        <i class="fa fa-tag"></i>
                         <span th:text="#{post.tags}"></span>
                         <th:block th:each="tag: ${post.tags}">
                             <a th:text="${tag.name}" th:href="${@urlUtils.postListByTag(tag)}"></a>

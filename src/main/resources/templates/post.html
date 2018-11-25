@@ -19,7 +19,7 @@
                 <hr>
                 <span th:text="${post.content}"></span>
                 <hr>
-                <h5 th:text="#{post.comments}"></h5>
+                <h5 th:text="#{post.comment.list}"></h5>
                 <div th:each="comment: ${post.comments}" th:id="'comment-' + ${comment.id}" class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
                     <div class="media-body">
@@ -30,7 +30,7 @@
                 </div>
                 <hr>
                 <div class="card my-4">
-                    <h5 class="card-header" th:text="#{post.post.comment}"></h5>
+                    <h5 class="card-header" th:text="#{post.comment.leaveComment}"></h5>
                     <div class="card-body">
                         <form th:action="@{'/post/' + ${post.id} + '/comment'}" th:object="${newComment}" method="post">
                             <div class="form-group">
