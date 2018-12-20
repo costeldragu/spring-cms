@@ -14,7 +14,7 @@
                 <hr>
                 <p>
                     <span th:text="#{post.published.at}"></span>
-                    <span th:text="${#temporals.format(post.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
+                    <span th:text="${#temporals.format(post.publishedAt.toZonedDateTime(), 'MMMM dd, YYYY HH:mm')}"></span>
                 </p>
                 <hr>
                 <span th:text="${post.content}"></span>
@@ -24,7 +24,7 @@
                     <img class="d-flex mr-3 rounded-circle" src="//placehold.it/50x50" alt="">
                     <div class="media-body">
                         <h5 th:text="${comment.name}" class="mt-0"></h5>
-                        <h6 th:text="${#temporals.format(comment.createdAt, 'MMMM dd, YYYY HH:mm')}"></h6>
+                        <h6 th:text="${#temporals.format(comment.createdAt.toZonedDateTime(), 'MMMM dd, YYYY HH:mm')}"></h6>
                         <span th:text="${comment.comment}"></span>
                     </div>
                 </div>

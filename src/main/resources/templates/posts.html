@@ -19,7 +19,7 @@
                     <div class="card-footer text-muted">
                         <i class="fa fa-clock-o"></i>
                         <span th:text="#{post.published.at}"></span>
-                        <span th:text="${#temporals.format(post.publishedAt, 'MMMM dd, YYYY HH:mm')}"></span>
+                        <span th:text="${#temporals.format(post.publishedAt.toZonedDateTime(), 'MMMM dd, YYYY HH:mm')}"></span>
                         <i class="fa fa-tag"></i>
                         <span th:text="#{post.tags}"></span>
                         <th:block th:each="tag: ${post.tags}">
